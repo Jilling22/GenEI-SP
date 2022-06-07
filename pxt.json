@@ -1,0 +1,34 @@
+{
+    "name": "Mikage. Attack! (character select) ver.0.25",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "controller": "*",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "main.py",
+        "images.g.jres",
+        "images.g.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "branch": "v1.2.16",
+        "tag": "v1.2.16",
+        "commits": "https://github.com/microsoft/pxt-arcade/commits/971a86b03314f200ceb1a951ad277d1d6b8c1e23",
+        "target": "1.8.26",
+        "pxt": "6.2.30",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
+}
