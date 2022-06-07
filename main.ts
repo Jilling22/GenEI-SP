@@ -60,14 +60,14 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function initialize_menu () {
-    scene.setBackgroundColor(15)
+    scene.setBackgroundImage(assets.image`menu_bg`)
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
     cursor.setFlag(SpriteFlag.StayInScreen, true)
     menu_mikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
     menu_spica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
     controller.moveSprite(cursor)
-    menu_mikage.setPosition(23, 87)
-    menu_spica.setPosition(121, 87)
+    menu_mikage.setPosition(26, 100)
+    menu_spica.setPosition(137, 100)
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (game_state == "arcade") {
@@ -92,19 +92,20 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 function start_game (character: string) {
     cursor.destroy()
     sprites.destroyAllSpritesOfKind(SpriteKind.Button)
-    scene.setBackgroundImage(assets.image`menu_bg`)
+    scene.setBackgroundImage(assets.image`game_bg`)
     info.setLife(3)
     info.setScore(0)
     if (character == "mikage") {
         player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
+        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else if (character == "spica") {
         player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
+        game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else {
         game.over(false, effects.hearts)
     }
     controller.moveSprite(player_sprite)
     player_sprite.setStayInScreen(true)
-    game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     game_state = "arcade"
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite3, otherSprite3) {
