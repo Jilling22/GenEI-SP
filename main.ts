@@ -80,7 +80,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 // animation functions (REFACTOR!)
 
 function animate_walk() {
-    if (character_name == "mikage") {
+    if (player_sprite.data === "mikage") {
         if (info.life() >= 3) {
             // replace with class method
             animation.runImageAnimation(
@@ -104,7 +104,7 @@ function animate_walk() {
                 false
             )
         }
-    } else if (character_name == "spica") {
+    } else if (player_sprite.data === "spica") {
         if (info.life() >= 3) {
             animation.runImageAnimation(
                 player_sprite,
@@ -131,7 +131,7 @@ function animate_walk() {
 }
 
 function animate_injured (character: Sprite) {
-    if (character_name == "mikage") {
+    if (player_sprite.data === "mikage") {
         if (info.life() == 2) {
             character.setImage(assets.image`MikageSemi`)
             animation.runImageAnimation(
@@ -156,7 +156,7 @@ function animate_injured (character: Sprite) {
             false
             )
         }
-    } else if (character_name == "spica") {
+    } else if (player_sprite.data === "spica") {
         if (info.life() == 2) {
             character.setImage(assets.image`SpicaSemi`)
             animation.runImageAnimation(
@@ -232,11 +232,11 @@ function start_game(selectedSprite: Sprite) {
     info.setScore(0)
     if (selectedSprite == menuMikage) {
         player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
-        character_name = "mikage"
+        player_sprite.data = "mikage"
         game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else if (selectedSprite == menuSpica) {
         player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
-        character_name = "spica"
+        player_sprite.data = "spica"
         game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else {
         game.over(false, effects.hearts)
@@ -253,7 +253,6 @@ let menuSpica: Sprite = null
 let menuMikage: Sprite = null
 let cursor: Sprite = null
 let game_state = "menu"
-let character_name = "bald"
 let level_up_time = 11000
 
 initialize_menu()
