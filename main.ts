@@ -1,6 +1,44 @@
 // custom sprite category
 namespace SpriteKind {
     export const Button = SpriteKind.create()
+    export const Phantom = SpriteKind.create()
+}
+
+namespace phantom {
+    export let x_speed = -60
+    export let spawn_rate = 0
+
+    // spawn function
+    sprites.onCreated(SpriteKind.Phantom, function (phantom: Sprite) {
+        setWalk(phantom)
+        phantom.vx = randint(x_speed - 40, x_speed + 40)
+        phantom.lifespan = 3500
+    });
+
+    // oncreate functions
+    game.onUpdateInterval(1000, function () {
+        if (game_state == "arcade") {
+            for (let index = 0; index <= Math.round(spawn_rate); index++) {
+                let phantom = sprites.create(assets.image`PMikage`, SpriteKind.Phantom)
+                setPosition(phantom, index);
+            }
+        }
+    })
+
+    // setposition function
+    function setPosition(pmikage: Sprite, index: number) {
+        pmikage.x = scene.screenWidth() + randint(10, 30) * (index % 5)
+        pmikage.y = randint(20, 110)
+    }
+
+    function setWalk(pmikage: Sprite) {
+        animation.runImageAnimation(pmikage,
+            assets.animation`PMikage Walk`,
+            200,
+            true
+        )
+    }
+
 }
 
 // controller events
@@ -148,7 +186,7 @@ function animate_injured (character: Sprite) {
     }
 }
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite3, otherSprite3) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (sprite3, otherSprite3) {
     timer.throttle("on_on_overlap", 300, function () {
         animate_injured(sprite3)
         music.powerDown.play()
@@ -177,7 +215,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Button, function (sprite, otherS
         start_game(character_name)
     }
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite2, otherSprite2) {
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (sprite2, otherSprite2) {
     otherSprite2.vx = 0
     otherSprite2.destroy(effects.hearts, 200)
     sprite2.destroy()
@@ -215,7 +253,6 @@ function start_game(character: string) {
     game_state = "arcade"
 }
 
-let meteor: Sprite = null
 let life_up: Sprite = null
 let player_sprite: Sprite = null
 let bullet: Sprite = null
@@ -224,10 +261,7 @@ let menu_mikage: Sprite = null
 let cursor: Sprite = null
 let game_state = "menu"
 let character_name = "bald"
-
 let level_up_time = 11000
-let meteor_speed = -60
-let meteor_spawn = 0
 
 initialize_menu()
 
@@ -245,24 +279,7 @@ game.onUpdateInterval(15000, function () {
 
 game.onUpdateInterval(level_up_time, function () {
     if (game_state == "arcade") {
-        meteor_spawn += 0.7
-        meteor_speed += -6
-    }
-})
-game.onUpdateInterval(1000, function () {
-    if (game_state == "arcade") {
-        for (let index = 0; index <= Math.round(meteor_spawn); index++) {
-            meteor = sprites.create(assets.image`PMikage`, SpriteKind.Enemy)
-            animation.runImageAnimation(
-            meteor,
-            assets.animation`PMikage Walk`,
-            200,
-            true
-            )
-            meteor.x = scene.screenWidth() + randint(10, 30) * (index % 5)
-            meteor.vx = randint(meteor_speed - 40, meteor_speed + 40)
-            meteor.y = randint(20, 110)
-            meteor.lifespan = 3500
-        }
+        phantom.spawn_rate += 0.7
+        phantom.x_speed += -6
     }
 })
