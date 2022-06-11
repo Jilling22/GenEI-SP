@@ -4,18 +4,18 @@ namespace SpriteKind {
     export const Phantom = SpriteKind.create()
 }
 
+
+
 namespace phantom {
     export let x_speed = -60
     export let spawn_rate = 0
 
-    // spawn function
     sprites.onCreated(SpriteKind.Phantom, function (phantom: Sprite) {
         setWalk(phantom)
         phantom.vx = randint(x_speed - 40, x_speed + 40)
         phantom.lifespan = 3500
-    });
+    })
 
-    // oncreate functions
     game.onUpdateInterval(1000, function () {
         if (game_state == "arcade") {
             for (let index = 0; index <= Math.round(spawn_rate); index++) {
@@ -25,7 +25,6 @@ namespace phantom {
         }
     })
 
-    // setposition function
     function setPosition(pmikage: Sprite, index: number) {
         pmikage.x = scene.screenWidth() + randint(10, 30) * (index % 5)
         pmikage.y = randint(20, 110)
@@ -38,7 +37,6 @@ namespace phantom {
             true
         )
     }
-
 }
 
 // controller events
@@ -202,17 +200,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     music.powerUp.play()
     otherSprite.destroy()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Button, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Button, function (cursorSprite, selectedSprite) {
     if (controller.A.isPressed()) {
         game_state = "arcade"
-        if (otherSprite == menu_mikage) {
-            character_name = "mikage"
-        } else if (otherSprite == menu_spica) {
-            character_name = "spica"
-        } else {
-            game.over(false, effects.hearts)
-        }
-        start_game(character_name)
+        start_game(selectedSprite)
     }
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (sprite2, otherSprite2) {
@@ -226,24 +217,26 @@ function initialize_menu() {
     scene.setBackgroundImage(assets.image`menu_bg`)
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
     cursor.setFlag(SpriteFlag.StayInScreen, true)
-    menu_mikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
-    menu_spica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
+    menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
+    menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
     controller.moveSprite(cursor)
-    menu_mikage.setPosition(26, 100)
-    menu_spica.setPosition(137, 100)
+    menuMikage.setPosition(26, 100)
+    menuSpica.setPosition(137, 100)
 }
 
-function start_game(character: string) {
+function start_game(selectedSprite: Sprite) {
     cursor.destroy()
     sprites.destroyAllSpritesOfKind(SpriteKind.Button)
     scene.setBackgroundImage(assets.image`game_bg`)
     info.setLife(3)
     info.setScore(0)
-    if (character == "mikage") {
+    if (selectedSprite == menuMikage) {
         player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
+        character_name = "mikage"
         game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
-    } else if (character == "spica") {
+    } else if (selectedSprite == menuSpica) {
         player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
+        character_name = "spica"
         game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else {
         game.over(false, effects.hearts)
@@ -256,8 +249,8 @@ function start_game(character: string) {
 let life_up: Sprite = null
 let player_sprite: Sprite = null
 let bullet: Sprite = null
-let menu_spica: Sprite = null
-let menu_mikage: Sprite = null
+let menuSpica: Sprite = null
+let menuMikage: Sprite = null
 let cursor: Sprite = null
 let game_state = "menu"
 let character_name = "bald"
@@ -283,3 +276,4 @@ game.onUpdateInterval(level_up_time, function () {
         phantom.x_speed += -6
     }
 })
+
