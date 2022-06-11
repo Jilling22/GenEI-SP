@@ -1,6 +1,99 @@
+// custom sprite category
 namespace SpriteKind {
     export const Button = SpriteKind.create()
 }
+
+// controller events
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game_state == "arcade") {
+        animate_walk()
+    }
+})
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game_state == "arcade") {
+        animate_walk()
+    }
+})
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game_state == "arcade") {
+        animate_walk()
+    }
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game_state == "arcade") {
+        animate_walk()
+    }
+})
+
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game_state == "arcade") {
+        timer.throttle("on_a_pressed", 150, function () {
+            bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player_sprite, 200, 0)
+            animation.runImageAnimation(
+                bullet,
+                assets.animation`EP`,
+                50,
+                true
+            )
+            music.pewPew.play()
+            bullet.lifespan = 2000
+        })
+    }
+})
+
+// animation functions (REFACTOR!)
+
+function animate_walk() {
+    if (character_name == "mikage") {
+        if (info.life() >= 3) {
+            // replace with class method
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`Mikage Walk`,
+                150,
+                false
+            )
+        } else if (info.life() == 2) {
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`MikageSemi Walk`,
+                150,
+                false
+            )
+        } else {
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`MikageBald Walk`,
+                150,
+                false
+            )
+        }
+    } else if (character_name == "spica") {
+        if (info.life() >= 3) {
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`Spica Walk`,
+                150,
+                false
+            )
+        } else if (info.life() == 2) {
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`SpicaSemi Walk`,
+                200,
+                false
+            )
+        } else {
+            animation.runImageAnimation(
+                player_sprite,
+                assets.animation`SpicaBald Walk`,
+                200,
+                false
+            )
+        }
+    }
+}
+
 function animate_injured (character: Sprite) {
     if (character_name == "mikage") {
         if (info.life() == 2) {
@@ -54,60 +147,7 @@ function animate_injured (character: Sprite) {
         }
     }
 }
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (game_state == "arcade") {
-        animate_walk()
-    }
-})
-function initialize_menu () {
-    scene.setBackgroundImage(assets.image`menu_bg`)
-    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
-    cursor.setFlag(SpriteFlag.StayInScreen, true)
-    menu_mikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
-    menu_spica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
-    controller.moveSprite(cursor)
-    menu_mikage.setPosition(26, 100)
-    menu_spica.setPosition(137, 100)
-}
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (game_state == "arcade") {
-        timer.throttle("on_a_pressed", 150, function () {
-            bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player_sprite, 200, 0)
-            animation.runImageAnimation(
-            bullet,
-            assets.animation`EP`,
-            50,
-            true
-            )
-            music.pewPew.play()
-            bullet.lifespan = 2000
-        })
-    }
-})
-controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (game_state == "arcade") {
-        animate_walk()
-    }
-})
-function start_game (character: string) {
-    cursor.destroy()
-    sprites.destroyAllSpritesOfKind(SpriteKind.Button)
-    scene.setBackgroundImage(assets.image`game_bg`)
-    info.setLife(3)
-    info.setScore(0)
-    if (character == "mikage") {
-        player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
-        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
-    } else if (character == "spica") {
-        player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
-        game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
-    } else {
-        game.over(false, effects.hearts)
-    }
-    controller.moveSprite(player_sprite)
-    player_sprite.setStayInScreen(true)
-    game_state = "arcade"
-}
+
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite3, otherSprite3) {
     timer.throttle("on_on_overlap", 300, function () {
         animate_injured(sprite3)
@@ -117,65 +157,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite3, otherS
         otherSprite3.destroy()
     })
 })
-controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (game_state == "arcade") {
-        animate_walk()
-    }
-})
-controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (game_state == "arcade") {
-        animate_walk()
-    }
-})
-function animate_walk () {
-    if (character_name == "mikage") {
-        if (info.life() >= 3) {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`Mikage Walk`,
-            150,
-            false
-            )
-        } else if (info.life() == 2) {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`MikageSemi Walk`,
-            150,
-            false
-            )
-        } else {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`MikageBald Walk`,
-            150,
-            false
-            )
-        }
-    } else if (character_name == "spica") {
-        if (info.life() >= 3) {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`Spica Walk`,
-            150,
-            false
-            )
-        } else if (info.life() == 2) {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`SpicaSemi Walk`,
-            200,
-            false
-            )
-        } else {
-            animation.runImageAnimation(
-            player_sprite,
-            assets.animation`SpicaBald Walk`,
-            200,
-            false
-            )
-        }
-    }
-}
+
+
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     info.changeLifeBy(1)
     music.powerUp.play()
@@ -200,6 +183,38 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite2, ot
     sprite2.destroy()
     info.changeScoreBy(1)
 })
+
+function initialize_menu() {
+    scene.setBackgroundImage(assets.image`menu_bg`)
+    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
+    cursor.setFlag(SpriteFlag.StayInScreen, true)
+    menu_mikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
+    menu_spica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
+    controller.moveSprite(cursor)
+    menu_mikage.setPosition(26, 100)
+    menu_spica.setPosition(137, 100)
+}
+
+function start_game(character: string) {
+    cursor.destroy()
+    sprites.destroyAllSpritesOfKind(SpriteKind.Button)
+    scene.setBackgroundImage(assets.image`game_bg`)
+    info.setLife(3)
+    info.setScore(0)
+    if (character == "mikage") {
+        player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
+        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
+    } else if (character == "spica") {
+        player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
+        game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
+    } else {
+        game.over(false, effects.hearts)
+    }
+    controller.moveSprite(player_sprite)
+    player_sprite.setStayInScreen(true)
+    game_state = "arcade"
+}
+
 let meteor: Sprite = null
 let life_up: Sprite = null
 let player_sprite: Sprite = null
@@ -207,14 +222,15 @@ let bullet: Sprite = null
 let menu_spica: Sprite = null
 let menu_mikage: Sprite = null
 let cursor: Sprite = null
-let game_state = ""
-let character_name = ""
-character_name = "bald"
-game_state = "menu"
+let game_state = "menu"
+let character_name = "bald"
+
 let level_up_time = 11000
 let meteor_speed = -60
 let meteor_spawn = 0
+
 initialize_menu()
+
 game.onUpdateInterval(15000, function () {
     if (game_state == "arcade") {
         timer.after(10000, function () {
@@ -226,6 +242,7 @@ game.onUpdateInterval(15000, function () {
         })
     }
 })
+
 game.onUpdateInterval(level_up_time, function () {
     if (game_state == "arcade") {
         meteor_spawn += 0.7
