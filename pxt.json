@@ -14,7 +14,8 @@
         "tilemap.g.ts",
         "main.py",
         "images.g.jres",
-        "images.g.ts"
+        "images.g.ts",
+        "gamedata.ts"
     ],
     "testFiles": [
         "test.ts"
