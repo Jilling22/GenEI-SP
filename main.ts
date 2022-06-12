@@ -4,8 +4,41 @@ namespace SpriteKind {
     export const Cursor = SpriteKind.create()
 }
 
+let mikage = {
+    name: "MIKAGE",
+
+    normalSprite: assets.image`Mikage`,
+    sbaldSprite: assets.image`MikageSemi`,
+    baldSprite: assets.image`MikageBald`,
+
+    normalWalkAnim: assets.animation`Mikage Walk`,
+    sbaldWalkAnim: assets.animation`MikageSemi Walk`,
+    baldWalkAnim: assets.animation`MikageBald Walk`,
+
+    normalHurtAnim: assets.animation`Mikage Injured`,
+    sbaldHurtAnim: assets.animation`MikageSemi Injured`,
+    baldHurtAnim: assets.animation`MikageBald Injured`
+}
+
+let spica = {
+    name: "SPICA",
+
+    normalSprite: assets.image`Spica`,
+    sbaldSprite: assets.image`SpicaSemi`,
+    baldSprite: assets.image`SpicaBald`,
+
+    normalWalkAnim: assets.animation`Spica Walk`,
+    sbaldWalkAnim: assets.animation`SpicaSemi Walk`,
+    baldWalkAnim: assets.animation`SpicaBald Walk`,
+
+    normalHurtAnim: assets.animation`Spica Injured`,
+    sbaldHurtAnim: assets.animation`MikageSemi Injured`,
+    baldHurtAnim: assets.animation`SpicaBald Injured`
+}
+
 class Player {
     sprite: Sprite;
+    
     constructor() {
         this.sprite = this.initialize()
     }
@@ -17,6 +50,10 @@ class Player {
         controller.moveSprite(player)
         player.setStayInScreen(true)
         return player
+    }
+
+    animate_walk() {
+
     }
 }
 
