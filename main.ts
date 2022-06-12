@@ -10,13 +10,13 @@ class Player {
     bulletSpeed: number
     shootCooldown: number
     iframes: number
-    
+
     constructor(character: CharacterData) {
         info.setLife(character.startingLives)
         info.setScore(0)
 
         this.spriteAssets = character
-        
+
         this.sprite = sprites.create(character.normalSprite, SpriteKind.Player)
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
@@ -25,9 +25,9 @@ class Player {
         this.agility = character.agility
         this.bulletSpeed = character.bulletSpeed
         this.shootCooldown = character.shootCooldown
-        
+
         this.iframes = character.iframes
-        
+
         controller.moveSprite(this.sprite, this.agility, this.agility)
         this.sprite.setStayInScreen(true)
 
@@ -36,9 +36,9 @@ class Player {
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("on_a_pressed", this.shootCooldown, function () {
                 bullet = sprites.createProjectileFromSprite(
-                    assets.image`Mikage`, 
-                    player.sprite, 
-                    this.bulletSpeed, 
+                    assets.image`Mikage`,
+                    player.sprite,
+                    this.bulletSpeed,
                     0)
                 animation.runImageAnimation(
                     bullet,
@@ -87,7 +87,7 @@ class Player {
     }
 
     updateHair() {
-        const spriteAssets = this.spriteAssets 
+        const spriteAssets = this.spriteAssets
 
         if (info.life() >= 3) {
             this.sprite.setImage(spriteAssets.normalSprite)
@@ -157,7 +157,7 @@ function initializeMenu() {
     menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
     menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.Button)
     menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.Button)
-    
+
     menuMikage.setPosition(26, 100)
     menuSpica.setPosition(62, 100)
     menuYuuhi.setPosition(98, 100)
@@ -179,7 +179,7 @@ function initializeMenu() {
 
 function startGame(selectedSprite: Sprite) {
     scene.setBackgroundImage(assets.image`game_bg`)
-    
+
     if (selectedSprite == menuMikage) {
         player = new Player(MIKAGE)
     } else if (selectedSprite == menuSpica) {
@@ -222,7 +222,7 @@ game.onUpdate(function () {
             player.animateWalk()
         })
 
-        
+
 
         timer.after(10000, function () {
             game.onUpdateInterval(25000, function () {
