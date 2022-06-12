@@ -1,4 +1,10 @@
 
+namespace SpriteKind {
+    export const Button = SpriteKind.create()
+    export const Phantom = SpriteKind.create()
+    export const Cursor = SpriteKind.create()
+}
+
 type CharacterData = {
     name: string,
 
@@ -12,7 +18,9 @@ type CharacterData = {
 
     normalHurtAnim: Image[],
     sbaldHurtAnim: Image[],
-    baldHurtAnim: Image[]
+    baldHurtAnim: Image[],
+
+    iframes: number
 }
 
 const MIKAGE: CharacterData = {
@@ -28,7 +36,9 @@ const MIKAGE: CharacterData = {
 
     normalHurtAnim: assets.animation`Mikage Injured`,
     sbaldHurtAnim: assets.animation`MikageSemi Injured`,
-    baldHurtAnim: assets.animation`MikageBald Injured`
+    baldHurtAnim: assets.animation`MikageBald Injured`,
+
+    iframes: 500
 }
 
 const SPICA: CharacterData = {
@@ -44,7 +54,9 @@ const SPICA: CharacterData = {
 
     normalHurtAnim: assets.animation`Spica Injured`,
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
-    baldHurtAnim: assets.animation`SpicaBald Injured`
+    baldHurtAnim: assets.animation`SpicaBald Injured`,
+
+    iframes: 500
 }
 
 type LevelData = {

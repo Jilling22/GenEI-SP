@@ -1,8 +1,4 @@
-namespace SpriteKind {
-    export const Button = SpriteKind.create()
-    export const Phantom = SpriteKind.create()
-    export const Cursor = SpriteKind.create()
-}
+
 
 class Player {
     spriteAssets: CharacterData
@@ -11,8 +7,11 @@ class Player {
     hurtAnim: Image[]
     
     constructor(character: CharacterData) {
-        this.spriteAssets = character
+        info.setLife(3)
+        info.setScore(0)
 
+        this.spriteAssets = character
+        
         this.sprite = sprites.create(character.normalSprite, SpriteKind.Player)
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
@@ -21,7 +20,29 @@ class Player {
         controller.moveSprite(this.sprite)
         this.sprite.setStayInScreen(true)
 
-        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
+        game.showLongText(`Hello ${character.name}. I hope you're ready. Let's have some fun.`, DialogLayout.Bottom)
+
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (playerSprite, lifeUpSprite) {
+            info.changeLifeBy(1)
+            this.updateHair()
+            music.powerUp.play()
+
+            lifeUpSprite.destroy()
+        })
+
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
+            timer.throttle("on_on_overlap", character.iframes, function () {
+
+                info.changeLifeBy(-1)
+                this.updateHair()
+                this.animateHurt()
+
+                music.powerDown.play()
+                scene.cameraShake(4, 500)
+
+                phantomSprite.destroy()
+            })
+        })
     }
 
     animateWalk() {
@@ -93,13 +114,6 @@ class PhantomSpawner {
     }
 }
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (playerSprite, lifeUpSprite) {
-    info.changeLifeBy(1)
-    player.updateHair()
-    music.powerUp.play()
-    lifeUpSprite.destroy()
-})
-
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectileSprite, phantomSprite) {
     phantomSprite.vx = 0
     phantomSprite.destroy(effects.hearts, 200)
@@ -107,49 +121,39 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
     info.changeScoreBy(1)
 })
 
-// TODO: make i-frames adjustable
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
-    timer.throttle("on_on_overlap", 300, function () {
-    
-        info.changeLifeBy(-1)
-        player.updateHair()
-        player.animateHurt()
-        music.powerDown.play()
-        scene.cameraShake(4, 500)
-
-        phantomSprite.destroy()
-    })
-})
-
-// Initial menu event listener
-sprites.onOverlap(SpriteKind.Cursor, SpriteKind.Button, function (cursorSprite, selectedSprite) {
-    if (controller.A.isPressed()) {
-        start_game(selectedSprite)
-    }
-})
-
-function initialize_menu() {
+function initializeMenu() {
     scene.setBackgroundImage(assets.image`menu_bg`)
+
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
+    controller.moveSprite(cursor)
     cursor.setFlag(SpriteFlag.StayInScreen, true)
+
     menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
     menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
-    controller.moveSprite(cursor)
+
+    
     menuMikage.setPosition(26, 100)
     menuSpica.setPosition(137, 100)
+
+    // Initial menu event listener
+    sprites.onOverlap(SpriteKind.Cursor, SpriteKind.Button, function (cursorSprite, selectedSprite) {
+        if (controller.A.isPressed()) {
+            cursor.destroy()
+            sprites.destroyAllSpritesOfKind(SpriteKind.Button)
+            startGame(selectedSprite)
+        }
+    })
 }
 
-function start_game(selectedSprite: Sprite) {
-    cursor.destroy()
-    sprites.destroyAllSpritesOfKind(SpriteKind.Button)
+function startGame(selectedSprite: Sprite) {
     scene.setBackgroundImage(assets.image`game_bg`)
-    info.setLife(3)
-    info.setScore(0)
+    
     if (selectedSprite == menuMikage) {
         player = new Player(MIKAGE)
     } else if (selectedSprite == menuSpica) {
         player = new Player(SPICA)
     }
+
     gameState = "CHARACTER_SELECTED"
 }
 
@@ -160,7 +164,7 @@ let bullet: Sprite = null
 let player: Player = null
 let life_up: Sprite = null
 let gameState = "MENU"
-initialize_menu()
+initializeMenu()
 
 game.onUpdate(function () {
 
