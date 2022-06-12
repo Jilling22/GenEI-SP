@@ -4,7 +4,23 @@ namespace SpriteKind {
     export const Cursor = SpriteKind.create()
 }
 
-let mikage = {
+type CharacterData = {
+    name: string,
+
+    normalSprite: Image,
+    sbaldSprite: Image,
+    baldSprite: Image,
+
+    normalWalkAnim: Image[],
+    sbaldWalkAnim: Image[],
+    baldWalkAnim: Image[],
+
+    normalHurtAnim: Image[],
+    sbaldHurtAnim: Image[],
+    baldHurtAnim: Image[]
+}
+
+const MIKAGE: CharacterData = {
     name: "MIKAGE",
 
     normalSprite: assets.image`Mikage`,
@@ -20,8 +36,8 @@ let mikage = {
     baldHurtAnim: assets.animation`MikageBald Injured`
 }
 
-let spica = {
-    name: "SPICA",
+const SPICA: CharacterData = {
+    name: "MIKAGE",
 
     normalSprite: assets.image`Spica`,
     sbaldSprite: assets.image`SpicaSemi`,
@@ -32,31 +48,62 @@ let spica = {
     baldWalkAnim: assets.animation`SpicaBald Walk`,
 
     normalHurtAnim: assets.animation`Spica Injured`,
-    sbaldHurtAnim: assets.animation`MikageSemi Injured`,
+    sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`
 }
 
 class Player {
-    sprite: Sprite;
+    spriteAssets: CharacterData
+    sprite: Sprite
+    walkAnim: Image[]
+    hurtAnim: Image[]
     
-    constructor() {
-        this.sprite = this.initialize()
+    constructor(character: CharacterData) {
+        this.spriteAssets = character
+
+        this.sprite = sprites.create(character.normalSprite, SpriteKind.Player)
+        this.sprite.data = character.name
+        this.walkAnim = character.normalWalkAnim
+        this.hurtAnim = character.normalHurtAnim
+        
+        controller.moveSprite(this.sprite)
+        this.sprite.setStayInScreen(true)
+
+        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     }
 
-    initialize() {
-        // TODO: make this adjustable!
-        let player = sprites.create(assets.image`Mikage`, SpriteKind.Player)
-        player.data = "MIKAGE"
-        controller.moveSprite(player)
-        player.setStayInScreen(true)
-        return player
+    animateWalk() {
+        const sprite = this.sprite
+        const walk = this.walkAnim
+        animation.runImageAnimation(sprite, walk, 150, false)
     }
 
-    animate_walk() {
+    animateHurt() {
+        const sprite = this.sprite
+        const hurt = this.hurtAnim
+        animation.runImageAnimation(sprite, hurt, 100, false)
+    }
 
+    updateHair() {
+        const spriteAssets = this.spriteAssets 
+
+        if (info.life() >= 3) {
+            this.sprite.setImage(spriteAssets.normalSprite)
+            this.walkAnim = spriteAssets.normalWalkAnim
+            this.hurtAnim = spriteAssets.normalHurtAnim
+        } else if (info.life() == 2) {
+            this.sprite.setImage(spriteAssets.sbaldSprite)
+            this.walkAnim = spriteAssets.sbaldWalkAnim
+            this.hurtAnim = spriteAssets.sbaldHurtAnim
+        } else if (info.life() == 1) {
+            this.sprite.setImage(spriteAssets.baldSprite)
+            this.walkAnim = spriteAssets.baldWalkAnim
+            this.hurtAnim = spriteAssets.baldHurtAnim
+        }
     }
 }
 
+// TODO: convert this to a class
 namespace phantom {
     export let x_speed = -60
     export let spawn_rate = 0
@@ -90,116 +137,9 @@ namespace phantom {
     }
 }
 
-/**
- * animation functions (REFACTOR!)
- */
-function animate_walk () {
-    if (player.sprite.data == "MIKAGE") {
-        if (info.life() >= 3) {
-            // replace with class method
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`Mikage Walk`,
-            150,
-            false
-            )
-        } else if (info.life() == 2) {
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`MikageSemi Walk`,
-            150,
-            false
-            )
-        } else {
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`MikageBald Walk`,
-            150,
-            false
-            )
-        }
-    } else if (player.sprite.data == "SPICA") {
-        if (info.life() >= 3) {
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`Spica Walk`,
-            150,
-            false
-            )
-        } else if (info.life() == 2) {
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`SpicaSemi Walk`,
-            200,
-            false
-            )
-        } else {
-            animation.runImageAnimation(
-            player.sprite,
-            assets.animation`SpicaBald Walk`,
-            200,
-            false
-            )
-        }
-    }
-}
-
-function animate_injured(character: Sprite) {
-    if (player.sprite.data == "mikage") {
-        if (info.life() == 2) {
-            character.setImage(assets.image`MikageSemi`)
-            animation.runImageAnimation(
-                character,
-                assets.animation`MikageSemi Injured`,
-                100,
-                false
-            )
-        } else if (info.life() == 1) {
-            character.setImage(assets.image`MikageBald`)
-            animation.runImageAnimation(
-                character,
-                assets.animation`MikageBald Injured`,
-                100,
-                false
-            )
-        } else {
-            animation.runImageAnimation(
-                character,
-                assets.animation`Mikage Injured`,
-                100,
-                false
-            )
-        }
-    } else if (player.sprite.data == "spica") {
-        if (info.life() == 2) {
-            character.setImage(assets.image`SpicaSemi`)
-            animation.runImageAnimation(
-                character,
-                assets.animation`SpicaSemi Injured`,
-                100,
-                false
-            )
-        } else if (info.life() == 1) {
-            character.setImage(assets.image`SpicaBald`)
-            animation.runImageAnimation(
-                character,
-                assets.animation`SpicaBald Injured`,
-                100,
-                false
-            )
-        } else {
-            animation.runImageAnimation(
-                character,
-                assets.animation`Spica Injured`,
-                100,
-                false
-            )
-        }
-    }
-}
-
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (playerSprite, lifeUpSprite) {
     info.changeLifeBy(1)
+    player.updateHair()
     music.powerUp.play()
     lifeUpSprite.destroy()
 })
@@ -214,11 +154,12 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 // TODO: make i-frames adjustable
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
     timer.throttle("on_on_overlap", 300, function () {
-        // add class method for this
-        animate_injured(playerSprite)
+    
+        info.changeLifeBy(-1)
+        player.updateHair()
+        player.animateHurt()
         music.powerDown.play()
         scene.cameraShake(4, 500)
-        info.changeLifeBy(-1)
 
         phantomSprite.destroy()
     })
@@ -249,15 +190,10 @@ function start_game(selectedSprite: Sprite) {
     info.setLife(3)
     info.setScore(0)
     if (selectedSprite == menuMikage) {
-        // player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
-        // player_sprite.data = "mikage"
-        game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
+        player = new Player(MIKAGE)
     } else if (selectedSprite == menuSpica) {
-        // player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
-        // player_sprite.data = "spica"
-        game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
+        player = new Player(SPICA)
     }
-    player = new Player()
     gameState = "CHARACTER_SELECTED"
 }
 
@@ -270,21 +206,25 @@ let life_up: Sprite = null
 let gameState = "MENU"
 let level_up_time = 11000
 initialize_menu()
+
 game.onUpdate(function () {
+
     // check if selected flag has been triggered, then trigger first set of listeners 
     if (gameState == "CHARACTER_SELECTED") {
+
         controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-            animate_walk()
+            player.animateWalk()
         })
         controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-            animate_walk()
+            player.animateWalk()
         })
         controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-            animate_walk()
+            player.animateWalk()
         })
         controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-            animate_walk()
+            player.animateWalk()
         })
+
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("on_a_pressed", 150, function () {
                 bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player.sprite, 200, 0)
