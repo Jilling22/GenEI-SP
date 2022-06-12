@@ -46,3 +46,27 @@ const SPICA: CharacterData = {
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`
 }
+
+type LevelData = {
+    spawnFlag: string,
+    walkSpd: number,
+    walkSpdVar: number,
+
+    spawnInterval: number,
+    spawnRate: number,
+
+    spriteImg: Image,
+    walkAnim: Image[]
+}
+
+const LEVEL1: LevelData = {
+    spawnFlag: "LEVEL1",
+    walkSpd: -50,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage`,
+    walkAnim: assets.animation`PMikage Walk`
+}
