@@ -5,9 +5,14 @@ class Player {
     sprite: Sprite
     walkAnim: Image[]
     hurtAnim: Image[]
+
+    agility: number
+    bulletSpeed: number
+    shootCooldown: number
+    iframes: number
     
     constructor(character: CharacterData) {
-        info.setLife(3)
+        info.setLife(character.startingLives)
         info.setScore(0)
 
         this.spriteAssets = character
@@ -16,11 +21,35 @@ class Player {
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
         this.hurtAnim = character.normalHurtAnim
+
+        this.agility = character.agility
+        this.bulletSpeed = character.bulletSpeed
+        this.shootCooldown = character.shootCooldown
         
-        controller.moveSprite(this.sprite)
+        this.iframes = character.iframes
+        
+        controller.moveSprite(this.sprite, this.agility, this.agility)
         this.sprite.setStayInScreen(true)
 
         game.showLongText(`Hello ${character.name}. I hope you're ready. Let's have some fun.`, DialogLayout.Bottom)
+
+        controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+            timer.throttle("on_a_pressed", this.shootCooldown, function () {
+                bullet = sprites.createProjectileFromSprite(
+                    assets.image`Mikage`, 
+                    player.sprite, 
+                    this.bulletSpeed, 
+                    0)
+                animation.runImageAnimation(
+                    bullet,
+                    assets.animation`EP`,
+                    50,
+                    true
+                )
+                music.pewPew.play()
+                bullet.lifespan = 2000
+            })
+        })
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (playerSprite, lifeUpSprite) {
             info.changeLifeBy(1)
@@ -31,7 +60,7 @@ class Player {
         })
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
-            timer.throttle("on_on_overlap", character.iframes, function () {
+            timer.throttle("on_on_overlap", this.iframes, function () {
 
                 info.changeLifeBy(-1)
                 this.updateHair()
@@ -124,16 +153,19 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 function initializeMenu() {
     scene.setBackgroundImage(assets.image`menu_bg`)
 
+    menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
+    menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
+    menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.Button)
+    menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.Button)
+    
+    menuMikage.setPosition(26, 100)
+    menuSpica.setPosition(62, 100)
+    menuYuuhi.setPosition(98, 100)
+    menuUrara.setPosition(134, 100)
+
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
     controller.moveSprite(cursor)
     cursor.setFlag(SpriteFlag.StayInScreen, true)
-
-    menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
-    menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
-
-    
-    menuMikage.setPosition(26, 100)
-    menuSpica.setPosition(137, 100)
 
     // Initial menu event listener
     sprites.onOverlap(SpriteKind.Cursor, SpriteKind.Button, function (cursorSprite, selectedSprite) {
@@ -152,13 +184,19 @@ function startGame(selectedSprite: Sprite) {
         player = new Player(MIKAGE)
     } else if (selectedSprite == menuSpica) {
         player = new Player(SPICA)
+    } else if (selectedSprite == menuYuuhi) {
+        player = new Player(YUUHI)
+    } else if (selectedSprite == menuUrara) {
+        player = new Player(URARA)
     }
 
     gameState = "CHARACTER_SELECTED"
 }
 
-let menuSpica: Sprite = null
 let menuMikage: Sprite = null
+let menuSpica: Sprite = null
+let menuYuuhi: Sprite = null
+let menuUrara: Sprite = null
 let cursor: Sprite = null
 let bullet: Sprite = null
 let player: Player = null
@@ -184,19 +222,7 @@ game.onUpdate(function () {
             player.animateWalk()
         })
 
-        controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-            timer.throttle("on_a_pressed", 150, function () {
-                bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player.sprite, 200, 0)
-                animation.runImageAnimation(
-                    bullet,
-                    assets.animation`EP`,
-                    50,
-                    true
-                )
-                music.pewPew.play()
-                bullet.lifespan = 2000
-            })
-        })
+        
 
         timer.after(10000, function () {
             game.onUpdateInterval(25000, function () {

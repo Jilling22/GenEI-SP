@@ -19,12 +19,16 @@ type CharacterData = {
     normalHurtAnim: Image[],
     sbaldHurtAnim: Image[],
     baldHurtAnim: Image[],
-
+    
+    startingLives: number,
+    agility: number,
+    bulletSpeed: number,
+    shootCooldown: number,
     iframes: number
 }
 
 const MIKAGE: CharacterData = {
-    name: "MIKAGE",
+    name: "Mikage",
 
     normalSprite: assets.image`Mikage`,
     sbaldSprite: assets.image`MikageSemi`,
@@ -38,11 +42,15 @@ const MIKAGE: CharacterData = {
     sbaldHurtAnim: assets.animation`MikageSemi Injured`,
     baldHurtAnim: assets.animation`MikageBald Injured`,
 
+    startingLives: 3,
+    agility: 100,
+    bulletSpeed: 200,
+    shootCooldown: 150,
     iframes: 500
 }
 
 const SPICA: CharacterData = {
-    name: "SPICA",
+    name: "Spica",
 
     normalSprite: assets.image`Spica`,
     sbaldSprite: assets.image`SpicaSemi`,
@@ -56,7 +64,55 @@ const SPICA: CharacterData = {
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`,
 
-    iframes: 500
+    startingLives: 3,
+    agility: 130,
+    bulletSpeed: 150,
+    shootCooldown: 200,
+    iframes: 600
+}
+
+const YUUHI: CharacterData = {
+    name: "Yuuhi",
+
+    normalSprite: assets.image`Yuuhi`,
+    sbaldSprite: assets.image`YuuhiSemi`,
+    baldSprite: assets.image`YuuhiBald`,
+
+    normalWalkAnim: assets.animation`Yuuhi Walk`,
+    sbaldWalkAnim: assets.animation`YuuhiSemi Walk`,
+    baldWalkAnim: assets.animation`YuuhiBald Walk`,
+
+    normalHurtAnim: assets.animation`Yuuhi Injured`,
+    sbaldHurtAnim: assets.animation`YuuhiSemi Injured`,
+    baldHurtAnim: assets.animation`YuuhiBald Injured`,
+
+    startingLives: 2,
+    agility: 160,
+    bulletSpeed: 300,
+    shootCooldown: 500,
+    iframes: 600
+}
+
+const URARA: CharacterData = {
+    name: "Urara",
+
+    normalSprite: assets.image`Urara`,
+    sbaldSprite: assets.image`UraraSemi`,
+    baldSprite: assets.image`UraraBald`,
+
+    normalWalkAnim: assets.animation`Urara Walk`,
+    sbaldWalkAnim: assets.animation`UraraSemi Walk`,
+    baldWalkAnim: assets.animation`UraraBald Walk`,
+
+    normalHurtAnim: assets.animation`Urara Injured`,
+    sbaldHurtAnim: assets.animation`UraraSemi Injured`,
+    baldHurtAnim: assets.animation`UraraBald Injured`,
+
+    startingLives: 5,
+    agility: 10,
+    bulletSpeed: 50,
+    shootCooldown: 0,
+    iframes: 1000
 }
 
 type LevelData = {
