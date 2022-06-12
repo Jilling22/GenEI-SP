@@ -151,27 +151,49 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 })
 
 function initializeMenu() {
+    scene.setBackgroundImage(assets.image`mainmenu_bg`)
+    sprites.create(assets.image`title`, SpriteKind.Placeholder)
+    playButton = sprites.create(assets.image`Play Button`, SpriteKind.PlayButton)
+    helpButton = sprites.create(assets.image`Help Button`, SpriteKind.HelpButton)
+
+    playButton.setPosition(45, 98)
+    helpButton.setPosition(115, 98)
+
+    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
+    controller.moveSprite(cursor)
+    cursor.setFlag(SpriteFlag.StayInScreen, true)
+    cursor.z = 1
+
+    sprites.onOverlap(SpriteKind.Cursor, SpriteKind.PlayButton, function (cursorSprite, selectedSprite) {
+        if (controller.A.isPressed()) {
+            sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
+            sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
+            sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
+            characterSelect()
+        }
+    })
+}
+
+function characterSelect() {
     scene.setBackgroundImage(assets.image`menu_bg`)
 
-    menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.Button)
-    menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.Button)
-    menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.Button)
-    menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.Button)
-
+    menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.CharacterButton)
+    menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.CharacterButton)
+    menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.CharacterButton)
+    menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.CharacterButton)
+    
     menuMikage.setPosition(26, 100)
     menuSpica.setPosition(62, 100)
     menuYuuhi.setPosition(98, 100)
     menuUrara.setPosition(134, 100)
 
-    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
-    controller.moveSprite(cursor)
-    cursor.setFlag(SpriteFlag.StayInScreen, true)
+    
 
     // Initial menu event listener
-    sprites.onOverlap(SpriteKind.Cursor, SpriteKind.Button, function (cursorSprite, selectedSprite) {
+    sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
         if (controller.A.isPressed()) {
             cursor.destroy()
-            sprites.destroyAllSpritesOfKind(SpriteKind.Button)
+            sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
             startGame(selectedSprite)
         }
     })
@@ -193,6 +215,8 @@ function startGame(selectedSprite: Sprite) {
     gameState = "CHARACTER_SELECTED"
 }
 
+let playButton: Sprite = null
+let helpButton: Sprite = null
 let menuMikage: Sprite = null
 let menuSpica: Sprite = null
 let menuYuuhi: Sprite = null

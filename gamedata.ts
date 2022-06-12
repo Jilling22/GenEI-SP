@@ -1,6 +1,9 @@
 
 namespace SpriteKind {
-    export const Button = SpriteKind.create()
+    export const Placeholder = SpriteKind.create()
+    export const PlayButton = SpriteKind.create()
+    export const HelpButton = SpriteKind.create()
+    export const CharacterButton = SpriteKind.create()
     export const Phantom = SpriteKind.create()
     export const Cursor = SpriteKind.create()
 }
