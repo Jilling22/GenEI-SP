@@ -187,15 +187,15 @@ function characterSelect() {
     menuYuuhi.setPosition(98, 100)
     menuUrara.setPosition(134, 100)
 
-    
-
     // Initial menu event listener
-    sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
-        if (controller.A.isPressed()) {
-            cursor.destroy()
-            sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
-            startGame(selectedSprite)
-        }
+    timer.after(500, function () {
+        sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
+            if (controller.A.isPressed()) {
+                cursor.destroy()
+                sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
+                startGame(selectedSprite)
+            }
+        })
     })
 }
 
