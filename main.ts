@@ -4,7 +4,20 @@ namespace SpriteKind {
     export const Phantom = SpriteKind.create()
 }
 
+class Player {
+    sprite: Sprite;
+    constructor() {
+        this.sprite = this.initialize()
+    }
 
+    initialize() {
+        let player = sprites.create(assets.image`Mikage`, SpriteKind.Player)
+        player.data = "mikage"
+        controller.moveSprite(player)
+        player.setStayInScreen(true)
+        return player
+    }
+}
 
 namespace phantom {
     export let x_speed = -60
@@ -64,7 +77,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (game_state == "arcade") {
         timer.throttle("on_a_pressed", 150, function () {
-            bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player_sprite, 200, 0)
+            bullet = sprites.createProjectileFromSprite(assets.image`Mikage`, player.sprite, 200, 0)
             animation.runImageAnimation(
                 bullet,
                 assets.animation`EP`,
@@ -80,48 +93,48 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 // animation functions (REFACTOR!)
 
 function animate_walk() {
-    if (player_sprite.data === "mikage") {
+    if (player.sprite.data === "mikage") {
         if (info.life() >= 3) {
             // replace with class method
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`Mikage Walk`,
                 150,
                 false
             )
         } else if (info.life() == 2) {
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`MikageSemi Walk`,
                 150,
                 false
             )
         } else {
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`MikageBald Walk`,
                 150,
                 false
             )
         }
-    } else if (player_sprite.data === "spica") {
+    } else if (player.sprite.data === "spica") {
         if (info.life() >= 3) {
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`Spica Walk`,
                 150,
                 false
             )
         } else if (info.life() == 2) {
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`SpicaSemi Walk`,
                 200,
                 false
             )
         } else {
             animation.runImageAnimation(
-                player_sprite,
+                player.sprite,
                 assets.animation`SpicaBald Walk`,
                 200,
                 false
@@ -131,7 +144,7 @@ function animate_walk() {
 }
 
 function animate_injured (character: Sprite) {
-    if (player_sprite.data === "mikage") {
+    if (player.sprite.data === "mikage") {
         if (info.life() == 2) {
             character.setImage(assets.image`MikageSemi`)
             animation.runImageAnimation(
@@ -156,7 +169,7 @@ function animate_injured (character: Sprite) {
             false
             )
         }
-    } else if (player_sprite.data === "spica") {
+    } else if (player.sprite.data === "spica") {
         if (info.life() == 2) {
             character.setImage(assets.image`SpicaSemi`)
             animation.runImageAnimation(
@@ -194,7 +207,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (sprite3, othe
     })
 })
 
-
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     info.changeLifeBy(1)
     music.powerUp.play()
@@ -231,23 +243,25 @@ function start_game(selectedSprite: Sprite) {
     info.setLife(3)
     info.setScore(0)
     if (selectedSprite == menuMikage) {
-        player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
-        player_sprite.data = "mikage"
+        // player_sprite = sprites.create(assets.image`Mikage`, SpriteKind.Player)
+        // player_sprite.data = "mikage"
         game.showLongText("Hello Mikage. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else if (selectedSprite == menuSpica) {
-        player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
-        player_sprite.data = "spica"
+        // player_sprite = sprites.create(assets.image`Spica`, SpriteKind.Player)
+        // player_sprite.data = "spica"
         game.showLongText("Hello Spica. I hope you're ready. Let's have some fun.", DialogLayout.Bottom)
     } else {
         game.over(false, effects.hearts)
     }
-    controller.moveSprite(player_sprite)
-    player_sprite.setStayInScreen(true)
+    // controller.moveSprite(player_sprite)
+    // player_sprite.setStayInScreen(true)
+    player = new Player()
     game_state = "arcade"
+    console.log(player.sprite.data)
 }
 
 let life_up: Sprite = null
-let player_sprite: Sprite = null
+let player: Player = null
 let bullet: Sprite = null
 let menuSpica: Sprite = null
 let menuMikage: Sprite = null
