@@ -37,7 +37,7 @@ const MIKAGE: CharacterData = {
 }
 
 const SPICA: CharacterData = {
-    name: "MIKAGE",
+    name: "SPICA",
 
     normalSprite: assets.image`Spica`,
     sbaldSprite: assets.image`SpicaSemi`,
@@ -103,39 +103,75 @@ class Player {
     }
 }
 
-// TODO: convert this to a class
-namespace phantom {
-    export let x_speed = -60
-    export let spawn_rate = 0
+class PhantomSpawner {
+    spawnFlag: string
+    walkSpd: number
+    spawnInterval: number
+    spawnRate: number
+    walkSpdVar: number
+    staysFor: number
 
-    sprites.onCreated(SpriteKind.Phantom, function (phantom: Sprite) {
-        setWalk(phantom)
-        phantom.vx = randint(x_speed - 40, x_speed + 40)
-        phantom.lifespan = 3500
-    })
+    spriteImg: Image
+    walkAnim: Image[]
 
-    game.onUpdateInterval(1000, function () {
-        if (gameState == "LEVEL1") {
-            for (let index = 0; index <= Math.round(spawn_rate); index++) {
-                let phantom = sprites.create(assets.image`PMikage`, SpriteKind.Phantom)
-                setPosition(phantom, index);
+    constructor() {
+        this.spawnFlag = "LEVEL1"
+        this.walkSpd = -50
+        this.walkSpdVar = 10
+        this.spawnInterval = 1000
+        this.spawnRate = 100
+        this.staysFor = 3000 // TODO: improve this!
+        this.spriteImg = assets.image`PMikage`
+        this.walkAnim = assets.animation`PMikage Walk`
+
+        game.onUpdateInterval(this.spawnInterval, function () {
+            if (gameState == "LEVEL1" && Math.percentChance(this.spawnRate)) {
+                let phantom = sprites.create(this.spriteImg, SpriteKind.Phantom)
+
+                phantom.x = scene.screenWidth() + 10;
+                phantom.y = randint(20, 110)
+                phantom.vx = randint(this.walkSpd + this.walkSpdVar, this.walkSpd + this.walkSpdVar)
+
+                phantom.lifespan = this.staysFor
+
+                animation.runImageAnimation(phantom, this.walkAnim, 200, true)
             }
-        }
-    })
-
-    function setPosition(pmikage: Sprite, index: number) {
-        pmikage.x = scene.screenWidth() + randint(10, 30) * (index % 5)
-        pmikage.y = randint(20, 110)
-    }
-
-    function setWalk(pmikage: Sprite) {
-        animation.runImageAnimation(pmikage,
-            assets.animation`PMikage Walk`,
-            200,
-            true
-        )
+        })
     }
 }
+
+// // TODO: convert this to a class
+// namespace phantom {
+//     export let x_speed = -60
+//     export let spawn_rate = 0
+
+//     sprites.onCreated(SpriteKind.Phantom, function (phantom: Sprite) {
+//         setWalk(phantom)
+        
+//         phantom.lifespan = 3500
+//     })
+
+//     game.onUpdateInterval(1000, function () {
+//         if (gameState == "LEVEL1") {
+//             for (let index = 0; index <= Math.round(spawn_rate); index++) {
+//                 let phantom = sprites.create(assets.image`PMikage`, SpriteKind.Phantom)
+//                 setPosition(phantom, index);
+//             }
+//         }
+//     })
+
+//     function setPosition(pmikage: Sprite, index: number) {
+        
+//     }
+
+//     function setWalk(pmikage: Sprite) {
+//         animation.runImageAnimation(pmikage,
+//             assets.animation`PMikage Walk`,
+//             200,
+//             true
+//         )
+//     }
+// }
 
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (playerSprite, lifeUpSprite) {
     info.changeLifeBy(1)
@@ -204,7 +240,6 @@ let bullet: Sprite = null
 let player: Player = null
 let life_up: Sprite = null
 let gameState = "MENU"
-let level_up_time = 11000
 initialize_menu()
 
 game.onUpdate(function () {
@@ -251,5 +286,6 @@ game.onUpdate(function () {
 
         // change flag to first level
         gameState = "LEVEL1"
+        let firstWave: PhantomSpawner = new PhantomSpawner()
     }
 })
