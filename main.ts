@@ -1,5 +1,4 @@
 
-
 class Player {
     spriteAssets: CharacterData
     sprite: Sprite
@@ -109,6 +108,10 @@ class Player {
         animation.stopAnimation(animation.AnimationTypes.All, sprite)
         this.updateHair()
     }
+}
+
+class Bullet {
+    // needs bullet speed, lifespan, still sprite, animation, type
 }
 
 class PhantomSpawner {
