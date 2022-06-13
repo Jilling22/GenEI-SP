@@ -77,7 +77,7 @@ class Player {
     animateWalk() {
         const sprite = this.sprite
         const walk = this.walkAnim
-        animation.runImageAnimation(sprite, walk, 150, false)
+        animation.runImageAnimation(sprite, walk, 150, true)
     }
 
     animateHurt() {
@@ -103,6 +103,12 @@ class Player {
             this.hurtAnim = spriteAssets.baldHurtAnim
         }
     }
+
+    animateStill() {
+        const sprite = this.sprite
+        animation.stopAnimation(animation.AnimationTypes.All, sprite)
+        this.updateHair()
+    }
 }
 
 class PhantomSpawner {
@@ -111,7 +117,6 @@ class PhantomSpawner {
     spawnInterval: number
     spawnRate: number
     walkSpdVar: number
-    staysFor: number
 
     spriteImg: Image
     walkAnim: Image[]
@@ -122,7 +127,7 @@ class PhantomSpawner {
         this.walkSpdVar = data.walkSpdVar
         this.spawnInterval = data.spawnInterval
         this.spawnRate = data.spawnRate
-        this.staysFor = ((scene.screenWidth() + 10) / (this.walkSpd + this.walkSpdVar)) * -1000
+        // this.staysFor = ((scene.screenWidth() + 10) / (this.walkSpd + this.walkSpdVar)) * -1000
 
         this.spriteImg = data.spriteImg
         this.walkAnim = data.walkAnim
@@ -135,7 +140,7 @@ class PhantomSpawner {
                 phantom.y = randint(20, 110)
                 phantom.vx = randint(this.walkSpd - this.walkSpdVar, this.walkSpd + this.walkSpdVar)
 
-                phantom.lifespan = this.staysFor
+                phantom.setFlag(SpriteFlag.AutoDestroy, true)
 
                 animation.runImageAnimation(phantom, this.walkAnim, 200, true)
             }
@@ -164,11 +169,27 @@ function initializeMenu() {
     cursor.setFlag(SpriteFlag.StayInScreen, true)
     cursor.z = 1
 
+    let blackScreen1 = sprites.create(assets.image`black_bg`, SpriteKind.Placeholder)
+    let blackScreen2 = sprites.create(assets.image`black_bg`, SpriteKind.Placeholder)
+    let blackScreen3 = sprites.create(assets.image`black_bg`, SpriteKind.Placeholder)
+    blackScreen1.z = 2
+    blackScreen2.z = 3
+    blackScreen3.z = 4
+    timer.after(200, function () {
+        blackScreen1.destroy(effects.disintegrate, 800)
+        blackScreen2.destroy(effects.disintegrate, 600)
+        blackScreen3.destroy(effects.ashes, 400)
+        timer.after(800, function () {
+            effects.starField.startScreenEffect()
+        })
+    })
+
     sprites.onOverlap(SpriteKind.Cursor, SpriteKind.PlayButton, function (cursorSprite, selectedSprite) {
         if (controller.A.isPressed()) {
             sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
             sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
             sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
+            effects.starField.endScreenEffect()
             characterSelect()
         }
     })
@@ -188,7 +209,7 @@ function characterSelect() {
     menuUrara.setPosition(134, 100)
 
     // Initial menu event listener
-    timer.after(500, function () {
+    timer.after(400, function () {
         sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
             if (controller.A.isPressed()) {
                 cursor.destroy()
@@ -246,7 +267,19 @@ game.onUpdate(function () {
             player.animateWalk()
         })
 
+        game.onUpdate(function () {
 
+            let upPressed = controller.up.isPressed()
+            let downPressed = controller.down.isPressed()
+            let leftPressed = controller.left.isPressed()
+            let rightPressed = controller.right.isPressed()
+
+            let isMoving = upPressed || downPressed || leftPressed || rightPressed
+
+            if (!isMoving) {
+                player.animateStill()
+            }
+        })
 
         timer.after(10000, function () {
             game.onUpdateInterval(25000, function () {
