@@ -164,6 +164,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "Tomo Bullet"
     },
+    "image32": {
+        "data": "hwQRAA8AAAAAAAAAAAAAAAAAAAAAAAAAAABVAAAAAAAAAAUHAHAHAAAABXBwdwcAAAAFAAdwBwAAUFUAUHAAAFBVVQV1dwAAUABVVXcHAABQAHB3VXAAAAAHcHcHcAAAAHAHdwAABwAAAHAAdwcHAAAAcAAHcAcAAABwcAAAAAAAAAB3AAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "SpicaSpecial"
+    },
     "anim2": {
         "namespace": "myAnimations",
         "id": "anim2",
