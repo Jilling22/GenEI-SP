@@ -10,12 +10,16 @@ class Player {
     shootCooldown: number
     iframes: number
 
+    inventory: number
+    inventorySprites: Sprite[]
+
     constructor(character: CharacterData) {
         info.setLife(character.startingLives)
         info.setScore(0)
+        this.inventorySprites = []
 
         this.spriteAssets = character
-
+        
         this.sprite = sprites.create(character.normalSprite, SpriteKind.Player)
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
@@ -31,6 +35,22 @@ class Player {
         this.sprite.setStayInScreen(true)
 
         game.showLongText(`Hello ${character.name}. I hope you're ready. Let's have some fun.`, DialogLayout.Bottom)
+
+        this.inventory = 0
+        this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
+        this.inventorySprites[0].x = 48
+        this.inventorySprites[0].y = 10
+        this.inventorySprites[0].z = 1
+
+        this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
+        this.inventorySprites[1].x = 68
+        this.inventorySprites[1].y = 10
+        this.inventorySprites[1].z = 1
+
+        this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
+        this.inventorySprites[2].x = 88
+        this.inventorySprites[2].y = 10
+        this.inventorySprites[2].z = 1
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
@@ -53,7 +73,8 @@ class Player {
         })
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Special, function (playerSprite, specialSprite) {
-
+            this.inventory += 1
+            this.updateInventory()
             music.magicWand.play()
 
             specialSprite.destroy()
@@ -101,6 +122,20 @@ class Player {
             this.sprite.setImage(spriteAssets.baldSprite)
             this.walkAnim = spriteAssets.baldWalkAnim
             this.hurtAnim = spriteAssets.baldHurtAnim
+        }
+    }
+
+    updateInventory() {
+        this.inventorySprites.forEach(s => s.setImage(assets.image`Empty Special`))
+        if (this.inventory === 1) {
+            this.inventorySprites[0].setImage(assets.image`Special`)
+        } else if (this.inventory === 2) {
+            this.inventorySprites[0].setImage(assets.image`Special`)
+            this.inventorySprites[1].setImage(assets.image`Special`)
+        } else if (this.inventory >= 3) {
+            this.inventorySprites[0].setImage(assets.image`Special`)
+            this.inventorySprites[1].setImage(assets.image`Special`)
+            this.inventorySprites[2].setImage(assets.image`Special`)
         }
     }
 
@@ -267,6 +302,8 @@ function characterSelect() {
 
 function startGame(selectedSprite: Sprite) {
     scene.setBackgroundImage(assets.image`game_bg`)
+
+    
 
     if (selectedSprite == menuMikage) {
         player = new Player(MIKAGE)
