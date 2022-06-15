@@ -34,7 +34,7 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character)
+                let bullet = new Bullet(character, character.pierceSpecial)
             })
         })
 
@@ -112,7 +112,17 @@ class Bullet {
     shootCooldown: number
     iframes: number
 
-    constructor(character: CharacterData) {
+    specials: object
+
+    constructor(character: CharacterData, isPiercing: boolean) {
+
+        this.specials = {
+            homing: false,
+            multishot: false,
+            piercing: character.pierceSpecial,
+            vacuum: false
+        }
+
         this.bulletSprite = sprites.createProjectileFromSprite(
             assets.image`Mikage`,
             player.sprite,
@@ -127,6 +137,7 @@ class Bullet {
         
         music.pewPew.play()
         this.bulletSprite.lifespan = 2000
+        this.bulletSprite.data = this.specials
     }
 }
 
@@ -169,7 +180,10 @@ class PhantomSpawner {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectileSprite, phantomSprite) {
     phantomSprite.vx = 0
     phantomSprite.destroy(effects.hearts, 200)
-    projectileSprite.destroy()
+    if (!projectileSprite.data.piercing) {
+        projectileSprite.destroy()
+    }
+    
     info.changeScoreBy(1)
 })
 

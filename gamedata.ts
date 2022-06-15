@@ -27,7 +27,9 @@ type CharacterData = {
     agility: number,
     bulletSpeed: number,
     shootCooldown: number,
-    iframes: number
+    iframes: number,
+
+    pierceSpecial: boolean
 }
 
 const MIKAGE: CharacterData = {
@@ -49,7 +51,9 @@ const MIKAGE: CharacterData = {
     agility: 100,
     bulletSpeed: 200,
     shootCooldown: 150,
-    iframes: 500
+    iframes: 500,
+
+    pierceSpecial: false
 }
 
 const SPICA: CharacterData = {
@@ -71,7 +75,9 @@ const SPICA: CharacterData = {
     agility: 145,
     bulletSpeed: 150,
     shootCooldown: 200,
-    iframes: 600
+    iframes: 600,
+
+    pierceSpecial: false
 }
 
 const YUUHI: CharacterData = {
@@ -93,7 +99,9 @@ const YUUHI: CharacterData = {
     agility: 160,
     bulletSpeed: 300,
     shootCooldown: 500,
-    iframes: 600
+    iframes: 600,
+
+    pierceSpecial: true 
 }
 
 const URARA: CharacterData = {
@@ -115,7 +123,9 @@ const URARA: CharacterData = {
     agility: 15,
     bulletSpeed: 0,
     shootCooldown: 200,
-    iframes: 1000
+    iframes: 1000,
+
+    pierceSpecial: true
 }
 
 type LevelData = {
