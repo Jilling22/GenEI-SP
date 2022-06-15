@@ -38,18 +38,18 @@ class Player {
 
         this.inventory = 0
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
-        this.inventorySprites[0].x = 48
-        this.inventorySprites[0].y = 10
+        this.inventorySprites[0].x = 45
+        this.inventorySprites[0].y = 5
         this.inventorySprites[0].z = 1
 
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
-        this.inventorySprites[1].x = 68
-        this.inventorySprites[1].y = 10
+        this.inventorySprites[1].x = 55
+        this.inventorySprites[1].y = 5
         this.inventorySprites[1].z = 1
 
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
-        this.inventorySprites[2].x = 88
-        this.inventorySprites[2].y = 10
+        this.inventorySprites[2].x = 65
+        this.inventorySprites[2].y = 5
         this.inventorySprites[2].z = 1
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -60,7 +60,11 @@ class Player {
 
         controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character, character.pierceSpecial)
+                if (this.inventory > 0) {
+                    let bullet = new Bullet(character, character.pierceSpecial)
+                    this.inventory -= 1
+                    this.updateInventory()
+                }
             })
         })
 
@@ -136,6 +140,7 @@ class Player {
             this.inventorySprites[0].setImage(assets.image`Special`)
             this.inventorySprites[1].setImage(assets.image`Special`)
             this.inventorySprites[2].setImage(assets.image`Special`)
+            this.inventory = 3
         }
     }
 
