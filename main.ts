@@ -43,12 +43,12 @@ class Player {
         this.inventorySprites[0].z = 1
 
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
-        this.inventorySprites[1].x = 55
+        this.inventorySprites[1].x = 56
         this.inventorySprites[1].y = 5
         this.inventorySprites[1].z = 1
 
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
-        this.inventorySprites[2].x = 65
+        this.inventorySprites[2].x = 67
         this.inventorySprites[2].y = 5
         this.inventorySprites[2].z = 1
 
@@ -380,7 +380,7 @@ game.onUpdate(function () {
 
         timer.after(1000, function () {
             game.onUpdateInterval(3000, function () {
-                life_up = sprites.create(assets.image`Special`, SpriteKind.Special)
+                life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
                 life_up.x = randint(30, 130)
                 life_up.y = randint(30, 100)
                 life_up.z = -1
