@@ -32,6 +32,7 @@ type CharacterData = {
     shootCooldown: number,
     iframes: number,
 
+    multishotSpecial: boolean,
     pierceSpecial: boolean
 }
 
@@ -58,6 +59,7 @@ const MIKAGE: CharacterData = {
     shootCooldown: 150,
     iframes: 500,
 
+    multishotSpecial: false,
     pierceSpecial: false
 }
 
@@ -84,6 +86,7 @@ const SPICA: CharacterData = {
     shootCooldown: 200,
     iframes: 600,
 
+    multishotSpecial: true,
     pierceSpecial: false
 }
 
@@ -110,6 +113,7 @@ const YUUHI: CharacterData = {
     shootCooldown: 500,
     iframes: 600,
 
+    multishotSpecial: false,
     pierceSpecial: true 
 }
 
@@ -136,6 +140,7 @@ const URARA: CharacterData = {
     shootCooldown: 200,
     iframes: 1000,
 
+    multishotSpecial: false,
     pierceSpecial: true
 }
 

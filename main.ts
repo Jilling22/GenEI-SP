@@ -54,14 +54,14 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character, assets.animation`EP`, false)
+                let bullet = new Bullet(character, assets.animation`EP`, false, false)
             })
         })
 
         controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
                 if (this.inventory > 0) {
-                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial)
+                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial)
                     this.inventory -= 1
                     this.updateInventory()
                 }
@@ -167,7 +167,7 @@ class Bullet {
 
     specials: object
 
-    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean) {
+    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean, isMultishot: boolean) {
 
         this.specials = {
             homing: false,
@@ -187,6 +187,32 @@ class Bullet {
             bulletAnim,
             50,
             true)
+        
+        if (isMultishot) {
+            let bullet1 = sprites.createProjectileFromSprite(
+                assets.image`Mikage`,
+                player.sprite,
+                character.bulletSpeed,
+                100)
+
+            animation.runImageAnimation(
+                bullet1,
+                bulletAnim,
+                50,
+                true)
+
+            let bullet2 = sprites.createProjectileFromSprite(
+                assets.image`Mikage`,
+                player.sprite,
+                character.bulletSpeed,
+                -100)
+
+            animation.runImageAnimation(
+                bullet2,
+                bulletAnim,
+                50,
+                true)
+        }
         
         music.pewPew.play()
         this.bulletSprite.lifespan = 2000
