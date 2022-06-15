@@ -34,6 +34,12 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
+                let bullet = new Bullet(character, false)
+            })
+        })
+
+        controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+            timer.throttle("shot_throttle", this.shootCooldown, function () {
                 let bullet = new Bullet(character, character.pierceSpecial)
             })
         })
@@ -119,7 +125,7 @@ class Bullet {
         this.specials = {
             homing: false,
             multishot: false,
-            piercing: character.pierceSpecial,
+            piercing: isPiercing,
             vacuum: false
         }
 

@@ -71,7 +71,7 @@ const SPICA: CharacterData = {
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`,
 
-    startingLives: 3,
+    startingLives: 4,
     agility: 145,
     bulletSpeed: 150,
     shootCooldown: 200,
@@ -95,7 +95,7 @@ const YUUHI: CharacterData = {
     sbaldHurtAnim: assets.animation`YuuhiSemi Injured`,
     baldHurtAnim: assets.animation`YuuhiBald Injured`,
 
-    startingLives: 2,
+    startingLives: 3,
     agility: 160,
     bulletSpeed: 300,
     shootCooldown: 500,
