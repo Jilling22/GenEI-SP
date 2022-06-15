@@ -54,14 +54,14 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character, false)
+                let bullet = new Bullet(character, assets.animation`EP`, false)
             })
         })
 
         controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
                 if (this.inventory > 0) {
-                    let bullet = new Bullet(character, character.pierceSpecial)
+                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial)
                     this.inventory -= 1
                     this.updateInventory()
                 }
@@ -167,7 +167,7 @@ class Bullet {
 
     specials: object
 
-    constructor(character: CharacterData, isPiercing: boolean) {
+    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean) {
 
         this.specials = {
             homing: false,
@@ -184,7 +184,7 @@ class Bullet {
         
         animation.runImageAnimation(
             this.bulletSprite,
-            assets.animation`EP`,
+            bulletAnim,
             50,
             true)
         
