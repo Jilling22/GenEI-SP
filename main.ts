@@ -52,6 +52,13 @@ class Player {
             lifeUpSprite.destroy()
         })
 
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.Special, function (playerSprite, specialSprite) {
+
+            music.magicWand.play()
+
+            specialSprite.destroy()
+        })
+
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
             timer.throttle("damage_throttle", this.iframes, function () {
 
@@ -321,11 +328,20 @@ game.onUpdate(function () {
 
         timer.after(10000, function () {
             game.onUpdateInterval(25000, function () {
-                life_up = sprites.create(assets.image`Heart`, SpriteKind.Food)
+                life_up = sprites.create(assets.image`Life Up`, SpriteKind.Food)
                 life_up.x = scene.screenWidth()
                 life_up.vx = -30
                 life_up.y = randint(20, 115)
                 life_up.lifespan = 8000
+            })
+        })
+
+        timer.after(1000, function () {
+            game.onUpdateInterval(3000, function () {
+                life_up = sprites.create(assets.image`Special`, SpriteKind.Special)
+                life_up.x = randint(30, 130)
+                life_up.y = randint(30, 100)
+                life_up.z = -1
             })
         })
 

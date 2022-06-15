@@ -6,6 +6,7 @@ namespace SpriteKind {
     export const CharacterButton = SpriteKind.create()
     export const Phantom = SpriteKind.create()
     export const Cursor = SpriteKind.create()
+    export const Special = SpriteKind.create()
 }
 
 type CharacterData = {

@@ -534,63 +534,6 @@ ffffffffffffffffffffffffffffffffffffffffffff2ffffffffffff2fffffffffffffffffff2ff
 ffffffffffffffffffffffffffffffffffffffffffff2ffffffffffff2fffffffffffffffffff2ffffffffffffffff2fffffff2ffffffffffffffffffffffffffff2ffffffffffffffffffffffffffff
 ffffffffffffffffffffffffffffffffffffffffffff2ffffffffffff2fffffffffffffffffff2ffffffffffffffff2fffffff22222222222222222222222222222222ffffffffffffffffffffffffff
 `;
-            case "image4":
-            case "Heart":return img`
-. . . . . f f f f f f . . . . . 
-. . . . f 1 1 1 1 1 1 f . . . . 
-. . . f 1 3 3 3 3 3 3 3 f . . . 
-. . f 1 3 3 3 3 3 3 3 3 3 f . . 
-. f 1 3 3 3 3 3 3 3 3 3 3 3 f . 
-f 1 3 3 3 3 3 3 3 3 3 3 3 3 3 f 
-f 1 3 3 3 3 3 f f 3 3 3 3 3 3 f 
-f 1 3 3 3 3 f . . f 3 3 3 3 3 f 
-f 1 3 3 3 3 f . . f 3 3 3 3 3 f 
-f 3 3 3 3 3 3 f f 3 3 3 3 3 3 f 
-f 3 3 3 3 3 3 3 3 3 3 3 3 3 3 f 
-. f 3 3 3 3 3 3 3 3 3 3 3 3 f . 
-. . f 3 3 3 3 3 3 3 3 3 3 f . . 
-. . . f 3 3 3 3 3 3 3 3 f . . . 
-. . . . f 3 3 3 3 3 3 f . . . . 
-. . . . . f f f f f f . . . . . 
-`;
-            case "image14":
-            case "empty special":return img`
-. . . . . 1 1 1 1 1 1 . . . . . 
-. . . . 1 7 7 7 7 7 7 1 . . . . 
-. . . 1 7 . . . . . . 7 1 . . . 
-. . 1 7 . . . . . . . . 7 1 . . 
-. 1 7 . . . . . . . . . . 7 1 . 
-1 7 . . . . . 7 7 . . . . . 7 1 
-1 7 . . . . 7 1 1 7 . . . . 7 1 
-1 7 . . . 7 1 . . 1 7 . . . 7 1 
-1 7 . . . 7 1 . . 1 7 . . . 7 1 
-1 7 . . . . 7 1 1 7 . . . . 7 1 
-1 7 . . . . . 7 7 . . . . . 7 1 
-. 1 7 . . . . . . . . . . 7 1 . 
-. . 1 7 . . . . . . . . 7 1 . . 
-. . . 1 7 . . . . . . 7 1 . . . 
-. . . . 1 7 7 7 7 7 7 1 . . . . 
-. . . . . 1 1 1 1 1 1 . . . . . 
-`;
-            case "image3":
-            case "filled special":return img`
-. . . . . f f f f f f . . . . . 
-. . . . f 5 5 5 5 5 5 f . . . . 
-. . . f 5 7 7 7 7 7 7 7 f . . . 
-. . f 5 7 7 7 7 7 7 7 7 7 f . . 
-. f 5 7 7 7 7 7 7 7 7 7 7 7 f . 
-f 5 7 7 7 7 7 7 7 7 7 7 7 7 7 f 
-f 5 7 7 7 7 7 f f 7 7 7 7 7 7 f 
-f 5 7 7 7 7 f . . f 7 7 7 7 7 f 
-f 5 7 7 7 7 f . . f 7 7 7 7 7 f 
-f 7 7 7 7 7 7 f f 7 7 7 7 7 7 f 
-f 7 7 7 7 7 7 7 7 7 7 7 7 7 7 f 
-. f 7 7 7 7 7 7 7 7 7 7 7 7 f . 
-. . f 7 7 7 7 7 7 7 7 7 7 f . . 
-. . . f 7 7 7 7 7 7 7 7 f . . . 
-. . . . f 7 7 7 7 7 7 f . . . . 
-. . . . . f f f f f f . . . . . 
-`;
             case "image16":
             case "Yuuhi Button":return img`
 .........................
@@ -1418,6 +1361,63 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 .........fffffff.........
 .........fffffff.........
 .........fffffff.........
+`;
+            case "image3":
+            case "Special":return img`
+. . . . . f f f f f f . . . . . 
+. . . . f 5 5 5 5 5 5 f . . . . 
+. . . f 5 7 7 7 7 7 7 7 f . . . 
+. . f 5 7 7 7 7 7 7 7 7 7 f . . 
+. f 5 7 7 7 7 7 7 7 7 7 7 7 f . 
+f 5 7 7 7 7 7 7 7 7 7 7 7 7 7 f 
+f 5 7 7 7 7 7 f f 7 7 7 7 7 7 f 
+f 5 7 7 7 7 f . . f 7 7 7 7 7 f 
+f 5 7 7 7 7 f . . f 7 7 7 7 7 f 
+f 7 7 7 7 7 7 f f 7 7 7 7 7 7 f 
+f 7 7 7 7 7 7 7 7 7 7 7 7 7 7 f 
+. f 7 7 7 7 7 7 7 7 7 7 7 7 f . 
+. . f 7 7 7 7 7 7 7 7 7 7 f . . 
+. . . f 7 7 7 7 7 7 7 7 f . . . 
+. . . . f 7 7 7 7 7 7 f . . . . 
+. . . . . f f f f f f . . . . . 
+`;
+            case "image14":
+            case "Empty Special":return img`
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . 1 7 7 7 7 7 7 1 . . . . 
+. . . 1 7 . . . . . . 7 1 . . . 
+. . 1 7 . . . . . . . . 7 1 . . 
+. 1 7 . . . . . . . . . . 7 1 . 
+1 7 . . . . . 7 7 . . . . . 7 1 
+1 7 . . . . 7 1 1 7 . . . . 7 1 
+1 7 . . . 7 1 . . 1 7 . . . 7 1 
+1 7 . . . 7 1 . . 1 7 . . . 7 1 
+1 7 . . . . 7 1 1 7 . . . . 7 1 
+1 7 . . . . . 7 7 . . . . . 7 1 
+. 1 7 . . . . . . . . . . 7 1 . 
+. . 1 7 . . . . . . . . 7 1 . . 
+. . . 1 7 . . . . . . 7 1 . . . 
+. . . . 1 7 7 7 7 7 7 1 . . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+`;
+            case "image4":
+            case "Life Up":return img`
+. . . . . f f f f f f . . . . . 
+. . . . f 1 1 1 1 1 1 f . . . . 
+. . . f 1 3 3 3 3 3 3 3 f . . . 
+. . f 1 3 3 3 3 3 3 3 3 3 f . . 
+. f 1 3 3 3 3 3 3 3 3 3 3 3 f . 
+f 1 3 3 3 3 3 3 3 3 3 3 3 3 3 f 
+f 1 3 3 3 3 3 f f 3 3 3 3 3 3 f 
+f 1 3 3 3 3 f . . f 3 3 3 3 3 f 
+f 1 3 3 3 3 f . . f 3 3 3 3 3 f 
+f 3 3 3 3 3 3 f f 3 3 3 3 3 3 f 
+f 3 3 3 3 3 3 3 3 3 3 3 3 3 3 f 
+. f 3 3 3 3 3 3 3 3 3 3 3 3 f . 
+. . f 3 3 3 3 3 3 3 3 3 3 f . . 
+. . . f 3 3 3 3 3 3 3 3 f . . . 
+. . . . f 3 3 3 3 3 3 f . . . . 
+. . . . . f f f f f f . . . . . 
 `;
         }
         return null;
