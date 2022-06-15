@@ -45,7 +45,7 @@ const MIKAGE: CharacterData = {
     sbaldHurtAnim: assets.animation`MikageSemi Injured`,
     baldHurtAnim: assets.animation`MikageBald Injured`,
 
-    startingLives: 4,
+    startingLives: 3,
     agility: 100,
     bulletSpeed: 200,
     shootCooldown: 150,
@@ -67,7 +67,7 @@ const SPICA: CharacterData = {
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`,
 
-    startingLives: 4,
+    startingLives: 3,
     agility: 145,
     bulletSpeed: 150,
     shootCooldown: 200,
@@ -89,7 +89,7 @@ const YUUHI: CharacterData = {
     sbaldHurtAnim: assets.animation`YuuhiSemi Injured`,
     baldHurtAnim: assets.animation`YuuhiBald Injured`,
 
-    startingLives: 3,
+    startingLives: 2,
     agility: 160,
     bulletSpeed: 300,
     shootCooldown: 500,
@@ -111,10 +111,10 @@ const URARA: CharacterData = {
     sbaldHurtAnim: assets.animation`UraraSemi Injured`,
     baldHurtAnim: assets.animation`UraraBald Injured`,
 
-    startingLives: 6,
-    agility: 40,
-    bulletSpeed: 65,
-    shootCooldown: 5,
+    startingLives: 5,
+    agility: 15,
+    bulletSpeed: 0,
+    shootCooldown: 200,
     iframes: 1000
 }
 

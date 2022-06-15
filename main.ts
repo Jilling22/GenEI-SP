@@ -33,20 +33,8 @@ class Player {
         game.showLongText(`Hello ${character.name}. I hope you're ready. Let's have some fun.`, DialogLayout.Bottom)
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-            timer.throttle("on_a_pressed", this.shootCooldown, function () {
-                bullet = sprites.createProjectileFromSprite(
-                    assets.image`Mikage`,
-                    player.sprite,
-                    this.bulletSpeed,
-                    0)
-                animation.runImageAnimation(
-                    bullet,
-                    assets.animation`EP`,
-                    50,
-                    true
-                )
-                music.pewPew.play()
-                bullet.lifespan = 2000
+            timer.throttle("shot_throttle", this.shootCooldown, function () {
+                let bullet = new Bullet(character)
             })
         })
 
@@ -59,7 +47,7 @@ class Player {
         })
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
-            timer.throttle("on_on_overlap", this.iframes, function () {
+            timer.throttle("damage_throttle", this.iframes, function () {
 
                 info.changeLifeBy(-1)
                 this.updateHair()
@@ -111,7 +99,35 @@ class Player {
 }
 
 class Bullet {
-    // needs bullet speed, lifespan, still sprite, animation, type
+    // needs bullet speed, lifespan, still sprite, animation, type of bullet (normal, piercing, etc)
+    // use global flag to check whether to add special property to bullet
+
+    spriteAssets: CharacterData
+    bulletSprite: Sprite
+    walkAnim: Image[]
+    hurtAnim: Image[]
+
+    agility: number
+    bulletSpeed: number
+    shootCooldown: number
+    iframes: number
+
+    constructor(character: CharacterData) {
+        this.bulletSprite = sprites.createProjectileFromSprite(
+            assets.image`Mikage`,
+            player.sprite,
+            character.bulletSpeed,
+            0)
+        
+        animation.runImageAnimation(
+            this.bulletSprite,
+            assets.animation`EP`,
+            50,
+            true)
+        
+        music.pewPew.play()
+        this.bulletSprite.lifespan = 2000
+    }
 }
 
 class PhantomSpawner {
@@ -130,7 +146,6 @@ class PhantomSpawner {
         this.walkSpdVar = data.walkSpdVar
         this.spawnInterval = data.spawnInterval
         this.spawnRate = data.spawnRate
-        // this.staysFor = ((scene.screenWidth() + 10) / (this.walkSpd + this.walkSpdVar)) * -1000
 
         this.spriteImg = data.spriteImg
         this.walkAnim = data.walkAnim
