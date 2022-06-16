@@ -54,14 +54,14 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character, assets.animation`EP`, false, false, false)
+                let bullet = new Bullet(character, assets.animation`EP`, false, false, false, false)
             })
         })
 
         controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
                 if (this.inventory > 0) {
-                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial, character.homingSpecial)
+                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial, character.homingSpecial, character.vacuumSpecial)
                     this.inventory -= 1
                     this.updateInventory()
                 }
@@ -167,20 +167,27 @@ class Bullet {
 
     specials: object
     homing: boolean
+    vacuum: boolean
+    static blackHole: Sprite = null
 
     static homingBullets: Sprite[] = []
 
-    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean, isMultishot: boolean, isHoming: boolean) {
+    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean, isMultishot: boolean, isHoming: boolean, isVacuum: boolean) {
 
         this.specials = {
             homing: isHoming,
             piercing: isPiercing,
-            vacuum: false
+            vacuum: isVacuum
         }
 
         this.homing = isHoming
+        this.vacuum = isVacuum
 
-        this.fireBullet(bulletAnim, character.bulletSpeed, 0)
+        if (isVacuum) {
+            this.fireBullet(bulletAnim, 50, 0)
+        } else {
+            this.fireBullet(bulletAnim, character.bulletSpeed, 0)
+        }
         
         if (isMultishot) {
             this.fireBullet(bulletAnim, character.bulletSpeed, 55)
@@ -214,8 +221,18 @@ class Bullet {
         if (this.homing) {
             Bullet.homingBullets.push(bullet);
         }
+
+        if (this.vacuum) {
+            Bullet.blackHole = bullet
+        }
     }
 }
+
+sprites.onDestroyed(SpriteKind.Projectile, p => {
+    if (p.data.vacuum) {
+        Bullet.blackHole = null
+    }
+})
 
 class PhantomSpawner {
     spawnFlag: string
@@ -252,7 +269,6 @@ class PhantomSpawner {
                 animation.runImageAnimation(phantom, this.walkAnim, 200, true)
 
                 PhantomSpawner.phantoms.push(phantom)
-                console.log(PhantomSpawner.phantoms.length)
             }
         })
     }
@@ -261,7 +277,7 @@ class PhantomSpawner {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectileSprite, phantomSprite) {
     phantomSprite.vx = 0
     phantomSprite.destroy(effects.hearts, 200)
-    if (!projectileSprite.data.piercing) {
+    if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
         projectileSprite.destroy()
     }
     info.changeScoreBy(1)
@@ -336,8 +352,6 @@ function characterSelect() {
 
 function startGame(selectedSprite: Sprite) {
     scene.setBackgroundImage(assets.image`game_bg`)
-
-    
 
     if (selectedSprite == menuMikage) {
         player = new Player(MIKAGE)
@@ -432,6 +446,22 @@ game.onUpdate(function () {
                 b.vx = newVelocity.x;
                 b.vy = newVelocity.y;
             });
+        });
+
+        game.onUpdate(() => {
+            if (Bullet.blackHole) {
+                PhantomSpawner.phantoms.forEach(p => {
+                    let t = Bullet.blackHole;
+                    if (!t) return;
+                    const currentDirection = velVec(p).normalize();
+                    const targetDirection = posVec(t).subtract(posVec(p)).normalize();
+                    const angle = Math.acos(currentDirection.dot(targetDirection));
+                    const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * Math.min(Math.abs(angle), hachanBulletTurnRate);
+                    const newVelocity = currentDirection.rotateByRadians(clampedAngle).multiply(100);
+                    p.vx = newVelocity.x;
+                    p.vy = newVelocity.y;
+                })
+            }
         });
 
         // change flag to first level

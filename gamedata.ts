@@ -34,7 +34,8 @@ type CharacterData = {
 
     multishotSpecial: boolean,
     pierceSpecial: boolean,
-    homingSpecial: boolean
+    homingSpecial: boolean,
+    vacuumSpecial: boolean
 }
 
 const MIKAGE: CharacterData = {
@@ -62,7 +63,8 @@ const MIKAGE: CharacterData = {
 
     multishotSpecial: false,
     pierceSpecial: false,
-    homingSpecial: true
+    homingSpecial: true,
+    vacuumSpecial: false
 }
 
 const SPICA: CharacterData = {
@@ -90,7 +92,8 @@ const SPICA: CharacterData = {
 
     multishotSpecial: true,
     pierceSpecial: false,
-    homingSpecial: false
+    homingSpecial: false,
+    vacuumSpecial: false
 }
 
 const YUUHI: CharacterData = {
@@ -118,7 +121,8 @@ const YUUHI: CharacterData = {
 
     multishotSpecial: false,
     pierceSpecial: true,
-    homingSpecial: false
+    homingSpecial: false,
+    vacuumSpecial: false
 }
 
 const URARA: CharacterData = {
@@ -146,7 +150,8 @@ const URARA: CharacterData = {
 
     multishotSpecial: false,
     pierceSpecial: false,
-    homingSpecial: false
+    homingSpecial: false,
+    vacuumSpecial: true
 }
 
 type LevelData = {
