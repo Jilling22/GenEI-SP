@@ -423,6 +423,21 @@ game.onUpdate(function () {
 
         sprites.onDestroyed(SpriteKind.Phantom, p => PhantomSpawner.phantoms.removeElement(p));
 
+        // this is also hachan's code, don't touch :baldmikagebigbrain:
+        game.onUpdate(() => {
+            Bullet.homingBullets.forEach(b => {
+                let t = findNearestEnemy(b);
+                if (!t) return;
+                const currentDirection = velVec(b).normalize();
+                const targetDirection = posVec(t).subtract(posVec(b)).normalize();
+                const angle = Math.acos(currentDirection.dot(targetDirection));
+                const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * Math.min(Math.abs(angle), hachanBulletTurnRate);
+                const newVelocity = currentDirection.rotateByRadians(clampedAngle).multiply(hachanBulletSpeed);
+                b.vx = newVelocity.x;
+                b.vy = newVelocity.y;
+            });
+        });
+
         // change flag to first level
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
