@@ -428,6 +428,7 @@ game.onUpdate(function () {
                 life_up.x = randint(30, 130)
                 life_up.y = randint(30, 100)
                 life_up.z = -1
+                life_up.lifespan = 8000
             })
         })
 
