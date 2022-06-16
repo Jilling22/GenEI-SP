@@ -16,7 +16,8 @@
         "images.g.jres",
         "images.g.ts",
         "gamedata.ts",
-        "vecti.ts"
+        "vecti.ts",
+        "hachan.ts"
     ],
     "testFiles": [
         "test.ts"

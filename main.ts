@@ -64,7 +64,6 @@ class Player {
                     let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial, character.homingSpecial)
                     this.inventory -= 1
                     this.updateInventory()
-                    console.log(Bullet.homingBullets.length)
                 }
             })
         })
@@ -233,6 +232,8 @@ class PhantomSpawner {
     spriteImg: Image
     walkAnim: Image[]
 
+    static phantoms: Sprite[] = []
+
     constructor(data: LevelData) {
         this.spawnFlag = data.spawnFlag
         this.walkSpd = data.walkSpd
@@ -254,6 +255,9 @@ class PhantomSpawner {
                 phantom.setFlag(SpriteFlag.AutoDestroy, true)
 
                 animation.runImageAnimation(phantom, this.walkAnim, 200, true)
+
+                PhantomSpawner.phantoms.push(phantom)
+                console.log(PhantomSpawner.phantoms.length)
             }
         })
     }
@@ -416,6 +420,8 @@ game.onUpdate(function () {
                 life_up.z = -1
             })
         })
+
+        sprites.onDestroyed(SpriteKind.Phantom, p => PhantomSpawner.phantoms.removeElement(p));
 
         // change flag to first level
         gameState = "LEVEL1"
