@@ -66,6 +66,7 @@ class Player {
                     this.updateInventory()
                     if (character.vacuumSpecial) {
                         this.agility -= 10
+                        this.bulletSpeed -= 10
                         controller.moveSprite(this.sprite, this.agility, this.agility)
                     }
                 }
@@ -81,15 +82,17 @@ class Player {
         })
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Special, function (playerSprite, specialSprite) {
-            this.inventory += 1
+            if (this.inventory < 3) {
+                this.inventory += 1
+                if (character.vacuumSpecial) {
+                    this.agility += 10
+                    this.bulletSpeed += 10
+                    controller.moveSprite(this.sprite, this.agility, this.agility)
+                }
+
+            }
             this.updateInventory()
             music.magicWand.play()
-
-            if (character.vacuumSpecial && this.inventory < 3) {
-                this.agility += 10
-                controller.moveSprite(this.sprite, this.agility, this.agility)
-            }
-
             specialSprite.destroy()
         })
 
@@ -193,20 +196,20 @@ class Bullet {
         if (isVacuum) {
             this.fireBullet(bulletAnim, 50, 0)
         } else {
-            this.fireBullet(bulletAnim, character.bulletSpeed, 0)
+            this.fireBullet(bulletAnim, player.bulletSpeed, 0)
         }
 
         if (isHoming) {
-            this.fireBullet(bulletAnim, character.bulletSpeed, 200)
-            this.fireBullet(bulletAnim, character.bulletSpeed, -200)
+            this.fireBullet(bulletAnim, player.bulletSpeed, 200)
+            this.fireBullet(bulletAnim, player.bulletSpeed, -200)
         }
         
         if (isMultishot) {
-            this.fireBullet(bulletAnim, character.bulletSpeed, 55)
-            this.fireBullet(bulletAnim, character.bulletSpeed, -55)
+            this.fireBullet(bulletAnim, player.bulletSpeed, 55)
+            this.fireBullet(bulletAnim, player.bulletSpeed, -55)
             timer.after(100, function () {
-                this.fireBullet(bulletAnim, character.bulletSpeed, 25)
-                this.fireBullet(bulletAnim, character.bulletSpeed, -25)
+                this.fireBullet(bulletAnim, player.bulletSpeed, 25)
+                this.fireBullet(bulletAnim, player.bulletSpeed, -25)
             })
         }
 
