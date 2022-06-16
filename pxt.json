@@ -15,7 +15,8 @@
         "main.py",
         "images.g.jres",
         "images.g.ts",
-        "gamedata.ts"
+        "gamedata.ts",
+        "vecti.ts"
     ],
     "testFiles": [
         "test.ts"

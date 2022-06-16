@@ -33,7 +33,8 @@ type CharacterData = {
     iframes: number,
 
     multishotSpecial: boolean,
-    pierceSpecial: boolean
+    pierceSpecial: boolean,
+    homingSpecial: boolean
 }
 
 const MIKAGE: CharacterData = {
@@ -60,7 +61,8 @@ const MIKAGE: CharacterData = {
     iframes: 500,
 
     multishotSpecial: false,
-    pierceSpecial: false
+    pierceSpecial: false,
+    homingSpecial: true
 }
 
 const SPICA: CharacterData = {
@@ -87,7 +89,8 @@ const SPICA: CharacterData = {
     iframes: 600,
 
     multishotSpecial: true,
-    pierceSpecial: false
+    pierceSpecial: false,
+    homingSpecial: false
 }
 
 const YUUHI: CharacterData = {
@@ -114,7 +117,8 @@ const YUUHI: CharacterData = {
     iframes: 600,
 
     multishotSpecial: false,
-    pierceSpecial: true 
+    pierceSpecial: true,
+    homingSpecial: false
 }
 
 const URARA: CharacterData = {
@@ -141,7 +145,8 @@ const URARA: CharacterData = {
     iframes: 1000,
 
     multishotSpecial: false,
-    pierceSpecial: true
+    pierceSpecial: false,
+    homingSpecial: false
 }
 
 type LevelData = {

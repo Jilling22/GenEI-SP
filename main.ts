@@ -54,16 +54,17 @@ class Player {
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
-                let bullet = new Bullet(character, assets.animation`EP`, false, false)
+                let bullet = new Bullet(character, assets.animation`EP`, false, false, false)
             })
         })
 
         controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             timer.throttle("shot_throttle", this.shootCooldown, function () {
                 if (this.inventory > 0) {
-                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial)
+                    let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial, character.homingSpecial)
                     this.inventory -= 1
                     this.updateInventory()
+                    console.log(Bullet.homingBullets.length)
                 }
             })
         })
@@ -166,14 +167,19 @@ class Bullet {
     iframes: number
 
     specials: object
+    homing: boolean
 
-    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean, isMultishot: boolean) {
+    static homingBullets: Sprite[] = []
+
+    constructor(character: CharacterData, bulletAnim: Image[], isPiercing: boolean, isMultishot: boolean, isHoming: boolean) {
 
         this.specials = {
-            homing: false,
+            homing: isHoming,
             piercing: isPiercing,
             vacuum: false
         }
+
+        this.homing = isHoming
 
         this.fireBullet(bulletAnim, character.bulletSpeed, 0)
         
@@ -191,7 +197,7 @@ class Bullet {
                 this.fireBullet(bulletAnim, character.bulletSpeed, -55)
             })
         }
-        
+
         music.pewPew.play()
     }
 
@@ -210,6 +216,10 @@ class Bullet {
 
         bullet.lifespan = 2000
         bullet.data = this.specials
+
+        if (this.homing) {
+            Bullet.homingBullets.push(bullet);
+        }
     }
 }
 
@@ -255,9 +265,10 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
     if (!projectileSprite.data.piercing) {
         projectileSprite.destroy()
     }
-    
     info.changeScoreBy(1)
 })
+
+sprites.onDestroyed(SpriteKind.Projectile, p => p.data.homing ? Bullet.homingBullets.removeElement(p) : null);
 
 function initializeMenu() {
     scene.setBackgroundImage(assets.image`mainmenu_bg`)
