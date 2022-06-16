@@ -64,6 +64,10 @@ class Player {
                     let bullet = new Bullet(character, character.specialBullet, character.pierceSpecial, character.multishotSpecial, character.homingSpecial, character.vacuumSpecial)
                     this.inventory -= 1
                     this.updateInventory()
+                    if (character.vacuumSpecial) {
+                        this.agility -= 10
+                        controller.moveSprite(this.sprite, this.agility, this.agility)
+                    }
                 }
             })
         })
@@ -80,6 +84,11 @@ class Player {
             this.inventory += 1
             this.updateInventory()
             music.magicWand.play()
+
+            if (character.vacuumSpecial && this.inventory < 3) {
+                this.agility += 10
+                controller.moveSprite(this.sprite, this.agility, this.agility)
+            }
 
             specialSprite.destroy()
         })
@@ -152,8 +161,6 @@ class Player {
 }
 
 class Bullet {
-    // needs bullet speed, lifespan, still sprite, animation, type of bullet (normal, piercing, etc)
-    // use global flag to check whether to add special property to bullet
 
     spriteAssets: CharacterData
     bulletSprite: Sprite
@@ -188,14 +195,18 @@ class Bullet {
         } else {
             this.fireBullet(bulletAnim, character.bulletSpeed, 0)
         }
+
+        if (isHoming) {
+            this.fireBullet(bulletAnim, character.bulletSpeed, 200)
+            this.fireBullet(bulletAnim, character.bulletSpeed, -200)
+        }
         
         if (isMultishot) {
             this.fireBullet(bulletAnim, character.bulletSpeed, 55)
             this.fireBullet(bulletAnim, character.bulletSpeed, -55)
             timer.after(100, function () {
-                this.fireBullet(bulletAnim, character.bulletSpeed, 0)
-                this.fireBullet(bulletAnim, character.bulletSpeed, 55)
-                this.fireBullet(bulletAnim, character.bulletSpeed, -55)
+                this.fireBullet(bulletAnim, character.bulletSpeed, 25)
+                this.fireBullet(bulletAnim, character.bulletSpeed, -25)
             })
         }
 
