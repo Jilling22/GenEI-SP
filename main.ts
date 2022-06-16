@@ -171,52 +171,45 @@ class Bullet {
 
         this.specials = {
             homing: false,
-            multishot: false,
             piercing: isPiercing,
             vacuum: false
         }
 
-        this.bulletSprite = sprites.createProjectileFromSprite(
-            assets.image`Mikage`,
-            player.sprite,
-            character.bulletSpeed,
-            0)
-        
-        animation.runImageAnimation(
-            this.bulletSprite,
-            bulletAnim,
-            50,
-            true)
+        this.fireBullet(bulletAnim, character.bulletSpeed, 0)
         
         if (isMultishot) {
-            let bullet1 = sprites.createProjectileFromSprite(
-                assets.image`Mikage`,
-                player.sprite,
-                character.bulletSpeed,
-                100)
-
-            animation.runImageAnimation(
-                bullet1,
-                bulletAnim,
-                50,
-                true)
-
-            let bullet2 = sprites.createProjectileFromSprite(
-                assets.image`Mikage`,
-                player.sprite,
-                character.bulletSpeed,
-                -100)
-
-            animation.runImageAnimation(
-                bullet2,
-                bulletAnim,
-                50,
-                true)
+            this.fireBullet(bulletAnim, character.bulletSpeed, 55)
+            this.fireBullet(bulletAnim, character.bulletSpeed, -55)
+            timer.after(100, function () {
+                this.fireBullet(bulletAnim, character.bulletSpeed, 0)
+                this.fireBullet(bulletAnim, character.bulletSpeed, 55)
+                this.fireBullet(bulletAnim, character.bulletSpeed, -55)
+            })
+            timer.after(200, function () {
+                this.fireBullet(bulletAnim, character.bulletSpeed, 0)
+                this.fireBullet(bulletAnim, character.bulletSpeed, 55)
+                this.fireBullet(bulletAnim, character.bulletSpeed, -55)
+            })
         }
         
         music.pewPew.play()
-        this.bulletSprite.lifespan = 2000
-        this.bulletSprite.data = this.specials
+    }
+
+    fireBullet(bulletAnim: Image[], vx: number, vy: number) {
+        let bullet = sprites.createProjectileFromSprite(
+            assets.image`Mikage`,
+            player.sprite,
+            vx,
+            vy)
+        
+        animation.runImageAnimation(
+            bullet,
+            bulletAnim,
+            50,
+            true)
+
+        bullet.lifespan = 2000
+        bullet.data = this.specials
     }
 }
 
