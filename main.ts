@@ -118,9 +118,10 @@ class Player {
         info.onLifeZero(function () {
             this.toggleStill = false
             controller.moveSprite(this.sprite, 0, 0)
+            this.sprite.setFlag(SpriteFlag.Ghost, true)
 
             this.animateDeath()
-            timer.after(800, function () {
+            timer.after(character.deathTimer, function () {
                 game.over(false)
             })
         })
@@ -146,14 +147,15 @@ class Player {
         const sprite = this.sprite
         const hurt = this.hurtAnim
         animation.runImageAnimation(sprite, hurt, 100, false)
-        timer.after(500, () => {
-            this.toggleStill = true
+        timer.after(400, () => {
+            if (info.life() > 0) {
+                this.toggleStill = true
+                animation.runImageAnimation(this.sprite, this.walkAnim, 150, true)
+            }
         })
     }
 
     animateDeath() {
-        this.sprite.setFlag(SpriteFlag.Ghost, true)
-
         const sprite = this.sprite
         const death = this.deathAnim
         animation.runImageAnimation(sprite, death, 100, false)
