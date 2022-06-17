@@ -24,6 +24,8 @@ type CharacterData = {
     sbaldHurtAnim: Image[],
     baldHurtAnim: Image[],
 
+    deathAnim: Image[],
+
     specialBullet: Image[],
 
     startingLives: number,
@@ -52,6 +54,8 @@ const MIKAGE: CharacterData = {
     normalHurtAnim: assets.animation`Mikage Injured`,
     sbaldHurtAnim: assets.animation`MikageSemi Injured`,
     baldHurtAnim: assets.animation`MikageBald Injured`,
+
+    deathAnim: assets.animation`Mikagedeath`,
 
     specialBullet: assets.animation`MikageSpecial animate`,
 
@@ -82,6 +86,8 @@ const SPICA: CharacterData = {
     sbaldHurtAnim: assets.animation`SpicaSemi Injured`,
     baldHurtAnim: assets.animation`SpicaBald Injured`,
 
+    deathAnim: assets.animation`Spicadeath`,
+
     specialBullet: assets.animation`SpicaSpecial animate`,
 
     startingLives: 4,
@@ -111,6 +117,8 @@ const YUUHI: CharacterData = {
     sbaldHurtAnim: assets.animation`YuuhiSemi Injured`,
     baldHurtAnim: assets.animation`YuuhiBald Injured`,
 
+    deathAnim: assets.animation`Yuuhideath`,
+
     specialBullet: assets.animation`YuuhiSpecial animate`,
 
     startingLives: 3,
@@ -139,6 +147,8 @@ const URARA: CharacterData = {
     normalHurtAnim: assets.animation`Urara Injured`,
     sbaldHurtAnim: assets.animation`UraraSemi Injured`,
     baldHurtAnim: assets.animation`UraraBald Injured`,
+
+    deathAnim: assets.animation`Uraradeath`,
 
     specialBullet: assets.animation`UraraSpecial animate`,
 

@@ -4,6 +4,7 @@ class Player {
     sprite: Sprite
     walkAnim: Image[]
     hurtAnim: Image[]
+    deathAnim: Image[]
 
     agility: number
     bulletSpeed: number
@@ -24,6 +25,7 @@ class Player {
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
         this.hurtAnim = character.normalHurtAnim
+        this.deathAnim = character.deathAnim
 
         this.agility = character.agility
         this.bulletSpeed = character.bulletSpeed
@@ -121,6 +123,12 @@ class Player {
         const sprite = this.sprite
         const hurt = this.hurtAnim
         animation.runImageAnimation(sprite, hurt, 100, false)
+    }
+
+    animateDeath() {
+        const sprite = this.sprite
+        const death = this.deathAnim
+        animation.runImageAnimation(sprite, death, 200, false)
     }
 
     updateHair() {
