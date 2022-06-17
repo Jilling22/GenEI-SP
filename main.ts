@@ -14,6 +14,8 @@ class Player {
     inventory: number
     inventorySprites: Sprite[]
 
+    toggleStill: boolean
+
     constructor(character: CharacterData) {
         info.setLife(character.startingLives)
         info.setScore(0)
@@ -32,6 +34,7 @@ class Player {
         this.shootCooldown = character.shootCooldown
 
         this.iframes = character.iframes
+        this.toggleStill = true
 
         controller.moveSprite(this.sprite, this.agility, this.agility)
         this.sprite.setStayInScreen(true)
@@ -91,7 +94,6 @@ class Player {
                     this.bulletSpeed += 10
                     controller.moveSprite(this.sprite, this.agility, this.agility)
                 }
-
             }
             this.updateInventory()
             music.magicWand.play()
@@ -100,7 +102,8 @@ class Player {
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
             timer.throttle("damage_throttle", this.iframes, function () {
-
+                
+                this.toggleStill = false
                 info.changeLifeBy(-1)
                 this.updateHair()
                 this.animateHurt()
@@ -111,24 +114,49 @@ class Player {
                 phantomSprite.destroy()
             })
         })
+
+        info.onLifeZero(function () {
+            this.toggleStill = false
+            controller.moveSprite(this.sprite, 0, 0)
+
+            this.animateDeath()
+            timer.after(800, function () {
+                game.over(false)
+            })
+        })
+    }
+
+    animateStill() {
+        if (this.toggleStill === true) {
+            const sprite = this.sprite
+            animation.stopAnimation(animation.AnimationTypes.All, sprite)
+            this.updateHair()
+        }
     }
 
     animateWalk() {
-        const sprite = this.sprite
-        const walk = this.walkAnim
-        animation.runImageAnimation(sprite, walk, 150, true)
+        if (this.toggleStill === true) {
+            const sprite = this.sprite
+            const walk = this.walkAnim
+            animation.runImageAnimation(sprite, walk, 150, true)
+        }
     }
 
     animateHurt() {
         const sprite = this.sprite
         const hurt = this.hurtAnim
         animation.runImageAnimation(sprite, hurt, 100, false)
+        timer.after(500, () => {
+            this.toggleStill = true
+        })
     }
 
     animateDeath() {
+        this.sprite.setFlag(SpriteFlag.Ghost, true)
+
         const sprite = this.sprite
         const death = this.deathAnim
-        animation.runImageAnimation(sprite, death, 200, false)
+        animation.runImageAnimation(sprite, death, 100, false)
     }
 
     updateHair() {
@@ -164,11 +192,7 @@ class Player {
         }
     }
 
-    animateStill() {
-        const sprite = this.sprite
-        animation.stopAnimation(animation.AnimationTypes.All, sprite)
-        this.updateHair()
-    }
+    
 }
 
 class Bullet {
