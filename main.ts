@@ -461,22 +461,26 @@ game.onUpdate(function () {
 
         timer.after(10000, function () {
             game.onUpdateInterval(25000, function () {
-                life_up = sprites.create(assets.image`Life Up`, SpriteKind.Food)
-                life_up.x = scene.screenWidth()
-                life_up.vx = -30
-                life_up.y = randint(20, 115)
-                life_up.lifespan = 8000
+                if (info.life() > 0) {
+                    life_up = sprites.create(assets.image`Life Up`, SpriteKind.Food)
+                    life_up.x = scene.screenWidth()
+                    life_up.vx = -30
+                    life_up.y = randint(20, 115)
+                    life_up.lifespan = 8000
+                }
             })
         })
 
         timer.after(1000, function () {
             game.onUpdateInterval(3000, function () {
-                life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
-                animation.runImageAnimation(life_up, assets.animation`Special_fire`, 200, true)
-                life_up.x = randint(30, 130)
-                life_up.y = randint(30, 100)
-                life_up.z = -1
-                life_up.lifespan = 8000
+                if (info.life() > 0) {
+                    life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
+                    animation.runImageAnimation(life_up, assets.animation`Special_fire`, 200, true)
+                    life_up.x = randint(30, 130)
+                    life_up.y = randint(30, 100)
+                    life_up.z = -1
+                    life_up.lifespan = 8000
+                }
             })
         })
 
