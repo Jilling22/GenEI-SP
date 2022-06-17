@@ -4,7 +4,8 @@
     "dependencies": {
         "device": "*",
         "controller": "*",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1"
     },
     "files": [
         "main.blocks",
