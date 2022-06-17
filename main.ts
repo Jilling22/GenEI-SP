@@ -342,6 +342,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
         projectileSprite.destroy()
     }
     info.changeScoreBy(1)
+    music.smallCrash.play()
 })
 
 sprites.onDestroyed(SpriteKind.Projectile, p => p.data.homing ? Bullet.homingBullets.removeElement(p) : null);
@@ -363,14 +364,24 @@ class Tomo {
         this.sprite.data = 10
         PhantomSpawner.phantoms.push(this.sprite)
 
-        this.bulletSpeed = -400
+        this.bulletSpeed = -180
         this.bossIntro()
 
         // 6. While moving, start shooting volleys of bullets (with sound)
 
         timer.after(2500, () => {
-            game.onUpdateInterval(1000, () => {
-                this.shootVolley()
+            game.onUpdateInterval(1200, () => {
+                if (this.sprite.data > 0) {
+                    this.shootVolley()
+                }
+            })
+
+            game.onUpdate(() => {
+                if (!(this.sprite.data > 0)) {
+                    this.sprite.vy = 0
+                    this.animateDeath()
+                    console.log("Yay")
+                }
             })
         })
 
@@ -398,7 +409,7 @@ class Tomo {
         timer.after(2000, () => {
             // 4. Pick a random direction
             // 5. Move up and down
-            this.sprite.vy = 200
+            this.sprite.vy = 50
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
@@ -407,11 +418,14 @@ class Tomo {
 
     shootVolley() {
         this.shootPopsicle()
-        timer.after(200, () => {
-            this.shootPopsicle()
+        timer.after(100, () => {
+            if (this.sprite.data < 9) this.shootPopsicle()
         })
-        timer.after(400, () => {
-            this.shootPopsicle()
+        timer.after(200, () => {
+            if (this.sprite.data < 6) this.shootPopsicle()
+        })
+        timer.after(300, () => {
+            if (this.sprite.data < 3) this.shootPopsicle()
         })
     }
 
@@ -427,6 +441,22 @@ class Tomo {
         
     }
 
+    animateDeath() {
+        this.sprite.vy = 0
+        this.sprite.setFlag(SpriteFlag.Ghost, true)
+        timer.after(500, () => {
+            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath1`, 150, false)
+            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath2`, 150, true)
+        })
+        timer.after(1500, () => {
+            this.sprite.destroy(effects.hearts, 200)
+            music.jumpUp.play()
+        })
+        timer.after(2000, () => {
+            game.over(true, effects.confetti)
+        })
+    }
+
     // 7. Update behavior based on HP
 
     // 8. If HP reaches zero, trigger dialogue + death animation
@@ -436,13 +466,18 @@ class Tomo {
 sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
 
     timer.throttle("boss_throttle", 1000, () => {
-        bossSprite.data -= 1
-        
-        
+        if (bossSprite.data > 0) {
+            bossSprite.data -= 1
+            if (gameState === "TOMO") {
+                bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
+                music.zapped.play()
+            }
 
-        if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
-            projectileSprite.destroy()
+            if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+                projectileSprite.destroy()
+            }
         }
+        
     })
 })
 
