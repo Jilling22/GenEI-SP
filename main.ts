@@ -115,6 +115,21 @@ class Player {
             })
         })
 
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyProjectile, function (playerSprite, projectileSprite) {
+            timer.throttle("damage_throttle", this.iframes, function () {
+
+                this.toggleStill = false
+                info.changeLifeBy(-1)
+                this.updateHair()
+                this.animateHurt()
+
+                music.powerDown.play()
+                scene.cameraShake(4, 500)
+
+                projectileSprite.destroy()
+            })
+        })
+
         info.onLifeZero(function () {
             this.toggleStill = false
             controller.moveSprite(this.sprite, 0, 0)
@@ -193,8 +208,6 @@ class Player {
             this.inventory = 3
         }
     }
-
-    
 }
 
 class Bullet {
@@ -333,7 +346,110 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 
 sprites.onDestroyed(SpriteKind.Projectile, p => p.data.homing ? Bullet.homingBullets.removeElement(p) : null);
 
+class Tomo {
+
+    sprite: Sprite
+    walkAnim: Image[]
+    hurtAnim: Image[]
+    deathAnim: Image[]
+
+    agility: number
+    bulletSpeed: number
+    iframes: number
+
+    constructor() {
+        this.sprite = sprites.create(assets.image`Tomo`, SpriteKind.Boss)
+        this.sprite.setFlag(SpriteFlag.Ghost, true)
+        this.sprite.data = 10
+        PhantomSpawner.phantoms.push(this.sprite)
+
+        this.bulletSpeed = -400
+        this.bossIntro()
+
+        // 6. While moving, start shooting volleys of bullets (with sound)
+
+        timer.after(2500, () => {
+            game.onUpdateInterval(1000, () => {
+                this.shootVolley()
+            })
+        })
+
+
+    }
+
+    // 2. Stands still (insert dialogue here)
+
+    // 3. Start fight
+
+    bossIntro() {
+        this.sprite.x = 170
+        this.sprite.y = 60
+
+        // 1. Walks from right side of screen into view
+        this.sprite.vx = -30
+        animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 200, true)
+
+        timer.after(1000, () => {
+            // 2. Stands still (insert dialogue here)
+            this.sprite.vx = 0
+            animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
+        })
+
+        timer.after(2000, () => {
+            // 4. Pick a random direction
+            // 5. Move up and down
+            this.sprite.vy = 200
+            this.sprite.setBounceOnWall(true)
+            animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
+            this.sprite.setFlag(SpriteFlag.Ghost, false)
+        })
+    }
+
+    shootVolley() {
+        this.shootPopsicle()
+        timer.after(200, () => {
+            this.shootPopsicle()
+        })
+        timer.after(400, () => {
+            this.shootPopsicle()
+        })
+    }
+
+    shootPopsicle() {
+        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
+        bullet.x = this.sprite.x
+        bullet.y = this.sprite.y
+
+        bullet.vx = this.bulletSpeed
+
+        bullet.setFlag(SpriteFlag.AutoDestroy, true)
+        music.pewPew.play()
+        
+    }
+
+    // 7. Update behavior based on HP
+
+    // 8. If HP reaches zero, trigger dialogue + death animation
+
+}
+
+sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
+
+    timer.throttle("boss_throttle", 1000, () => {
+        bossSprite.data -= 1
+        
+        
+
+        if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+            projectileSprite.destroy()
+        }
+    })
+})
+
+
 function initializeMenu() {
+    
+
     scene.setBackgroundImage(assets.image`mainmenu_bg`)
     sprites.create(assets.image`title`, SpriteKind.Placeholder)
     playButton = sprites.create(assets.image`Play Button`, SpriteKind.PlayButton)
@@ -521,7 +637,7 @@ game.onUpdate(function () {
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         game.onUpdate(() => {
-            if (gameState === "LEVEL1" && info.score() > 20) {
+            if (gameState === "LEVEL1" && info.score() > 5) {
                 gameState = "LEVEL1_COMPLETE"
             }
         })
@@ -529,6 +645,23 @@ game.onUpdate(function () {
 
     if (gameState === "LEVEL1_COMPLETE") {
         gameState = "LEVEL2"
-        let secondWave: PhantomSpawner = new PhantomSpawner(LEVEL2)   
+        
+        timer.after(2000, () => {
+            let secondWave: PhantomSpawner = new PhantomSpawner(LEVEL2)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL2" && info.score() > 10) {
+                gameState = "LEVEL2_COMPLETE"
+            }
+        })
+    }
+
+    if (gameState === "LEVEL2_COMPLETE") {
+        gameState = "TOMO"
+
+        timer.after(2000, () => {
+            let bossFight1: Tomo = new Tomo()
+        })
     }
 })

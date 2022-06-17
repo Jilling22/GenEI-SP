@@ -7,6 +7,9 @@ namespace SpriteKind {
     export const Phantom = SpriteKind.create()
     export const Cursor = SpriteKind.create()
     export const Special = SpriteKind.create()
+
+    export const Boss = SpriteKind.create()
+    export const EnemyProjectile = SpriteKind.create()
 }
 
 type CharacterData = {
@@ -203,4 +206,26 @@ const LEVEL2: LevelData = {
 
     spriteImg: assets.image`PMikage`,
     walkAnim: assets.animation`PMikage Walk`
+}
+
+type BossData = {
+
+    spriteImg: Image,
+    walkAnim: Image[],
+    deathAnim: Image[],
+    
+    deathTimer: number
+
+    specialBullet: Image[],
+
+    startingLives: number,
+    agility: number,
+    bulletSpeed: number,
+    shootCooldown: number,
+    iframes: number,
+
+    multishotSpecial: boolean,
+    pierceSpecial: boolean,
+    homingSpecial: boolean,
+    vacuumSpecial: boolean
 }
