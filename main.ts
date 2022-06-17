@@ -430,7 +430,7 @@ initializeMenu()
 game.onUpdate(function () {
 
     // check if selected flag has been triggered, then trigger first set of listeners 
-    if (gameState == "CHARACTER_SELECTED") {
+    if (gameState === "CHARACTER_SELECTED") {
 
         controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
             player.animateWalk()
@@ -520,5 +520,15 @@ game.onUpdate(function () {
         // change flag to first level
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
+        game.onUpdate(() => {
+            if (gameState === "LEVEL1" && info.score() > 20) {
+                gameState = "LEVEL1_COMPLETE"
+            }
+        })
+    }
+
+    if (gameState === "LEVEL1_COMPLETE") {
+        gameState = "LEVEL2"
+        let secondWave: PhantomSpawner = new PhantomSpawner(LEVEL2)   
     }
 })

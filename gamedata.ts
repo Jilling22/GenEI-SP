@@ -192,3 +192,15 @@ const LEVEL1: LevelData = {
     spriteImg: assets.image`PMikage`,
     walkAnim: assets.animation`PMikage Walk`
 }
+
+const LEVEL2: LevelData = {
+    spawnFlag: "LEVEL2",
+    walkSpd: -100,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage`,
+    walkAnim: assets.animation`PMikage Walk`
+}
