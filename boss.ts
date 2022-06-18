@@ -18,19 +18,22 @@ class Tomo {
         PhantomSpawner.phantoms.push(this.sprite)
 
         Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        Tomo.health.max = 1
+        Tomo.health.max = 10
 
         Tomo.health.attachToSprite(this.sprite)
 
-        this.bulletSpeed = -180
+        this.bulletSpeed = -170
         this.bossIntro()
 
         // 6. While moving, start shooting volleys of bullets (with sound)
 
         timer.after(2500, () => {
-            game.onUpdateInterval(1200, () => {
+            game.onUpdateInterval(2400, () => {
                 if (gameState === "TOMO" && Tomo.health.value > 0) {
                     this.shootVolley()
+                    timer.after(1200, () => {
+                        this.shootHomingVolley()
+                    })
                 }
             })
 
@@ -86,6 +89,19 @@ class Tomo {
         })
     }
 
+    shootHomingVolley() {
+        this.shootHomingPopsicle()
+        timer.after(200, () => {
+            if (Tomo.health.value < 9) this.shootHomingPopsicle()
+        })
+        timer.after(400, () => {
+            if (Tomo.health.value < 6) this.shootHomingPopsicle()
+        })
+        timer.after(600, () => {
+            if (Tomo.health.value < 3) this.shootHomingPopsicle()
+        })
+    }
+
     shootPopsicle() {
         let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
         bullet.x = this.sprite.x
@@ -95,7 +111,23 @@ class Tomo {
 
         bullet.setFlag(SpriteFlag.AutoDestroy, true)
         music.pewPew.play()
+    }
 
+    shootHomingPopsicle() {
+        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
+        bullet.x = this.sprite.x
+        bullet.y = this.sprite.y
+
+        const bulletVec = Vector.of(this.sprite.x, this.sprite.y)
+        const playerVec = Vector.of(player.sprite.x, player.sprite.y)
+
+        const targetDirection = playerVec.subtract(bulletVec).normalize()
+
+        bullet.vx = targetDirection.x * Math.abs(this.bulletSpeed)
+        bullet.vy = targetDirection.y * Math.abs(this.bulletSpeed)
+
+        bullet.setFlag(SpriteFlag.AutoDestroy, true)
+        music.pewPew.play()
     }
 
     animateDeath() {
@@ -139,7 +171,7 @@ class SuperPhantom {
         this.facingLeft = true
 
         SuperPhantom.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        SuperPhantom.health.max = 1
+        SuperPhantom.health.max = 15
 
         SuperPhantom.health.attachToSprite(this.sprite)
 

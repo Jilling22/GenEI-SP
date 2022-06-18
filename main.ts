@@ -608,5 +608,11 @@ game.onUpdate(function () {
                 }
             })
         })
+    } else if (gameState === "PHANTOM_DEFEATED") {
+        gameState = "GOD_URARA"
+
+        timer.after(2000, () => {
+            let bossFight3: SuperPhantom = new SuperPhantom()
+        })
     }
 })

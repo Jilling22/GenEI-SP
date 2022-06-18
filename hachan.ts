@@ -33,6 +33,17 @@ function findNearestEnemy(base: Sprite): Sprite {
 const hachanBulletTurnRate = 0.2;
 const hachanBulletSpeed = 200;
 
+// Make a sprite move towards a set of coordinates
+// function moveTo(x: number, y: number, sprite: Sprite, baseVel: number) {
+//     const currentDirection = velVec(sprite).normalize();
+
+//     const targetPosVec = Vector.of(x, y);
+//     const targetDirection = targetPosVec.subtract(posVec(sprite)).normalize();
+
+//     sprite.vx = newVelocity.x;
+//     sprite.vy = newVelocity.y;
+// }
+
 // Move a sprite towards a set of coordinates
 function moveSpriteTo(x: number, y: number, sprite: Sprite, baseVel: number, turnRate?: number) {
     const currentDirection = velVec(sprite).normalize();
