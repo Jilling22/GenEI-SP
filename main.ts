@@ -347,141 +347,6 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 
 sprites.onDestroyed(SpriteKind.Projectile, p => p.data.homing ? Bullet.homingBullets.removeElement(p) : null);
 
-class Tomo {
-
-    sprite: Sprite
-    walkAnim: Image[]
-    hurtAnim: Image[]
-    deathAnim: Image[]
-
-    agility: number
-    bulletSpeed: number
-    iframes: number
-
-    constructor() {
-        this.sprite = sprites.create(assets.image`Tomo`, SpriteKind.Boss)
-        this.sprite.setFlag(SpriteFlag.Ghost, true)
-        this.sprite.data = 10
-        PhantomSpawner.phantoms.push(this.sprite)
-
-        this.bulletSpeed = -180
-        this.bossIntro()
-
-        // 6. While moving, start shooting volleys of bullets (with sound)
-
-        timer.after(2500, () => {
-            game.onUpdateInterval(1200, () => {
-                if (this.sprite.data > 0) {
-                    this.shootVolley()
-                }
-            })
-
-            game.onUpdate(() => {
-                if (!(this.sprite.data > 0)) {
-                    this.sprite.vy = 0
-                    this.animateDeath()
-                    console.log("Yay")
-                }
-            })
-        })
-
-
-    }
-
-    // 2. Stands still (insert dialogue here)
-
-    // 3. Start fight
-
-    bossIntro() {
-        this.sprite.x = 170
-        this.sprite.y = 60
-
-        // 1. Walks from right side of screen into view
-        this.sprite.vx = -30
-        animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 200, true)
-
-        timer.after(1000, () => {
-            // 2. Stands still (insert dialogue here)
-            this.sprite.vx = 0
-            animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
-        })
-
-        timer.after(2000, () => {
-            // 4. Pick a random direction
-            // 5. Move up and down
-            this.sprite.vy = 50
-            this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
-            this.sprite.setFlag(SpriteFlag.Ghost, false)
-        })
-    }
-
-    shootVolley() {
-        this.shootPopsicle()
-        timer.after(100, () => {
-            if (this.sprite.data < 9) this.shootPopsicle()
-        })
-        timer.after(200, () => {
-            if (this.sprite.data < 6) this.shootPopsicle()
-        })
-        timer.after(300, () => {
-            if (this.sprite.data < 3) this.shootPopsicle()
-        })
-    }
-
-    shootPopsicle() {
-        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
-        bullet.x = this.sprite.x
-        bullet.y = this.sprite.y
-
-        bullet.vx = this.bulletSpeed
-
-        bullet.setFlag(SpriteFlag.AutoDestroy, true)
-        music.pewPew.play()
-        
-    }
-
-    animateDeath() {
-        this.sprite.vy = 0
-        this.sprite.setFlag(SpriteFlag.Ghost, true)
-        timer.after(500, () => {
-            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath1`, 150, false)
-            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath2`, 150, true)
-        })
-        timer.after(1500, () => {
-            this.sprite.destroy(effects.hearts, 200)
-            music.jumpUp.play()
-        })
-        timer.after(2000, () => {
-            game.over(true, effects.confetti)
-        })
-    }
-
-    // 7. Update behavior based on HP
-
-    // 8. If HP reaches zero, trigger dialogue + death animation
-
-}
-
-sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
-
-    timer.throttle("boss_throttle", 1000, () => {
-        if (bossSprite.data > 0) {
-            bossSprite.data -= 1
-            if (gameState === "TOMO") {
-                bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
-                music.zapped.play()
-            }
-
-            if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
-                projectileSprite.destroy()
-            }
-        }
-        
-    })
-})
-
-
 function initializeMenu() {
     
 
@@ -672,13 +537,12 @@ game.onUpdate(function () {
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         game.onUpdate(() => {
-            if (gameState === "LEVEL1" && info.score() > 5) {
+            if (gameState === "LEVEL1" && info.score() > 1) {
                 gameState = "LEVEL1_COMPLETE"
             }
         })
-    }
+    } else if (gameState === "LEVEL1_COMPLETE") {
 
-    if (gameState === "LEVEL1_COMPLETE") {
         gameState = "LEVEL2"
         
         timer.after(2000, () => {
@@ -686,17 +550,24 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL2" && info.score() > 10) {
+            if (gameState === "LEVEL2" && info.score() > 2) {
                 gameState = "LEVEL2_COMPLETE"
             }
         })
-    }
+    } else if (gameState === "LEVEL2_COMPLETE") {
 
-    if (gameState === "LEVEL2_COMPLETE") {
         gameState = "TOMO"
 
         timer.after(2000, () => {
             let bossFight1: Tomo = new Tomo()
+        })
+
+    } else if (gameState === "TOMO_DEFEATED") {
+
+        gameState = "SUPERPHANTOM"
+
+        timer.after(2000, () => {
+            let bossFight2: SuperPhantom = new SuperPhantom()
         })
     }
 })
