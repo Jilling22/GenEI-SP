@@ -163,10 +163,10 @@ const URARA: CharacterData = {
     specialBullet: assets.animation`UraraSpecial animate`,
 
     startingLives: 5,
-    agility: 20,
+    agility: 5,
     bulletSpeed: 0,
-    shootCooldown: 400,
-    iframes: 1500,
+    shootCooldown: 500,
+    iframes: 2000,
 
     multishotSpecial: false,
     pierceSpecial: false,

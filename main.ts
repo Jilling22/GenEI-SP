@@ -70,8 +70,8 @@ class Player {
                     this.inventory -= 1
                     this.updateInventory()
                     if (character.vacuumSpecial) {
-                        this.agility -= 10
-                        this.bulletSpeed -= 10
+                        this.agility -= 20
+                        this.bulletSpeed -= 20
                         controller.moveSprite(this.sprite, this.agility, this.agility)
                     }
                 }
@@ -90,8 +90,8 @@ class Player {
             if (this.inventory < 3) {
                 this.inventory += 1
                 if (character.vacuumSpecial) {
-                    this.agility += 10
-                    this.bulletSpeed += 10
+                    this.agility += 20
+                    this.bulletSpeed += 20
                     controller.moveSprite(this.sprite, this.agility, this.agility)
                 }
             }
@@ -267,7 +267,7 @@ class Bullet {
         this.vacuum = isVacuum
 
         if (isVacuum) {
-            this.fireBullet(bulletAnim, 50, 0)
+            this.fireBullet(bulletAnim, 30, 0)
         } else {
             this.fireBullet(bulletAnim, player.bulletSpeed, 0)
         }
@@ -302,7 +302,7 @@ class Bullet {
             50,
             true)
 
-        bullet.lifespan = 2000
+        
         bullet.data = this.specials
 
         if (this.homing) {
@@ -310,7 +310,10 @@ class Bullet {
         }
 
         if (this.vacuum) {
+            bullet.setFlag(SpriteFlag.AutoDestroy, true)
             Bullet.blackHole = bullet
+        } else {
+            bullet.lifespan = 2000
         }
     }
 }
