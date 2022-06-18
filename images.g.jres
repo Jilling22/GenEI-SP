@@ -224,6 +224,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "BPMikage right"
     },
+    "image45": {
+        "data": "hwQiAAwAAAD///////8AAB/x//8R8QAAH/H/HxHxAAAf8f8fH/EAAB/x/xEf8QAAH/Ef8R/xAAAf8R/xH/EAAB/xEf8f8QAAHxHx/x/xAAAfEfH/H/EAAB8R//8f8QAA////////AAAf8f//EfEAAB/x/x8R8QAAH/H/Hx/xAAAf8f8RH/EAAB/xH/Ef8QAAH/Ef8R/xAAAf8RH/H/EAAB8R8f8f8QAAHxHx/x/xAAAfEf//H/EAAP///////wAAH/H//xHxAAAf8f8fEfEAAB/x/x8f8QAAH/H/ER/xAAAf8R/xH/EAAB/xH/Ef8QAAH/ER/x/xAAAfEfH/H/EAAB8R8f8f8QAAHxH//x/xAAD///////8AAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Urarabullet"
+    },
     "anim2": {
         "namespace": "myAnimations",
         "id": "anim2",

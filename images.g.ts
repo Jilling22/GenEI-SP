@@ -1706,6 +1706,21 @@ f8f8888ff8ff8f..
 ..............f999f.............
 ..............fffff.............
 `;
+            case "image45":
+            case "Urarabullet":return img`
+ffffffffffffffffffffffffffffffffff
+f1111111111f1111111111f1111111111f
+f1111111111f1111111111f1111111111f
+ffffffff111ffffffff111ffffffff111f
+fffffff111ffffffff111ffffffff111ff
+fffff111ffffffff111ffffffff111ffff
+ffff111ffffffff111ffffffff111fffff
+ff111ffffffff111ffffffff111fffffff
+f11fffffffff11fffffffff11fffffffff
+f1111111111f1111111111f1111111111f
+f1111111111f1111111111f1111111111f
+ffffffffffffffffffffffffffffffffff
+`;
         }
         return null;
     })
