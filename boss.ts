@@ -18,7 +18,7 @@ class Tomo {
         PhantomSpawner.phantoms.push(this.sprite)
 
         Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        Tomo.health.max = 10
+        Tomo.health.max = 1
 
         Tomo.health.attachToSprite(this.sprite)
 
