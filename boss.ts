@@ -36,8 +36,8 @@ class Tomo {
 
             game.onUpdate(() => {
                 if (gameState === "TOMO" && Tomo.health.value <= 0) {
-                    this.sprite.vy = 0
                     this.animateDeath()
+                    gameState = "TOMO_DEFEATED"
                 }
             })
         })
@@ -105,14 +105,9 @@ class Tomo {
             animation.runImageAnimation(this.sprite, assets.animation`TomoDeath1`, 150, false)
             animation.runImageAnimation(this.sprite, assets.animation`TomoDeath2`, 150, true)
         })
-        timer.after(1500, () => {
+        timer.after(2000, () => {
             PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts, 200)
-        })
-        timer.after(2000, () => {
-            if (gameState === "TOMO") {
-                gameState = "TOMO_DEFEATED"
-            }
         })
     }
 
@@ -121,9 +116,6 @@ class Tomo {
     // 8. If HP reaches zero, trigger dialogue + death animation
 
 }
-
-
-
 
 class SuperPhantom {
 
@@ -147,7 +139,7 @@ class SuperPhantom {
         this.facingLeft = true
 
         SuperPhantom.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        SuperPhantom.health.max = 15
+        SuperPhantom.health.max = 1
 
         SuperPhantom.health.attachToSprite(this.sprite)
 
@@ -174,13 +166,11 @@ class SuperPhantom {
 
                 if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value <= 0) {
                     // Out of lives
-                    this.sprite.vy = 0
                     this.animateDeath()
+                    gameState = "PHANTOM_DEFEATED"
                 }
             })
         })
-
-
     }
 
     bossIntro() {
@@ -240,14 +230,16 @@ class SuperPhantom {
         this.sprite.vx = 0
         this.sprite.setFlag(SpriteFlag.Ghost, true)
         timer.after(500, () => {
-            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath1`, 150, false)
-            animation.runImageAnimation(this.sprite, assets.animation`TomoDeath2`, 150, true)
+            this.sprite.setImage(assets.image`PMikage left`)
+            animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
+            this.sprite.x += 2
+            this.sprite.y += 8
         })
-        timer.after(1500, () => {
-            this.sprite.destroy(effects.hearts, 200)
+        timer.after(1000, () => {
+            animation.runImageAnimation(this.sprite, assets.animation`PMikage death`, 100, false)
         })
-        timer.after(2000, () => {
-            gameState = "PHANTOM_DEFEATED"
+        timer.after(1800, () => {
+            this.sprite.destroy(effects.hearts)
         })
     }
 
