@@ -18,7 +18,8 @@
         "images.g.ts",
         "gamedata.ts",
         "vecti.ts",
-        "hachan.ts"
+        "hachan.ts",
+        "boss.ts"
     ],
     "testFiles": [
         "test.ts"
