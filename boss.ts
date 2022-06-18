@@ -102,7 +102,6 @@ class Tomo {
         timer.after(1500, () => {
             PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts, 200)
-            music.jumpUp.play()
         })
         timer.after(2000, () => {
             if (gameState === "TOMO") {
@@ -121,10 +120,21 @@ sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, 
     timer.throttle("boss_throttle", 1000, () => {
         if (bossSprite.data > 0) {
             bossSprite.data -= 1
+            music.zapped.play()
 
             if (gameState === "TOMO") {
                 bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
-                music.zapped.play()
+            }
+
+            if (gameState === "SUPERPHANTOM") {
+                bossSprite.vy += bossSprite.vy > 0 ? 5 : -5
+                bossSprite.vx += bossSprite.vx > 0 ? 20 : -20
+
+                if (Math.random() * 3 < 1) {
+                    bossSprite.vx *= -1
+                } else if (Math.random() * 3 < 2) {
+                    bossSprite.vy *= -1
+                }
             }
 
             if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
@@ -146,23 +156,36 @@ class SuperPhantom {
     bulletSpeed: number
     iframes: number
 
+    facingLeft: boolean 
+
     constructor() {
-        this.sprite = sprites.create(assets.image`PMikage`, SpriteKind.Boss)
+        this.sprite = sprites.create(assets.image`BPMikage left`, SpriteKind.Boss)
         this.sprite.setFlag(SpriteFlag.Ghost, true)
-        this.sprite.data = 1
+        this.sprite.data = 10
         PhantomSpawner.phantoms.push(this.sprite)
+        this.facingLeft = true
 
         this.bossIntro()
 
-        timer.after(3500, () => {
-            game.onUpdateInterval(1200, () => {
+        timer.after(1500, () => {
+            game.onUpdateInterval(1500, () => {
                 if (gameState === "SUPERPHANTOM" && this.sprite.data > 0) {
                     // Do a thing
-
+                    this.shootVolley()
                 }
             })
 
             game.onUpdate(() => {
+                if (gameState === "SUPERPHANTOM" && this.facingLeft && this.sprite.vx > 0) {
+                    animation.runImageAnimation(this.sprite, assets.animation`BPMikage right walk`, 200, true)
+                    this.facingLeft = false
+                }
+
+                if (gameState === "SUPERPHANTOM" && !this.facingLeft && this.sprite.vx < 0) {
+                    animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 200, true)
+                    this.facingLeft = true
+                }
+
                 if (gameState === "SUPERPHANTOM" && !(this.sprite.data > 0)) {
                     // Out of lives
                     this.sprite.vy = 0
@@ -184,7 +207,7 @@ class SuperPhantom {
 
         // 1. Walks from right side of screen into view
         this.sprite.vx = -30
-        animation.runImageAnimation(this.sprite, assets.animation`PMikage Walk`, 200, true)
+        animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 200, true)
 
         timer.after(1000, () => {
             // 2. Stands still (insert dialogue here)
@@ -193,43 +216,34 @@ class SuperPhantom {
         })
 
         timer.after(1500, () => {
-            this.sprite.changeScale(1, ScaleAnchor.Bottom)
-        })
-
-        timer.after(3000, () => {
             // 4. Pick a random direction
             // 5. Move up and down
-            this.sprite.vy = 50
-            this.sprite.vx = 50
+            this.sprite.vy = -40
+            this.sprite.vx = -50
             this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`PMikage Walk`, 150, true)
+            animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
         })
     }
 
     shootVolley() {
-        this.shootPopsicle()
-        timer.after(100, () => {
-            if (this.sprite.data < 9) this.shootPopsicle()
-        })
-        timer.after(200, () => {
-            if (this.sprite.data < 6) this.shootPopsicle()
-        })
-        timer.after(300, () => {
-            if (this.sprite.data < 3) this.shootPopsicle()
-        })
+        this.shootEP(50, 0)
+        this.shootEP(-50, 0)
+        this.shootEP(0, -50)
+        this.shootEP(0, 50)
     }
 
-    shootPopsicle() {
-        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
+    shootEP(vx: number, vy: number) {
+        let bullet = sprites.create(assets.image`Mikage`, SpriteKind.EnemyProjectile)
+        animation.runImageAnimation(bullet, assets.animation`TomoDeath2`, 200, true)
         bullet.x = this.sprite.x
         bullet.y = this.sprite.y
 
-        bullet.vx = this.bulletSpeed
+        bullet.vx = vx
+        bullet.vy = vy
 
         bullet.setFlag(SpriteFlag.AutoDestroy, true)
         music.pewPew.play()
-
     }
 
     animateDeath() {
