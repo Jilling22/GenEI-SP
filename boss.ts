@@ -116,33 +116,7 @@ class Tomo {
 
 }
 
-sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
-    timer.throttle("boss_throttle", 1000, () => {
-        if (bossSprite.data > 0) {
-            bossSprite.data -= 1
-            music.zapped.play()
 
-            if (gameState === "TOMO") {
-                bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
-            }
-
-            if (gameState === "SUPERPHANTOM") {
-                bossSprite.vy += bossSprite.vy > 0 ? 5 : -5
-                bossSprite.vx += bossSprite.vx > 0 ? 20 : -20
-
-                if (Math.random() * 3 < 1) {
-                    bossSprite.vx *= -1
-                } else if (Math.random() * 3 < 2) {
-                    bossSprite.vy *= -1
-                }
-            }
-
-            if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
-                projectileSprite.destroy()
-            }
-        }
-    })
-})
 
 
 class SuperPhantom {
@@ -161,7 +135,7 @@ class SuperPhantom {
     constructor() {
         this.sprite = sprites.create(assets.image`BPMikage left`, SpriteKind.Boss)
         this.sprite.setFlag(SpriteFlag.Ghost, true)
-        this.sprite.data = 10
+        this.sprite.data = 15
         PhantomSpawner.phantoms.push(this.sprite)
         this.facingLeft = true
 
@@ -197,10 +171,6 @@ class SuperPhantom {
 
     }
 
-    // 2. Stands still (insert dialogue here)
-
-    // 3. Start fight
-
     bossIntro() {
         this.sprite.x = 170
         this.sprite.y = 60
@@ -219,7 +189,7 @@ class SuperPhantom {
             // 4. Pick a random direction
             // 5. Move up and down
             this.sprite.vy = -40
-            this.sprite.vx = -50
+            this.sprite.vx = -40
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
@@ -231,6 +201,13 @@ class SuperPhantom {
         this.shootEP(-50, 0)
         this.shootEP(0, -50)
         this.shootEP(0, 50)
+
+        if (this.sprite.data < 6) {
+            this.shootEP(35, 35)
+            this.shootEP(-35, -35)
+            this.shootEP(35, -35)
+            this.shootEP(-35, 35)
+        }
     }
 
     shootEP(vx: number, vy: number) {
@@ -256,10 +233,9 @@ class SuperPhantom {
         })
         timer.after(1500, () => {
             this.sprite.destroy(effects.hearts, 200)
-            music.jumpUp.play()
         })
         timer.after(2000, () => {
-            gameState = "TOMO_DEFEATED"
+            gameState = "PHANTOM_DEFEATED"
         })
     }
 
@@ -268,3 +244,32 @@ class SuperPhantom {
     // 8. If HP reaches zero, trigger dialogue + death animation
 
 }
+
+sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
+    timer.throttle("boss_throttle", 1000, () => {
+        if (bossSprite.data > 0) {
+            bossSprite.data -= 1
+            music.zapped.play()
+
+            if (gameState === "TOMO") {
+                bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
+            }
+
+            if (gameState === "SUPERPHANTOM") {
+                bossSprite.vy += bossSprite.vy > 0 ? 3 : -3
+                bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
+
+                if (Math.random() * 3 < 1) {
+                    bossSprite.vx *= -1
+                } else if (Math.random() * 3 < 2) {
+                    bossSprite.vy *= -1
+                    let statusbar = statusbars.create(20, 4, StatusBarKind.EnemyHealth)
+                }
+            }
+
+            if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+                projectileSprite.destroy()
+            }
+        }
+    })
+})
