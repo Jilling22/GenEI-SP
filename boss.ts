@@ -136,20 +136,26 @@ class SuperPhantom {
     bulletSpeed: number
     iframes: number
 
-    facingLeft: boolean 
+    facingLeft: boolean
+
+    static health: StatusBarSprite
 
     constructor() {
         this.sprite = sprites.create(assets.image`BPMikage left`, SpriteKind.Boss)
         this.sprite.setFlag(SpriteFlag.Ghost, true)
-        this.sprite.data = 15
         PhantomSpawner.phantoms.push(this.sprite)
         this.facingLeft = true
+
+        SuperPhantom.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
+        SuperPhantom.health.max = 15
+
+        SuperPhantom.health.attachToSprite(this.sprite)
 
         this.bossIntro()
 
         timer.after(1500, () => {
             game.onUpdateInterval(1500, () => {
-                if (gameState === "SUPERPHANTOM" && this.sprite.data > 0) {
+                if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
                     // Do a thing
                     this.shootVolley()
                 }
@@ -166,7 +172,7 @@ class SuperPhantom {
                     this.facingLeft = true
                 }
 
-                if (gameState === "SUPERPHANTOM" && !(this.sprite.data > 0)) {
+                if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value <= 0) {
                     // Out of lives
                     this.sprite.vy = 0
                     this.animateDeath()
@@ -208,7 +214,7 @@ class SuperPhantom {
         this.shootEP(0, -50)
         this.shootEP(0, 50)
 
-        if (this.sprite.data < 6) {
+        if (SuperPhantom.health.value < 6) {
             this.shootEP(35, 35)
             this.shootEP(-35, -35)
             this.shootEP(35, -35)
@@ -253,27 +259,27 @@ class SuperPhantom {
 
 sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
     timer.throttle("boss_throttle", 1000, () => {
-        if (Tomo.health.value > 0) {
+        if (gameState === "TOMO" && Tomo.health.value > 0) {
             Tomo.health.value -= 1
             music.zapped.play()
             bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
+            
+        } else if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
+            SuperPhantom.health.value -= 1
+            music.zapped.play()
 
+            bossSprite.vy += bossSprite.vy > 0 ? 3 : -3
+            bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
 
-            if (gameState === "SUPERPHANTOM") {
-                bossSprite.vy += bossSprite.vy > 0 ? 3 : -3
-                bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
-
-                if (Math.random() * 3 < 1) {
-                    bossSprite.vx *= -1
-                } else if (Math.random() * 3 < 2) {
-                    bossSprite.vy *= -1
-                    let statusbar = statusbars.create(20, 4, StatusBarKind.EnemyHealth)
-                }
+            if (Math.random() * 3 < 1) {
+                bossSprite.vx *= -1
+            } else if (Math.random() * 3 < 2) {
+                bossSprite.vy *= -1
             }
+        }
 
-            if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
-                projectileSprite.destroy()
-            }
+        if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+            projectileSprite.destroy()
         }
     })
 })
