@@ -200,8 +200,8 @@ class SuperPhantom {
         timer.after(1500, () => {
             // 4. Pick a random direction
             // 5. Move up and down
-            this.sprite.vy = -40
-            this.sprite.vx = -40
+            this.sprite.vy = -30
+            this.sprite.vx = -30
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
@@ -268,7 +268,7 @@ sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, 
             SuperPhantom.health.value -= 1
             music.zapped.play()
 
-            bossSprite.vy += bossSprite.vy > 0 ? 3 : -3
+            bossSprite.vy += bossSprite.vy > 0 ? 4 : -4
             bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
 
             if (Math.random() * 3 < 1) {

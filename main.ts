@@ -100,6 +100,19 @@ class Player {
             specialSprite.destroy()
         })
 
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.Vine, function (playerSprite, debuffSprite) {
+            music.bigCrash.play()
+            this.agility /= 2
+            controller.moveSprite(this.sprite, this.agility, this.agility)
+
+            timer.after(2000, () => {
+                this.agility *= 2
+                controller.moveSprite(this.sprite, this.agility, this.agility)
+            })
+
+            debuffSprite.destroy()
+        })
+
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
             timer.throttle("damage_throttle", this.iframes, function () {
                 
@@ -108,7 +121,7 @@ class Player {
                 this.updateHair()
                 this.animateHurt()
 
-                music.powerDown.play()
+                music.smallCrash.play()
                 scene.cameraShake(4, 500)
 
                 phantomSprite.destroy()
@@ -581,6 +594,29 @@ game.onUpdate(function () {
 
         timer.after(2000, () => {
             let bossFight2: SuperPhantom = new SuperPhantom()
+        })
+
+        timer.after(6000, function () {
+            game.onUpdateInterval(6000, function () {
+                if (gameState === "SUPERPHANTOM" && info.life() > 0) {
+                    let sprout = sprites.create(assets.image`sprout`, SpriteKind.Sprout)
+                    let vine: Sprite = null
+                    sprout.x = randint(30, 130)
+                    sprout.y = randint(30, 100)
+                    sprout.z = -2
+                    timer.after(2000, () => {
+                        if (Math.random() < 0.5) {
+                            vine = sprites.create(assets.image`vine1`, SpriteKind.Vine)
+                        } else {
+                            vine = sprites.create(assets.image`vine2`, SpriteKind.Vine)
+                        }
+                        vine.x = sprout.x
+                        vine.y = sprout.y - 8
+                        vine.z = -2
+                        sprout.destroy()
+                    })
+                }
+            })
         })
     }
 })

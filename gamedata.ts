@@ -10,6 +10,8 @@ namespace SpriteKind {
 
     export const Boss = SpriteKind.create()
     export const EnemyProjectile = SpriteKind.create()
+    export const Sprout = SpriteKind.create()
+    export const Vine = SpriteKind.create()
 }
 
 type CharacterData = {
@@ -67,8 +69,8 @@ const MIKAGE: CharacterData = {
     startingLives: 3,
     agility: 100,
     bulletSpeed: 200,
-    shootCooldown: 150,
-    iframes: 500,
+    shootCooldown: 120,
+    iframes: 700,
 
     multishotSpecial: false,
     pierceSpecial: false,
@@ -97,10 +99,10 @@ const SPICA: CharacterData = {
     specialBullet: assets.animation`SpicaSpecial animate`,
 
     startingLives: 4,
-    agility: 145,
+    agility: 140,
     bulletSpeed: 150,
     shootCooldown: 200,
-    iframes: 600,
+    iframes: 900,
 
     multishotSpecial: true,
     pierceSpecial: false,
@@ -129,10 +131,10 @@ const YUUHI: CharacterData = {
     specialBullet: assets.animation`YuuhiSpecial animate`,
 
     startingLives: 3,
-    agility: 160,
+    agility: 200,
     bulletSpeed: 300,
     shootCooldown: 500,
-    iframes: 600,
+    iframes: 400,
 
     multishotSpecial: false,
     pierceSpecial: true,
@@ -161,10 +163,10 @@ const URARA: CharacterData = {
     specialBullet: assets.animation`UraraSpecial animate`,
 
     startingLives: 5,
-    agility: 10,
+    agility: 20,
     bulletSpeed: 0,
-    shootCooldown: 200,
-    iframes: 1000,
+    shootCooldown: 400,
+    iframes: 1500,
 
     multishotSpecial: false,
     pierceSpecial: false,
