@@ -10,11 +10,17 @@ class Tomo {
     bulletSpeed: number
     iframes: number
 
+    static health: StatusBarSprite
+
     constructor() {
         this.sprite = sprites.create(assets.image`Tomo`, SpriteKind.Boss)
         this.sprite.setFlag(SpriteFlag.Ghost, true)
-        this.sprite.data = 1
         PhantomSpawner.phantoms.push(this.sprite)
+
+        Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
+        Tomo.health.max = 10
+
+        Tomo.health.attachToSprite(this.sprite)
 
         this.bulletSpeed = -180
         this.bossIntro()
@@ -23,13 +29,13 @@ class Tomo {
 
         timer.after(2500, () => {
             game.onUpdateInterval(1200, () => {
-                if (gameState === "TOMO" && this.sprite.data > 0) {
+                if (gameState === "TOMO" && Tomo.health.value > 0) {
                     this.shootVolley()
                 }
             })
 
             game.onUpdate(() => {
-                if (gameState === "TOMO" && !(this.sprite.data > 0)) {
+                if (gameState === "TOMO" && Tomo.health.value <= 0) {
                     this.sprite.vy = 0
                     this.animateDeath()
                 }
@@ -70,13 +76,13 @@ class Tomo {
     shootVolley() {
         this.shootPopsicle()
         timer.after(100, () => {
-            if (this.sprite.data < 9) this.shootPopsicle()
+            if (Tomo.health.value < 9) this.shootPopsicle()
         })
         timer.after(200, () => {
-            if (this.sprite.data < 6) this.shootPopsicle()
+            if (Tomo.health.value < 6) this.shootPopsicle()
         })
         timer.after(300, () => {
-            if (this.sprite.data < 3) this.shootPopsicle()
+            if (Tomo.health.value < 3) this.shootPopsicle()
         })
     }
 
@@ -247,13 +253,11 @@ class SuperPhantom {
 
 sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
     timer.throttle("boss_throttle", 1000, () => {
-        if (bossSprite.data > 0) {
-            bossSprite.data -= 1
+        if (Tomo.health.value > 0) {
+            Tomo.health.value -= 1
             music.zapped.play()
+            bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
 
-            if (gameState === "TOMO") {
-                bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
-            }
 
             if (gameState === "SUPERPHANTOM") {
                 bossSprite.vy += bossSprite.vy > 0 ? 3 : -3

@@ -115,6 +115,19 @@ class Player {
             })
         })
 
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.Boss, function (playerSprite, bossSprite) {
+            timer.throttle("damage_throttle", this.iframes, function () {
+
+                this.toggleStill = false
+                info.changeLifeBy(-1)
+                this.updateHair()
+                this.animateHurt()
+
+                music.powerDown.play()
+                scene.cameraShake(4, 500)
+            })
+        })
+
         sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyProjectile, function (playerSprite, projectileSprite) {
             timer.throttle("damage_throttle", this.iframes, function () {
 
