@@ -33,3 +33,29 @@ function findNearestEnemy(base: Sprite): Sprite {
 const hachanBulletTurnRate = 0.2;
 const hachanBulletSpeed = 200;
 
+// Move a sprite towards a set of coordinates
+function moveSpriteTo(x: number, y: number, sprite: Sprite, baseVel: number, turnRate?: number) {
+    const currentDirection = velVec(sprite).normalize();
+
+    const targetPosVec = Vector.of(x, y);
+    const targetDirection = targetPosVec.subtract(posVec(sprite)).normalize();
+
+    const angle = Math.acos(currentDirection.dot(targetDirection));
+    const angleMultiplier = typeof turnRate !== 'undefined' ? Math.min(Math.abs(angle), turnRate) : Math.abs(angle);
+    const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * angleMultiplier;
+
+    const newVelocity = currentDirection.rotateByRadians(clampedAngle).multiply(baseVel);
+    sprite.vx = newVelocity.x;
+    sprite.vy = newVelocity.y;
+}
+
+// Move a sprite towards a target sprite
+function moveSpriteToTargetSprite(source: Sprite, target: Sprite, baseVel: number, turnRate?: number) {
+    const targetX = posVec(target).x
+    const targetY = posVec(target).y
+    if (typeof turnRate !== 'undefined') {
+        moveSpriteTo(targetX, targetY, source, baseVel, turnRate)
+    } else {
+        moveSpriteTo(targetX, targetY, source, baseVel)
+    }
+}

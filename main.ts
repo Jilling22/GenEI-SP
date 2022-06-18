@@ -539,7 +539,7 @@ game.onUpdate(function () {
                 const currentDirection = velVec(b).normalize();
                 const targetDirection = posVec(t).subtract(posVec(b)).normalize();
                 const angle = Math.acos(currentDirection.dot(targetDirection));
-                const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * Math.min(Math.abs(angle), hachanBulletTurnRate);
+                const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * Math.min(Math.abs(angle), 100);
                 const newVelocity = currentDirection.rotateByRadians(clampedAngle).multiply(hachanBulletSpeed);
                 b.vx = newVelocity.x;
                 b.vy = newVelocity.y;
@@ -549,15 +549,7 @@ game.onUpdate(function () {
         game.onUpdate(() => {
             if (Bullet.blackHole) {
                 PhantomSpawner.phantoms.forEach(p => {
-                    let t = Bullet.blackHole;
-                    if (!t) return;
-                    const currentDirection = velVec(p).normalize();
-                    const targetDirection = posVec(t).subtract(posVec(p)).normalize();
-                    const angle = Math.acos(currentDirection.dot(targetDirection));
-                    const clampedAngle = Math.sign(currentDirection.cross(targetDirection)) * Math.min(Math.abs(angle), hachanBulletTurnRate);
-                    const newVelocity = currentDirection.rotateByRadians(clampedAngle).multiply(100);
-                    p.vx = newVelocity.x;
-                    p.vy = newVelocity.y;
+                    moveSpriteToTargetSprite(p, Bullet.blackHole, 100, 0.2)
                 })
             }
         });
