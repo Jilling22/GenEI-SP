@@ -619,7 +619,7 @@ game.onUpdate(function () {
         gameState = "GOD_URARA"
 
         timer.after(2000, () => {
-            let bossFight3: SuperPhantom = new SuperPhantom()
+            let bossFight3: GodUrara = new GodUrara()
         })
     }
 })

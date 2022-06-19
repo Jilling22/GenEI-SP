@@ -153,7 +153,7 @@ class SuperPhantom {
         this.facingLeft = true
 
         SuperPhantom.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        SuperPhantom.health.max = 15
+        SuperPhantom.health.max = 1
 
         SuperPhantom.health.attachToSprite(this.sprite)
 
@@ -269,9 +269,90 @@ class SuperPhantom {
             animation.runImageAnimation(this.sprite, assets.animation`PMikage death`, 100, false)
         })
         timer.after(1800, () => {
+            PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts)
             sprites.destroyAllSpritesOfKind(SpriteKind.Sprout)
             sprites.destroyAllSpritesOfKind(SpriteKind.Vine)
         })
+    }
+}
+
+class GodUrara {
+
+    sprite: Sprite
+    bossData: BossData
+    static health: StatusBarSprite
+
+    constructor() {
+        this.sprite = sprites.create(assets.image`GodUrara`, SpriteKind.Boss)
+        this.sprite.setFlag(SpriteFlag.Ghost, true)
+        PhantomSpawner.phantoms.push(this.sprite)
+
+        GodUrara.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
+        GodUrara.health.max = 30
+
+        GodUrara.health.attachToSprite(this.sprite)
+
+        this.bossIntro()
+
+        timer.after(1500, () => {
+            game.onUpdateInterval(2000, () => {
+                if (gameState === "GOD_URARA" && GodUrara.health.value > 0) {
+                    // Do a thing
+                    
+                }
+            })
+
+            game.onUpdate(() => {
+                if (gameState === "GOD_URARA" && GodUrara.health.value <= 0) {
+                    // Out of lives
+                    this.animateDeath()
+                    gameState = "ENDING"
+                }
+            })
+        })
+
+        sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
+            timer.throttle("boss3_throttle", 1000, () => {
+                if (gameState === "GOD_URARA" && GodUrara.health.value > 0) {
+
+                    GodUrara.health.value -= 1
+                    music.zapped.play()
+                    
+                    if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+                        projectileSprite.destroy()
+                    }
+                }
+            })
+        })
+    }
+
+    bossIntro() {
+        this.sprite.x = 170
+        this.sprite.y = 60
+
+        // 1. Walks from right side of screen into view
+        moveTo(140, 60, this.sprite, 30, 0, assets.animation`GodUrara walk`)
+
+        timer.after(1500, () => {
+            // 4. Pick a random direction
+            this.sprite.vy = Math.random() > 0.5 ? 30 : -30
+
+            this.sprite.setBounceOnWall(true)
+            animation.runImageAnimation(this.sprite, assets.animation`GodUrara walk`, 150, true)
+            this.sprite.setFlag(SpriteFlag.Ghost, false)
+        })
+    }
+
+    shootEP(vx: number, vy: number) {
+
+    }
+
+    shootVolley() {
+
+    }
+
+    animateDeath() {
+
     }
 }
