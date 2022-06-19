@@ -211,23 +211,65 @@ const LEVEL2: LevelData = {
 }
 
 type BossData = {
+    spawnFlag: string,
+    defeatedFlag: string,
 
     spriteImg: Image,
-    walkAnim: Image[],
-    deathAnim: Image[],
-    
-    deathTimer: number
 
-    specialBullet: Image[],
+    leftWalkAnim: Image[],
+    rightWalkAnim: Image[],
+    deathAnim1: Image[],
+    deathAnim2: Image[],
 
-    startingLives: number,
-    agility: number,
+    bulletSprite: Image,
+    bulletAnim: Image[],
+
+    introPeriod: number,
+
+    health: number,
+    phase2Start: number,
+    phase3Start: number,
+    phase4Start: number,
+
+    initialXSpeed: number,
+    xSpeedUp: number,
+    initialYSpeed: number,
+    ySpeedUp: number,
+
     bulletSpeed: number,
-    shootCooldown: number,
-    iframes: number,
+    shootCooldown1: number,
+    shootCooldown2: number,
+    iframes: number
+}
 
-    multishotSpecial: boolean,
-    pierceSpecial: boolean,
-    homingSpecial: boolean,
-    vacuumSpecial: boolean
+const TOMO: BossData = {
+    spawnFlag: "TOMO",
+    defeatedFlag: "TOMO_DEFEATED",
+
+    spriteImg: assets.image`Tomo`,
+
+    leftWalkAnim: assets.animation`Tomo Walk`,
+    rightWalkAnim: null,
+    deathAnim1: assets.animation`TomoDeath1`,
+    deathAnim2: assets.animation`TomoDeath2`,
+
+    bulletSprite: assets.image`Tomo Bullet`,
+    bulletAnim: null,
+
+    introPeriod: 2500,
+
+    health: 10,
+    phase2Start: 8,
+    phase3Start: 5,
+    phase4Start: 2,
+
+    initialXSpeed: 0,
+    xSpeedUp: 0,
+    initialYSpeed: 50,
+    ySpeedUp: 20,
+    
+    bulletSpeed: -170,
+    shootCooldown1: 1200,
+    shootCooldown2: 1200,
+    iframes: 1000
 }

@@ -586,7 +586,7 @@ game.onUpdate(function () {
         gameState = "TOMO"
 
         timer.after(2000, () => {
-            let bossFight1: Tomo = new Tomo()
+            let bossFight1: Tomo = new Tomo(TOMO)
         })
 
     } else if (gameState === "TOMO_DEFEATED") {

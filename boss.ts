@@ -2,45 +2,52 @@
 class Tomo {
 
     sprite: Sprite
-    walkAnim: Image[]
-    hurtAnim: Image[]
-    deathAnim: Image[]
-
-    agility: number
-    bulletSpeed: number
-    iframes: number
-
+    bossData: BossData
     static health: StatusBarSprite
 
-    constructor() {
-        this.sprite = sprites.create(assets.image`Tomo`, SpriteKind.Boss)
+    constructor(boss: BossData) {
+        this.bossData = boss
+        this.sprite = sprites.create(boss.spriteImg, SpriteKind.Boss)
+        
+        Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
+        Tomo.health.max = boss.health
+        Tomo.health.attachToSprite(this.sprite)
+
         this.sprite.setFlag(SpriteFlag.Ghost, true)
         PhantomSpawner.phantoms.push(this.sprite)
 
-        Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        Tomo.health.max = 1
-
-        Tomo.health.attachToSprite(this.sprite)
-
-        this.bulletSpeed = -170
         this.bossIntro()
 
-        // 6. While moving, start shooting volleys of bullets (with sound)
+        timer.after(boss.introPeriod, () => {
+            game.onUpdateInterval(boss.shootCooldown1 + boss.shootCooldown2, () => {
+                if (gameState === boss.spawnFlag && Tomo.health.value > 0) {
 
-        timer.after(2500, () => {
-            game.onUpdateInterval(2400, () => {
-                if (gameState === "TOMO" && Tomo.health.value > 0) {
                     this.shootVolley()
-                    timer.after(1200, () => {
+
+                    timer.after(boss.shootCooldown1, () => {
                         this.shootHomingVolley()
                     })
                 }
             })
 
             game.onUpdate(() => {
-                if (gameState === "TOMO" && Tomo.health.value <= 0) {
+                if (gameState === boss.spawnFlag && Tomo.health.value <= 0) {
                     this.animateDeath()
-                    gameState = "TOMO_DEFEATED"
+                    gameState = boss.defeatedFlag
+                }
+            })
+        })
+
+        sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
+            timer.throttle("boss_throttle", boss.iframes, () => {
+                if (gameState === boss.spawnFlag && Tomo.health.value > 0) {
+                    Tomo.health.value -= 1
+                    music.zapped.play()
+                    bossSprite.vy += bossSprite.vy > 0 ? boss.ySpeedUp : -(boss.ySpeedUp)
+
+                    if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+                        projectileSprite.destroy()
+                    }
                 }
             })
         })
@@ -50,66 +57,67 @@ class Tomo {
         this.sprite.x = 170
         this.sprite.y = 60
 
-        // 1. Walks from right side of screen into view
         moveTo(140, 60, this.sprite, 30, 0, assets.animation`Tomo Walk`)
 
-        timer.after(2000, () => {
-            // 4. Pick a random direction
-            this.sprite.vy = Math.random() > 0.5 ? 50 : -50
+        timer.after(this.bossData.introPeriod, () => {
+            let y = this.bossData.initialYSpeed
+            this.sprite.vy = Math.random() > 0.5 ? y : -y
+            
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
         })
     }
 
-    shootVolley() {
-        this.shootPopsicle()
-        timer.after(100, () => {
-            if (Tomo.health.value < 9) this.shootPopsicle()
-        })
-        timer.after(200, () => {
-            if (Tomo.health.value < 6) this.shootPopsicle()
-        })
-        timer.after(300, () => {
-            if (Tomo.health.value < 3) this.shootPopsicle()
-        })
-    }
-
-    shootHomingVolley() {
-        this.shootHomingPopsicle()
-        timer.after(200, () => {
-            if (Tomo.health.value < 9) this.shootHomingPopsicle()
-        })
-        timer.after(400, () => {
-            if (Tomo.health.value < 6) this.shootHomingPopsicle()
-        })
-        timer.after(600, () => {
-            if (Tomo.health.value < 3) this.shootHomingPopsicle()
-        })
-    }
-
     shootPopsicle() {
-        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
+        const bullet = sprites.create(this.bossData.bulletSprite, SpriteKind.EnemyProjectile)
         bullet.x = this.sprite.x
         bullet.y = this.sprite.y
 
-        bullet.vx = this.bulletSpeed
+        bullet.vx = this.bossData.bulletSpeed
 
         bullet.setFlag(SpriteFlag.AutoDestroy, true)
         music.pewPew.play()
     }
 
+    shootVolley() {
+        this.shootPopsicle()
+        timer.after(100, () => {
+            if (Tomo.health.value < this.bossData.phase2Start) this.shootPopsicle()
+        })
+        timer.after(200, () => {
+            if (Tomo.health.value < this.bossData.phase3Start) this.shootPopsicle()
+        })
+        timer.after(300, () => {
+            if (Tomo.health.value < this.bossData.phase4Start) this.shootPopsicle()
+        })
+    }
+
     shootHomingPopsicle() {
-        let bullet = sprites.create(assets.image`Tomo Bullet`, SpriteKind.EnemyProjectile)
+        const bullet = sprites.create(this.bossData.bulletSprite, SpriteKind.EnemyProjectile)
         bullet.x = this.sprite.x
         bullet.y = this.sprite.y
 
-        aimAtTarget(player.sprite, bullet, this.bulletSpeed)
+        aimAtTarget(player.sprite, bullet, this.bossData.bulletSpeed)
+    }
+
+    shootHomingVolley() {
+        this.shootHomingPopsicle()
+        timer.after(200, () => {
+            if (Tomo.health.value < this.bossData.phase2Start) this.shootHomingPopsicle()
+        })
+        timer.after(400, () => {
+            if (Tomo.health.value < this.bossData.phase3Start) this.shootHomingPopsicle()
+        })
+        timer.after(600, () => {
+            if (Tomo.health.value < this.bossData.phase4Start) this.shootHomingPopsicle()
+        })
     }
 
     animateDeath() {
         this.sprite.vy = 0
         this.sprite.setFlag(SpriteFlag.Ghost, true)
+
         timer.after(500, () => {
             animation.runImageAnimation(this.sprite, assets.animation`TomoDeath1`, 150, false)
             animation.runImageAnimation(this.sprite, assets.animation`TomoDeath2`, 150, true)
@@ -119,11 +127,6 @@ class Tomo {
             this.sprite.destroy(effects.hearts, 200)
         })
     }
-
-    // 7. Update behavior based on HP
-
-    // 8. If HP reaches zero, trigger dialogue + death animation
-
 }
 
 class SuperPhantom {
@@ -180,6 +183,29 @@ class SuperPhantom {
                 }
             })
         })
+
+        sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
+            timer.throttle("boss_throttle", 1000, () => {
+                if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
+
+                    SuperPhantom.health.value -= 1
+                    music.zapped.play()
+
+                    bossSprite.vy += bossSprite.vy > 0 ? 4 : -4
+                    bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
+
+                    if (Math.random() * 3 < 1) {
+                        bossSprite.vx *= -1
+                    } else if (Math.random() * 3 < 2) {
+                        bossSprite.vy *= -1
+                    }
+
+                    if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
+                        projectileSprite.destroy()
+                    }
+                }
+            })
+        })
     }
 
     bossIntro() {
@@ -199,6 +225,19 @@ class SuperPhantom {
         })
     }
 
+    shootEP(vx: number, vy: number) {
+        let bullet = sprites.create(assets.image`Mikage`, SpriteKind.EnemyProjectile)
+        animation.runImageAnimation(bullet, assets.animation`TomoDeath2`, 200, true)
+        bullet.x = this.sprite.x
+        bullet.y = this.sprite.y
+
+        bullet.vx = vx
+        bullet.vy = vy
+
+        bullet.setFlag(SpriteFlag.AutoDestroy, true)
+        music.pewPew.play()
+    }
+
     shootVolley() {
         this.shootEP(50, 0)
         this.shootEP(-50, 0)
@@ -211,19 +250,6 @@ class SuperPhantom {
             this.shootEP(35, -35)
             this.shootEP(-35, 35)
         }
-    }
-
-    shootEP(vx: number, vy: number) {
-        let bullet = sprites.create(assets.image`Mikage`, SpriteKind.EnemyProjectile)
-        animation.runImageAnimation(bullet, assets.animation`TomoDeath2`, 200, true)
-        bullet.x = this.sprite.x
-        bullet.y = this.sprite.y
-
-        bullet.vx = vx
-        bullet.vy = vy
-
-        bullet.setFlag(SpriteFlag.AutoDestroy, true)
-        music.pewPew.play()
     }
 
     animateDeath() {
@@ -243,36 +269,4 @@ class SuperPhantom {
             this.sprite.destroy(effects.hearts)
         })
     }
-
-    // 7. Update behavior based on HP
-
-    // 8. If HP reaches zero, trigger dialogue + death animation
-
 }
-
-sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
-    timer.throttle("boss_throttle", 1000, () => {
-        if (gameState === "TOMO" && Tomo.health.value > 0) {
-            Tomo.health.value -= 1
-            music.zapped.play()
-            bossSprite.vy += bossSprite.vy > 0 ? 20 : -20
-            
-        } else if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
-            SuperPhantom.health.value -= 1
-            music.zapped.play()
-
-            bossSprite.vy += bossSprite.vy > 0 ? 4 : -4
-            bossSprite.vx += bossSprite.vx > 0 ? 5 : -5
-
-            if (Math.random() * 3 < 1) {
-                bossSprite.vx *= -1
-            } else if (Math.random() * 3 < 2) {
-                bossSprite.vy *= -1
-            }
-        }
-
-        if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
-            projectileSprite.destroy()
-        }
-    })
-})
