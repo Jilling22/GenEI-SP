@@ -459,6 +459,9 @@ function startGame(selectedSprite: Sprite) {
     gameState = "CHARACTER_SELECTED"
 }
 
+let delay = 0;
+let currentTime = game.runtime();
+let travelQueue: Vector[] = [];
 let playButton: Sprite = null
 let helpButton: Sprite = null
 let menuMikage: Sprite = null
@@ -473,6 +476,14 @@ let gameState = "MENU"
 initializeMenu()
 
 game.onUpdate(function () {
+
+    if (delay > 0) {
+        delay -= delay - (game.runtime() - currentTime) > 0 ? game.runtime() - currentTime : delay
+    }
+
+    console.log(delay)
+    
+    currentTime = game.runtime()
 
     // check if selected flag has been triggered, then trigger first set of listeners 
     if (gameState === "CHARACTER_SELECTED") {
@@ -535,12 +546,12 @@ game.onUpdate(function () {
             Bullet.homingBullets.forEach(b => {
                 let t = findNearestEnemy(b);
                 if (!t) return;
-                moveSpriteToTargetSprite(b, t, hachanBulletSpeed, 0.09)
+                moveHomingSpriteToTargetSprite(b, t, hachanBulletSpeed, 0.09)
             });
 
             if (Bullet.blackHole) {
                 PhantomSpawner.phantoms.forEach(p => {
-                    moveSpriteToTargetSprite(p, Bullet.blackHole, 100, 0.1)
+                    moveHomingSpriteToTargetSprite(p, Bullet.blackHole, 100, 0.1)
                 })
             }
         });

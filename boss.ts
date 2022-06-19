@@ -18,7 +18,7 @@ class Tomo {
         PhantomSpawner.phantoms.push(this.sprite)
 
         Tomo.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        Tomo.health.max = 10
+        Tomo.health.max = 1
 
         Tomo.health.attachToSprite(this.sprite)
 
@@ -44,38 +44,22 @@ class Tomo {
                 }
             })
         })
-
-
     }
-
-    // 2. Stands still (insert dialogue here)
-
-    // 3. Start fight
 
     bossIntro() {
         this.sprite.x = 170
         this.sprite.y = 60
 
         // 1. Walks from right side of screen into view
-        // this.sprite.vx = -30
-        animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 200, true)
+        moveTo(140, 60, this.sprite, 30, 0, assets.animation`Tomo Walk`)
 
-        moveTo(70, 40, this.sprite, 100)
-
-        // timer.after(1000, () => {
-        //     // 2. Stands still (insert dialogue here)
-        //     // this.sprite.vx = 0
-        //     animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
-        // })
-
-        // timer.after(2000, () => {
-        //     // 4. Pick a random direction
-        //     // 5. Move up and down
-        //     this.sprite.vy = 50
-        //     this.sprite.setBounceOnWall(true)
-        //     animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
-        //     this.sprite.setFlag(SpriteFlag.Ghost, false)
-        // })
+        timer.after(2000, () => {
+            // 4. Pick a random direction
+            this.sprite.vy = Math.random() > 0.5 ? 50 : -50
+            this.sprite.setBounceOnWall(true)
+            animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
+            this.sprite.setFlag(SpriteFlag.Ghost, false)
+        })
     }
 
     shootVolley() {
@@ -120,16 +104,7 @@ class Tomo {
         bullet.x = this.sprite.x
         bullet.y = this.sprite.y
 
-        const bulletVec = Vector.of(this.sprite.x, this.sprite.y)
-        const playerVec = Vector.of(player.sprite.x, player.sprite.y)
-
-        const targetDirection = playerVec.subtract(bulletVec).normalize()
-
-        bullet.vx = targetDirection.x * Math.abs(this.bulletSpeed)
-        bullet.vy = targetDirection.y * Math.abs(this.bulletSpeed)
-
-        bullet.setFlag(SpriteFlag.AutoDestroy, true)
-        music.pewPew.play()
+        aimAtTarget(player.sprite, bullet, this.bulletSpeed)
     }
 
     animateDeath() {
@@ -180,7 +155,7 @@ class SuperPhantom {
         this.bossIntro()
 
         timer.after(1500, () => {
-            game.onUpdateInterval(1500, () => {
+            game.onUpdateInterval(2000, () => {
                 if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
                     // Do a thing
                     this.shootVolley()
@@ -212,20 +187,12 @@ class SuperPhantom {
         this.sprite.y = 60
 
         // 1. Walks from right side of screen into view
-        this.sprite.vx = -30
-        animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 200, true)
-
-        timer.after(1000, () => {
-            // 2. Stands still (insert dialogue here)
-            this.sprite.vx = 0
-            animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
-        })
+        moveTo(140, 60, this.sprite, 30, 0, assets.animation`BPMikage left walk`)
 
         timer.after(1500, () => {
             // 4. Pick a random direction
-            // 5. Move up and down
-            this.sprite.vy = -30
-            this.sprite.vx = -30
+            this.sprite.vy = Math.random() > 0.5 ? 30 : -30
+            this.sprite.vx = -40
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
