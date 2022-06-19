@@ -25,7 +25,9 @@ class Tomo {
                     this.shootVolley()
 
                     timer.after(boss.shootCooldown1, () => {
-                        this.shootHomingVolley()
+                        if (Tomo.health.value > 0) {
+                            this.shootHomingVolley()
+                        }
                     })
                 }
             })
@@ -185,7 +187,7 @@ class SuperPhantom {
         })
 
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
-            timer.throttle("boss_throttle", 1000, () => {
+            timer.throttle("boss2_throttle", 1000, () => {
                 if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
 
                     SuperPhantom.health.value -= 1
@@ -219,6 +221,7 @@ class SuperPhantom {
             // 4. Pick a random direction
             this.sprite.vy = Math.random() > 0.5 ? 30 : -30
             this.sprite.vx = -40
+            
             this.sprite.setBounceOnWall(true)
             animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
@@ -244,7 +247,7 @@ class SuperPhantom {
         this.shootEP(0, -50)
         this.shootEP(0, 50)
 
-        if (SuperPhantom.health.value < 6) {
+        if (SuperPhantom.health.value < 5) {
             this.shootEP(35, 35)
             this.shootEP(-35, -35)
             this.shootEP(35, -35)
@@ -267,6 +270,8 @@ class SuperPhantom {
         })
         timer.after(1800, () => {
             this.sprite.destroy(effects.hearts)
+            sprites.destroyAllSpritesOfKind(SpriteKind.Sprout)
+            sprites.destroyAllSpritesOfKind(SpriteKind.Vine)
         })
     }
 }

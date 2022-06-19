@@ -258,7 +258,7 @@ const TOMO: BossData = {
 
     introPeriod: 2500,
 
-    health: 10,
+    health: 1,
     phase2Start: 8,
     phase3Start: 5,
     phase4Start: 2,

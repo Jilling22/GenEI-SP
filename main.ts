@@ -480,8 +480,6 @@ game.onUpdate(function () {
     if (delay > 0) {
         delay -= delay - (game.runtime() - currentTime) > 0 ? game.runtime() - currentTime : delay
     }
-
-    console.log(delay)
     
     currentTime = game.runtime()
 
@@ -556,11 +554,6 @@ game.onUpdate(function () {
             }
         });
 
-        game.onUpdate(() => {
-            
-        });
-
-        // change flag to first level
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         game.onUpdate(() => {
@@ -568,8 +561,8 @@ game.onUpdate(function () {
                 gameState = "LEVEL1_COMPLETE"
             }
         })
-    } else if (gameState === "LEVEL1_COMPLETE") {
 
+    } else if (gameState === "LEVEL1_COMPLETE") {
         gameState = "LEVEL2"
         
         timer.after(2000, () => {
@@ -601,6 +594,7 @@ game.onUpdate(function () {
             game.onUpdateInterval(6000, function () {
                 if (gameState === "SUPERPHANTOM" && info.life() > 0) {
                     let sprout = sprites.create(assets.image`sprout`, SpriteKind.Sprout)
+                    animation.runImageAnimation(sprout, assets.animation`sprout animate`, 150, true)
                     let vine: Sprite = null
                     sprout.x = randint(30, 130)
                     sprout.y = randint(30, 100)
@@ -608,8 +602,10 @@ game.onUpdate(function () {
                     timer.after(2000, () => {
                         if (Math.random() < 0.5) {
                             vine = sprites.create(assets.image`vine1`, SpriteKind.Vine)
+                            animation.runImageAnimation(vine, assets.animation`vine animate1`, 150, false)
                         } else {
                             vine = sprites.create(assets.image`vine2`, SpriteKind.Vine)
+                            animation.runImageAnimation(vine, assets.animation`vine animate2`, 150, false)
                         }
                         vine.x = sprout.x
                         vine.y = sprout.y - 8
