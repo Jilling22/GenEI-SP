@@ -7,8 +7,8 @@ function velVec(s: Sprite) {
     return Vector.of(s.vx, s.vy);
 }
 
-function distance(s1: Sprite, s2: Sprite): number {
-    return Math.sqrt((s1.x - s2.x) ^ 2 + (s1.y - s2.y) ^ 2);
+function distance(pos1: Vector, pos2: Vector): number {
+    return Math.sqrt((pos2.x - pos1.x) ** 2 + (pos2.y - pos1.y) ** 2);
 }
 
 function min<Type>(arr: Type[], fn: (e: Type) => number) {
@@ -27,22 +27,31 @@ function min<Type>(arr: Type[], fn: (e: Type) => number) {
 function findNearestEnemy(base: Sprite): Sprite {
     const valid = PhantomSpawner.phantoms.filter(e => e.x > player.sprite.x);
     if (!valid.length) return null;
-    return min(valid, e => distance(e, base));
+    return min(valid, e => distance(posVec(e), posVec(base)));
 }
 
 const hachanBulletTurnRate = 0.2;
 const hachanBulletSpeed = 200;
 
-// Make a sprite move towards a set of coordinates
-// function moveTo(x: number, y: number, sprite: Sprite, baseVel: number) {
-//     const currentDirection = velVec(sprite).normalize();
+// Make a sprite move towards a set of coordinates, with constant velocity
+function moveTo(x: number, y: number, sprite: Sprite, baseVel: number) {
+    const currentDirection = velVec(sprite).normalize();
 
-//     const targetPosVec = Vector.of(x, y);
-//     const targetDirection = targetPosVec.subtract(posVec(sprite)).normalize();
+    const targetPosVec = Vector.of(x, y);
+    const targetDirection = targetPosVec.subtract(posVec(sprite)).normalize();
 
-//     sprite.vx = newVelocity.x;
-//     sprite.vy = newVelocity.y;
-// }
+    const displacement = distance(posVec(sprite), targetPosVec);
+    const timeTaken = displacement / baseVel;
+
+    sprite.vx = targetDirection.x * Math.abs(baseVel);
+    sprite.vy = targetDirection.y * Math.abs(baseVel);
+
+    timer.after(timeTaken * 1000, () => {
+        sprite.vx = 0
+        sprite.vy = 0
+        animation.stopAnimation(animation.AnimationTypes.All, sprite)
+    })
+}
 
 // Move a sprite towards a set of coordinates
 function moveSpriteTo(x: number, y: number, sprite: Sprite, baseVel: number, turnRate?: number) {
@@ -70,3 +79,4 @@ function moveSpriteToTargetSprite(source: Sprite, target: Sprite, baseVel: numbe
         moveSpriteTo(targetX, targetY, source, baseVel)
     }
 }
+

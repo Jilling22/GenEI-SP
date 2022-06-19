@@ -57,23 +57,25 @@ class Tomo {
         this.sprite.y = 60
 
         // 1. Walks from right side of screen into view
-        this.sprite.vx = -30
+        // this.sprite.vx = -30
         animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 200, true)
 
-        timer.after(1000, () => {
-            // 2. Stands still (insert dialogue here)
-            this.sprite.vx = 0
-            animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
-        })
+        moveTo(70, 40, this.sprite, 100)
 
-        timer.after(2000, () => {
-            // 4. Pick a random direction
-            // 5. Move up and down
-            this.sprite.vy = 50
-            this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
-            this.sprite.setFlag(SpriteFlag.Ghost, false)
-        })
+        // timer.after(1000, () => {
+        //     // 2. Stands still (insert dialogue here)
+        //     // this.sprite.vx = 0
+        //     animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
+        // })
+
+        // timer.after(2000, () => {
+        //     // 4. Pick a random direction
+        //     // 5. Move up and down
+        //     this.sprite.vy = 50
+        //     this.sprite.setBounceOnWall(true)
+        //     animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
+        //     this.sprite.setFlag(SpriteFlag.Ghost, false)
+        // })
     }
 
     shootVolley() {
