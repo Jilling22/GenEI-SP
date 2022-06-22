@@ -22,7 +22,7 @@ class Player {
         this.inventorySprites = []
 
         this.spriteAssets = character
-        
+
         this.sprite = sprites.create(character.normalSprite, SpriteKind.Player)
         this.sprite.data = character.name
         this.walkAnim = character.normalWalkAnim
@@ -115,7 +115,7 @@ class Player {
 
         sprites.onOverlap(SpriteKind.Player, SpriteKind.Phantom, function (playerSprite, phantomSprite) {
             timer.throttle("damage_throttle", this.iframes, function () {
-                
+
                 this.toggleStill = false
                 info.changeLifeBy(-1)
                 this.updateHair()
@@ -276,7 +276,7 @@ class Bullet {
             this.fireBullet(bulletAnim, player.bulletSpeed, 200)
             this.fireBullet(bulletAnim, player.bulletSpeed, -200)
         }
-        
+
         if (isMultishot) {
             this.fireBullet(bulletAnim, player.bulletSpeed, 55)
             this.fireBullet(bulletAnim, player.bulletSpeed, -55)
@@ -295,14 +295,14 @@ class Bullet {
             player.sprite,
             vx,
             vy)
-        
+
         animation.runImageAnimation(
             bullet,
             bulletAnim,
             50,
             true)
 
-        
+
         bullet.data = this.specials
 
         if (this.homing) {
@@ -377,7 +377,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Phantom, function (projectil
 sprites.onDestroyed(SpriteKind.Projectile, p => p.data.homing ? Bullet.homingBullets.removeElement(p) : null);
 
 function initializeMenu() {
-    
+
 
     scene.setBackgroundImage(assets.image`mainmenu_bg`)
     sprites.create(assets.image`title`, SpriteKind.Placeholder)
@@ -425,7 +425,7 @@ function characterSelect() {
     menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.CharacterButton)
     menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.CharacterButton)
     menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.CharacterButton)
-    
+
     menuMikage.setPosition(26, 100)
     menuSpica.setPosition(62, 100)
     menuYuuhi.setPosition(98, 100)
@@ -459,6 +459,9 @@ function startGame(selectedSprite: Sprite) {
     gameState = "CHARACTER_SELECTED"
 }
 
+let delay = 0;
+let currentTime = game.runtime();
+let travelQueue: Vector[] = [];
 let playButton: Sprite = null
 let helpButton: Sprite = null
 let menuMikage: Sprite = null
@@ -473,6 +476,12 @@ let gameState = "MENU"
 initializeMenu()
 
 game.onUpdate(function () {
+
+    if (delay > 0) {
+        delay -= delay - (game.runtime() - currentTime) > 0 ? game.runtime() - currentTime : delay
+    }
+    
+    currentTime = game.runtime()
 
     // check if selected flag has been triggered, then trigger first set of listeners 
     if (gameState === "CHARACTER_SELECTED") {
@@ -535,21 +544,16 @@ game.onUpdate(function () {
             Bullet.homingBullets.forEach(b => {
                 let t = findNearestEnemy(b);
                 if (!t) return;
-                moveSpriteToTargetSprite(b, t, hachanBulletSpeed, 0.09)
+                moveHomingSpriteToTargetSprite(b, t, hachanBulletSpeed, 0.09)
             });
 
             if (Bullet.blackHole) {
                 PhantomSpawner.phantoms.forEach(p => {
-                    moveSpriteToTargetSprite(p, Bullet.blackHole, 100, 0.1)
+                    moveHomingSpriteToTargetSprite(p, Bullet.blackHole, 100, 0.1)
                 })
             }
         });
 
-        game.onUpdate(() => {
-            
-        });
-
-        // change flag to first level
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         game.onUpdate(() => {
@@ -557,10 +561,10 @@ game.onUpdate(function () {
                 gameState = "LEVEL1_COMPLETE"
             }
         })
-    } else if (gameState === "LEVEL1_COMPLETE") {
 
+    } else if (gameState === "LEVEL1_COMPLETE") {
         gameState = "LEVEL2"
-        
+
         timer.after(2000, () => {
             let secondWave: PhantomSpawner = new PhantomSpawner(LEVEL2)
         })
@@ -575,7 +579,7 @@ game.onUpdate(function () {
         gameState = "TOMO"
 
         timer.after(2000, () => {
-            let bossFight1: Tomo = new Tomo()
+            let bossFight1: Tomo = new Tomo(TOMO)
         })
 
     } else if (gameState === "TOMO_DEFEATED") {
@@ -590,6 +594,7 @@ game.onUpdate(function () {
             game.onUpdateInterval(6000, function () {
                 if (gameState === "SUPERPHANTOM" && info.life() > 0) {
                     let sprout = sprites.create(assets.image`sprout`, SpriteKind.Sprout)
+                    animation.runImageAnimation(sprout, assets.animation`sprout animate`, 150, true)
                     let vine: Sprite = null
                     sprout.x = randint(30, 130)
                     sprout.y = randint(30, 100)
@@ -597,8 +602,10 @@ game.onUpdate(function () {
                     timer.after(2000, () => {
                         if (Math.random() < 0.5) {
                             vine = sprites.create(assets.image`vine1`, SpriteKind.Vine)
+                            animation.runImageAnimation(vine, assets.animation`vine animate1`, 150, false)
                         } else {
                             vine = sprites.create(assets.image`vine2`, SpriteKind.Vine)
+                            animation.runImageAnimation(vine, assets.animation`vine animate2`, 150, false)
                         }
                         vine.x = sprout.x
                         vine.y = sprout.y - 8
@@ -612,7 +619,7 @@ game.onUpdate(function () {
         gameState = "GOD_URARA"
 
         timer.after(2000, () => {
-            let bossFight3: SuperPhantom = new SuperPhantom()
+            let bossFight3: GodUrara = new GodUrara()
         })
     }
 })
