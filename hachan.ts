@@ -94,7 +94,7 @@ function accelerateTo(x: number, y: number, sprite: Sprite, accel: number, pause
         }
     })
 
-    timer.after(delay + timeTaken * 1000 - 100, () => {
+    timer.after(delay + timeTaken * 1000 + 50, () => {
         sprite.vx = 0
         sprite.vy = 0
         sprite.ax = 0

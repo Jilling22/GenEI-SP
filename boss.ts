@@ -296,10 +296,18 @@ class GodUrara {
         this.bossIntro()
 
         timer.after(1500, () => {
-            game.onUpdateInterval(2000, () => {
-                if (gameState === "GOD_URARA" && GodUrara.health.value > 0) {
-                    // Do a thing
-                    
+            
+            // PHASE 1
+            game.onUpdateInterval(1900, () => {
+                if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
+                    // Signal intent and snore
+                    this.chillZzz()
+                    animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
+
+                    timer.after(1100, () => {
+                        // Accelerate to player once, then pause
+                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 600, 0, assets.animation`GodUrara walk`)
+                    })
                 }
             })
 
@@ -335,17 +343,21 @@ class GodUrara {
         moveTo(140, 60, this.sprite, 30, 0, assets.animation`GodUrara walk`)
 
         timer.after(1500, () => {
-            // 4. Pick a random direction
-            this.sprite.vy = Math.random() > 0.5 ? 30 : -30
-
             this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`GodUrara walk`, 150, true)
             this.sprite.setFlag(SpriteFlag.Ghost, false)
         })
     }
 
-    shootEP(vx: number, vy: number) {
+    randomZzz(): Image {
+        return Math.pickRandom([assets.image`z`, assets.image`zz`, assets.image`zzz`])
+    }
 
+    chillZzz() {
+        const zzz = sprites.create(this.randomZzz(), SpriteKind.EnemyProjectile)
+        zzz.x = this.sprite.x
+        zzz.y = this.sprite.y
+        aimAtTarget(player.sprite, zzz, 20)
+        zzz.setFlag(SpriteFlag.AutoDestroy, true)
     }
 
     shootVolley() {
