@@ -301,6 +301,7 @@ class GodUrara {
             game.onUpdateInterval(3000, () => {
                 if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
                     // Signal intent and snore
+                    this.chillZzz()
                     this.shootDelayedVolley(5)
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
 
@@ -356,7 +357,7 @@ class GodUrara {
         const zzz = sprites.create(this.randomZzz(), SpriteKind.EnemyProjectile)
         zzz.x = this.sprite.x
         zzz.y = this.sprite.y
-        aimAtTarget(player.sprite, zzz, 20)
+        aimAtTarget(player.sprite, zzz, 15)
         zzz.setFlag(SpriteFlag.AutoDestroy, true)
     }
 
