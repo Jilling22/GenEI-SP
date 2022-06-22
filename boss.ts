@@ -298,13 +298,13 @@ class GodUrara {
         timer.after(1500, () => {
             
             // PHASE 1
-            game.onUpdateInterval(1900, () => {
+            game.onUpdateInterval(3000, () => {
                 if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
                     // Signal intent and snore
-                    this.chillZzz()
+                    this.shootDelayedVolley(5)
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
 
-                    timer.after(1100, () => {
+                    timer.after(2000, () => {
                         // Accelerate to player once, then pause
                         accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 600, 0, assets.animation`GodUrara walk`)
                     })
@@ -360,8 +360,23 @@ class GodUrara {
         zzz.setFlag(SpriteFlag.AutoDestroy, true)
     }
 
-    shootVolley() {
+    shootDelayedVolley(numBullets: number) {
+        const baseAngle = getAngle(player.sprite, this.sprite)
+        const spread = 40
+        const startAngle = baseAngle - spread
+        const angleGap = (spread * 2) / (numBullets - 1)
+        const shotArr: number[] = [];
 
+        for (let shot = 0; shot < numBullets; shot++) {
+            shotArr.push(shot)
+            timer.after(100 * shot, () => {
+                let bullet = sprites.create(assets.image`z`, SpriteKind.EnemyProjectile)
+                bullet.x = this.sprite.x
+                bullet.y = this.sprite.y
+                let shotNum = shotArr.shift()
+                aimWithDelayedHoming(startAngle + shotNum * angleGap, bullet, 150, 800, 400)
+            })
+        }
     }
 
     animateDeath() {

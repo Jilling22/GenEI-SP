@@ -150,7 +150,7 @@ function aimAtTarget(target: Sprite, bullet: Sprite, speed: number) {
 
 // Aim a bullet at a certain angle clockwise, from 12 o'clock (in degrees)
 function aimAtAngle(degrees: number, bullet: Sprite, speed: number) {
-    const baseDirection = Vector.of(0, 1);
+    const baseDirection = Vector.of(-1, 0);
     const radians = degrees * (Math.PI / 180);
 
     const newVelocity = baseDirection.rotateByRadians(radians).multiply(speed)
@@ -158,6 +158,26 @@ function aimAtAngle(degrees: number, bullet: Sprite, speed: number) {
     bullet.vx = newVelocity.x
     bullet.vy = newVelocity.y
 
-    bullet.setFlag(SpriteFlag.AutoDestroy, true)
+    bullet.lifespan = 3000
     music.pewPew.play()
+}
+
+function aimWithDelayedHoming(degrees: number, bullet: Sprite, speed1: number, pause: number, speed2: number) {
+    aimAtAngle(degrees, bullet, speed1)
+    
+    timer.after(200, () => {
+        bullet.vx = 0
+        bullet.vy = 0
+        
+        timer.after(pause, () => {
+            aimAtTarget(player.sprite, bullet, speed2)
+        })
+    })
+}
+
+function getAngle(a: Sprite, b: Sprite) {
+    const c = posVec(a)
+    const d = posVec(b)
+    const angle = Math.atan2(d.y - c.y, d.x- c.x)
+    return angle * (180 / Math.PI)
 }
