@@ -302,10 +302,21 @@ class GodUrara {
                 if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
                     // Signal intent and snore
                     this.chillZzz()
+
+                    timer.after(1000, () => {
+                        // Accelerate to player once, then pause
+                        moveTo(player.sprite.x, player.sprite.y, this.sprite, 100, 0, assets.animation`GodUrara walk`)
+                    })
+                }
+            })
+
+            game.onUpdateInterval(3000, () => {
+                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 16) {
+                    // Signal intent and snore
                     this.shootDelayedVolley(5)
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
 
-                    timer.after(2000, () => {
+                    timer.after(1500, () => {
                         // Accelerate to player once, then pause
                         accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 600, 0, assets.animation`GodUrara walk`)
                     })
@@ -313,6 +324,16 @@ class GodUrara {
             })
 
             game.onUpdate(() => {
+                if (gameState === "GOD_URARA" && GodUrara.health.value < 23) {
+                    // Out of lives
+                    gameState = "PHASE1_DONE"
+                    music.bigCrash.play()
+                    sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+                    timer.after(2000, () => {
+                        gameState = "GOD_URARA_PHASE2"
+                    })
+                }
+
                 if (gameState === "GOD_URARA" && GodUrara.health.value <= 0) {
                     // Out of lives
                     this.animateDeath()
@@ -358,7 +379,8 @@ class GodUrara {
         zzz.x = this.sprite.x
         zzz.y = this.sprite.y
         aimAtTarget(player.sprite, zzz, 15)
-        zzz.setFlag(SpriteFlag.AutoDestroy, true)
+        zzz.lifespan = 30000
+        zzz.setFlag(SpriteFlag.BounceOnWall, true)
     }
 
     shootDelayedVolley(numBullets: number) {
