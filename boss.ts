@@ -299,7 +299,7 @@ class GodUrara {
             
             // PHASE 1
             game.onUpdateInterval(4000, () => {
-                if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
+                if (gameState === "GOD_URARA" && GodUrara.health.value >= 30) { // 24
                     // Signal intent and snore
                     this.chillZzz()
                     timer.after(1100, () => {
@@ -307,37 +307,108 @@ class GodUrara {
                     })
 
                     timer.after(1500, () => {
+                        if (GodUrara.health.value >= 30) {
+                            moveTo(player.sprite.x, player.sprite.y, this.sprite, 50, 0, assets.animation`GodUrara walk`)
+                        }
                         // Accelerate to player once, then pause
-                        moveTo(player.sprite.x, player.sprite.y, this.sprite, 50, 0, assets.animation`GodUrara walk`)
                     })
                 }
             })
 
-            game.onUpdateInterval(2300, () => {
-                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 16) {
+            // PHASE 2
+            game.onUpdateInterval(3500, () => {
+                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 28) {
                     // Signal intent and snore
-                    if (Math.random() > 0.4) {
-                        this.shootDelayedVolley(5)
-                    } else {
-                        this.shootDelayedVolley(3)
-                    }
+                    this.sprite.setFlag(SpriteFlag.Ghost, false)
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
-
-                    timer.after(1500, () => {
-                        // Accelerate to player once, then pause
-                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 500, 0, assets.animation`GodUrara walk`)
+                    timer.after(600, () => {
+                        if (Math.random() < 0.4) {
+                            this.shootVolley(3, 180, 5, 0)
+                            timer.after(200, () => {
+                                this.shootVolley(2, 180, 5, 0)
+                            })
+                            timer.after(400, () => {
+                                this.shootVolley(3, 180, 5, 0)
+                            })
+                            timer.after(600, () => {
+                                this.shootVolley(2, 180, 5, 0)
+                            })
+                            timer.after(800, () => {
+                                this.shootVolley(3, 180, 5, 0)
+                            })
+                        } else {
+                            this.shootVolley(5, 120, 50, 100)
+                            timer.after(800, () => {
+                                this.shootVolley(4, 120, 50, 100)
+                            })
+                        }
                     })
+                    
+                    timer.after(2200, () => {
+                        // Accelerate to player once, then pause
+                        if (GodUrara.health.value < 28) return null
+                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 220, 0, assets.animation`GodUrara walk`)
+                    })
+                }
+            })
+
+            // PHASE 3
+            game.onUpdateInterval(2600, () => {
+                if (gameState === "GOD_URARA_PHASE3" && GodUrara.health.value >= 25) {
+                    animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 80, false)
+                    timer.after(500, () => {
+                        if (Math.random() < 0.3) {
+                            this.shootVolley(5, 130, 50, 50)
+                            timer.after(400, () => {
+                                this.shootVolley(4, 130, 50, 50)
+                            })
+                            timer.after(800, () => {
+                                this.shootVolley(5, 130, 50, 50)
+                            })
+
+                        } else {
+                            this.shootDelayedVolley(5)
+                        }
+                    })
+                    
+                    timer.after(1800, () => {
+                        // Accelerate to player once, then pause
+                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 400, 0, assets.animation`GodUrara walk`)
+                    })
+
+                    
                 }
             })
 
             game.onUpdate(() => {
-                if (gameState === "GOD_URARA" && GodUrara.health.value < 23) {
-                    // Out of lives
+                if (gameState === "GOD_URARA" && GodUrara.health.value < 30) {
+                    this.sprite.setFlag(SpriteFlag.Ghost, true)
                     gameState = "PHASE1_DONE"
                     music.bigCrash.play()
                     sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+        
                     timer.after(2000, () => {
+                        sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+                    })
+
+                    timer.after(2500, () => {
+                        this.sprite.setFlag(SpriteFlag.Ghost, false)
                         gameState = "GOD_URARA_PHASE2"
+                    })
+                }
+
+                if (gameState === "PHASE1_DONE") {
+                    this.sprite.vx = 0
+                    this.sprite.vy = 0
+                }
+
+                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value < 28) {
+                    gameState = "PHASE2_DONE"
+                    music.bigCrash.play()
+                    sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+
+                    timer.after(2500, () => {
+                        gameState = "GOD_URARA_PHASE3"
                     })
                 }
 
@@ -392,6 +463,24 @@ class GodUrara {
         zzz.setFlag(SpriteFlag.BounceOnWall, true)
     }
 
+    shootVolley(numBullets: number, speed: number, spread: number, gap: number) {
+        const baseAngle = getAngle(player.sprite, this.sprite)
+        const startAngle = baseAngle - spread
+        const angleGap = (spread * 2) / (numBullets - 1)
+        const shotArr: number[] = [];
+
+        for (let shot = 0; shot < numBullets; shot++) {
+            shotArr.push(shot)
+            timer.after(gap * shot, () => {
+                let bullet = sprites.create(assets.image`z`, SpriteKind.EnemyProjectile)
+                bullet.x = this.sprite.x
+                bullet.y = this.sprite.y
+                let shotNum = shotArr.shift()
+                aimAtAngle(startAngle + shotNum * angleGap, bullet, speed)
+            })
+        }
+    }
+
     shootDelayedVolley(numBullets: number) {
         const baseAngle = getAngle(player.sprite, this.sprite)
         const spread = 40
@@ -406,7 +495,7 @@ class GodUrara {
                 bullet.x = this.sprite.x
                 bullet.y = this.sprite.y
                 let shotNum = shotArr.shift()
-                aimWithDelayedHoming(startAngle + shotNum * angleGap, bullet, 150, 800, 400)
+                aimWithDelayedHoming(startAngle + shotNum * angleGap, bullet, 150, 800, 250)
             })
         }
     }
