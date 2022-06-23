@@ -298,27 +298,34 @@ class GodUrara {
         timer.after(1500, () => {
             
             // PHASE 1
-            game.onUpdateInterval(3000, () => {
+            game.onUpdateInterval(4000, () => {
                 if (gameState === "GOD_URARA" && GodUrara.health.value >= 23) {
                     // Signal intent and snore
                     this.chillZzz()
+                    timer.after(1100, () => {
+                        this.chillZzz()
+                    })
 
-                    timer.after(1000, () => {
+                    timer.after(1500, () => {
                         // Accelerate to player once, then pause
-                        moveTo(player.sprite.x, player.sprite.y, this.sprite, 100, 0, assets.animation`GodUrara walk`)
+                        moveTo(player.sprite.x, player.sprite.y, this.sprite, 50, 0, assets.animation`GodUrara walk`)
                     })
                 }
             })
 
-            game.onUpdateInterval(3000, () => {
+            game.onUpdateInterval(2300, () => {
                 if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 16) {
                     // Signal intent and snore
-                    this.shootDelayedVolley(5)
+                    if (Math.random() > 0.4) {
+                        this.shootDelayedVolley(5)
+                    } else {
+                        this.shootDelayedVolley(3)
+                    }
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
 
                     timer.after(1500, () => {
                         // Accelerate to player once, then pause
-                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 600, 0, assets.animation`GodUrara walk`)
+                        accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 500, 0, assets.animation`GodUrara walk`)
                     })
                 }
             })
@@ -342,9 +349,11 @@ class GodUrara {
             })
         })
 
+        const phases: string[] = ["GOD_URARA", "GOD_URARA_PHASE2", "GOD_URARA_PHASE3", "GOD_URARA_PHASE4"]
+
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
             timer.throttle("boss3_throttle", 1000, () => {
-                if (gameState === "GOD_URARA" && GodUrara.health.value > 0) {
+                if (phases.find(p => gameState === p) && GodUrara.health.value > 0) {
 
                     GodUrara.health.value -= 1
                     music.zapped.play()
@@ -379,7 +388,7 @@ class GodUrara {
         zzz.x = this.sprite.x
         zzz.y = this.sprite.y
         aimAtTarget(player.sprite, zzz, 15)
-        zzz.lifespan = 30000
+        zzz.lifespan = 60000
         zzz.setFlag(SpriteFlag.BounceOnWall, true)
     }
 
