@@ -307,17 +307,15 @@ class GodUrara {
                     })
 
                     timer.after(1500, () => {
-                        if (GodUrara.health.value >= 30) {
-                            moveTo(player.sprite.x, player.sprite.y, this.sprite, 50, 0, assets.animation`GodUrara walk`)
-                        }
-                        // Accelerate to player once, then pause
+                        if (GodUrara.health.value < 30) return null
+                        moveTo(player.sprite.x, player.sprite.y, this.sprite, 50, 0, assets.animation`GodUrara walk`)
                     })
                 }
             })
 
             // PHASE 2
             game.onUpdateInterval(3500, () => {
-                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 28) {
+                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value >= 29) { // 19
                     // Signal intent and snore
                     this.sprite.setFlag(SpriteFlag.Ghost, false)
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
@@ -346,7 +344,7 @@ class GodUrara {
                     
                     timer.after(2200, () => {
                         // Accelerate to player once, then pause
-                        if (GodUrara.health.value < 28) return null
+                        if (GodUrara.health.value < 29) return null
                         accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 220, 0, assets.animation`GodUrara walk`)
                     })
                 }
@@ -354,16 +352,16 @@ class GodUrara {
 
             // PHASE 3
             game.onUpdateInterval(2600, () => {
-                if (gameState === "GOD_URARA_PHASE3" && GodUrara.health.value >= 25) {
-                    animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 80, false)
+                if (gameState === "GOD_URARA_PHASE3" && GodUrara.health.value >= 28) { // 15
+                    animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
                     timer.after(500, () => {
                         if (Math.random() < 0.3) {
-                            this.shootVolley(5, 130, 50, 50)
+                            this.shootVolley(5, 120, 50, 50)
                             timer.after(400, () => {
-                                this.shootVolley(4, 130, 50, 50)
+                                this.shootVolley(4, 120, 50, 50)
                             })
                             timer.after(800, () => {
-                                this.shootVolley(5, 130, 50, 50)
+                                this.shootVolley(5, 120, 50, 50)
                             })
 
                         } else {
@@ -372,6 +370,7 @@ class GodUrara {
                     })
                     
                     timer.after(1800, () => {
+                        if (GodUrara.health.value < 28) return null
                         // Accelerate to player once, then pause
                         accelerateTo(player.sprite.x, player.sprite.y, this.sprite, 400, 0, assets.animation`GodUrara walk`)
                     })
@@ -380,18 +379,72 @@ class GodUrara {
                 }
             })
 
+            // PHASE 4
+            game.onUpdateInterval(8000, () => {
+                if (gameState === "GOD_URARA_PHASE4" && GodUrara.health.value >= 10) {
+
+                    animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 100, false)
+                
+                    timer.after(600, () => {
+  
+                        this.shootVolley(6, 100, 85, 0)
+                        timer.after(400, () => {
+                            this.shootVolley(5, 100, 85, 0)
+                        })
+                        timer.after(800, () => {
+                            this.shootVolley(7, 100, 85, 0)
+                        })
+                        timer.after(1200, () => {
+                            this.shootVolley(6, 100, 85, 0)
+                        })
+                        timer.after(1600, () => {
+                            this.shootVolley(5, 100, 85, 0)
+                        })
+                        timer.after(2000, () => {
+                            this.shootVolley(7, 100, 85, 0)
+                        })
+                        timer.after(2400, () => {
+                            this.shootVolley(6, 100, 85, 0)
+                        })
+                        timer.after(2800, () => {
+                            this.shootVolley(5, 100, 85, 0)
+                        })
+                        timer.after(3200, () => {
+                            this.shootVolley(7, 100, 85, 0)
+                        })
+                        timer.after(3600, () => {
+                            this.shootVolley(6, 100, 85, 0)
+                        })
+                        timer.after(4000, () => {
+                            this.shootVolley(5, 100, 85, 0)
+                        })
+                    })
+
+                    timer.after(7000, () => {
+                        if (GodUrara.health.value < 15) return null
+                        // Accelerate to player once, then pause
+                        if (this.sprite.x > 60) {
+                            accelerateTo(10, player.sprite.y, this.sprite, 200, 0, assets.animation`GodUrara walk`)
+                        } else {
+                            accelerateTo(140, player.sprite.y, this.sprite, 200, 0, assets.animation`GodUrara walk`)
+                        }
+                    })
+
+
+                }
+            })
+
             game.onUpdate(() => {
+                // PHASE 1
                 if (gameState === "GOD_URARA" && GodUrara.health.value < 30) {
                     this.sprite.setFlag(SpriteFlag.Ghost, true)
                     gameState = "PHASE1_DONE"
                     music.bigCrash.play()
                     sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+                    scene.cameraShake(5, 1500)
         
                     timer.after(2000, () => {
                         sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
-                    })
-
-                    timer.after(2500, () => {
                         this.sprite.setFlag(SpriteFlag.Ghost, false)
                         gameState = "GOD_URARA_PHASE2"
                     })
@@ -402,13 +455,31 @@ class GodUrara {
                     this.sprite.vy = 0
                 }
 
-                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value < 28) {
+                // PHASE 2
+                if (gameState === "GOD_URARA_PHASE2" && GodUrara.health.value < 29) {
+                    this.sprite.setFlag(SpriteFlag.Ghost, true)
                     gameState = "PHASE2_DONE"
                     music.bigCrash.play()
-                    sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
+                    scene.cameraShake(5, 1500)
 
-                    timer.after(2500, () => {
+                    timer.after(2000, () => {
+                        this.sprite.setFlag(SpriteFlag.Ghost, false)
                         gameState = "GOD_URARA_PHASE3"
+                    })
+                }
+
+                // PHASE 3
+                if (gameState === "GOD_URARA_PHASE3" && GodUrara.health.value < 28) {
+                    this.sprite.setFlag(SpriteFlag.Ghost, true)
+                    gameState = "PHASE3_DONE"
+                    music.bigCrash.play()
+                    scene.cameraShake(7, 1500)
+                    this.sprite.x = 140
+                    this.sprite.y = 60
+
+                    timer.after(2000, () => {
+                        this.sprite.setFlag(SpriteFlag.Ghost, false)
+                        gameState = "GOD_URARA_PHASE4"
                     })
                 }
 
@@ -424,7 +495,7 @@ class GodUrara {
 
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
             timer.throttle("boss3_throttle", 1000, () => {
-                if (phases.find(p => gameState === p) && GodUrara.health.value > 0) {
+                if (phases.indexOf(gameState) !== -1 && GodUrara.health.value > 0) {
 
                     GodUrara.health.value -= 1
                     music.zapped.play()
