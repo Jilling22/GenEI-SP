@@ -458,7 +458,8 @@ function characterSelect() {
 }
 
 function startGame(selectedSprite: Sprite) {
-    scene.setBackgroundImage(assets.image`game_bg`)
+
+    scene.setBackgroundImage(assets.image`game_bg1`)
 
     if (selectedSprite == menuMikage) {
         player = new Player(MIKAGE)
@@ -620,6 +621,7 @@ game.onUpdate(function () {
 
     } else if (gameState === "TOMO_DEFEATED") {
 
+        scene.setBackgroundImage(assets.image`game_bg2`)
         gameState = "LEVEL4"
 
         timer.after(2000, () => {
@@ -703,6 +705,7 @@ game.onUpdate(function () {
     } else if (gameState === "PHANTOM_DEFEATED") {
 
         gameState = "LEVEL7"
+        scene.setBackgroundImage(assets.image`game_bg3`)
 
         timer.after(2000, () => {
             let seventhWave: PhantomSpawner = new PhantomSpawner(LEVEL7)
