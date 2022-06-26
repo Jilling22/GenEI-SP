@@ -20,7 +20,8 @@
         "gamedata.ts",
         "vecti.ts",
         "hachan.ts",
-        "boss.ts"
+        "boss.ts",
+        "dialogue.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -492,6 +492,8 @@ let life_up: Sprite = null
 let gameState = "MENU"
 initializeMenu()
 
+closeTransition()
+
 game.onUpdate(function () {
 
     if (delay > 0) {
