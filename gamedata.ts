@@ -177,6 +177,8 @@ const URARA: CharacterData = {
 
 type LevelData = {
     spawnFlag: string,
+    requirement: number,
+
     walkSpd: number,
     walkSpdVar: number,
 
@@ -189,6 +191,8 @@ type LevelData = {
 
 const LEVEL1: LevelData = {
     spawnFlag: "LEVEL1",
+    requirement: 10,
+
     walkSpd: -50,
     walkSpdVar: 10,
 
@@ -201,6 +205,8 @@ const LEVEL1: LevelData = {
 
 const LEVEL2: LevelData = {
     spawnFlag: "LEVEL2",
+    requirement: 20,
+
     walkSpd: -100,
     walkSpdVar: 10,
 
@@ -213,6 +219,8 @@ const LEVEL2: LevelData = {
 
 const LEVEL3: LevelData = {
     spawnFlag: "LEVEL3",
+    requirement: 30,
+
     walkSpd: -50,
     walkSpdVar: 10,
 
@@ -225,6 +233,8 @@ const LEVEL3: LevelData = {
 
 const LEVEL4: LevelData = {
     spawnFlag: "LEVEL4",
+    requirement: 40,
+
     walkSpd: -100,
     walkSpdVar: 10,
 
@@ -237,6 +247,8 @@ const LEVEL4: LevelData = {
 
 const LEVEL5: LevelData = {
     spawnFlag: "LEVEL5",
+    requirement: 50,
+
     walkSpd: -50,
     walkSpdVar: 10,
 
@@ -249,6 +261,8 @@ const LEVEL5: LevelData = {
 
 const LEVEL6: LevelData = {
     spawnFlag: "LEVEL6",
+    requirement: 60,
+
     walkSpd: -100,
     walkSpdVar: 10,
 
@@ -261,6 +275,8 @@ const LEVEL6: LevelData = {
 
 const LEVEL7: LevelData = {
     spawnFlag: "LEVEL7",
+    requirement: 70,
+
     walkSpd: -50,
     walkSpdVar: 10,
 
@@ -273,6 +289,8 @@ const LEVEL7: LevelData = {
 
 const LEVEL8: LevelData = {
     spawnFlag: "LEVEL8",
+    requirement: 80,
+
     walkSpd: -100,
     walkSpdVar: 10,
 
@@ -285,6 +303,8 @@ const LEVEL8: LevelData = {
 
 const LEVEL9: LevelData = {
     spawnFlag: "LEVEL9",
+    requirement: 90,
+
     walkSpd: -50,
     walkSpdVar: 10,
 

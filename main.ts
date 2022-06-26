@@ -571,7 +571,9 @@ game.onUpdate(function () {
         gameState = "LEVEL1"
         let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         game.onUpdate(() => {
-            if (gameState === "LEVEL1" && info.score() > 1) {
+            if (gameState === "LEVEL1" && info.score() >= LEVEL1.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL1_COMPLETE"
             }
         })
@@ -585,7 +587,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL2" && info.score() > 2) {
+            if (gameState === "LEVEL2" && info.score() >= LEVEL2.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL2_COMPLETE"
             }
         })
@@ -599,7 +603,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL3" && info.score() > 3) {
+            if (gameState === "LEVEL3" && info.score() >= LEVEL3.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL3_COMPLETE"
             }
         })
@@ -621,7 +627,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL4" && info.score() > 4) {
+            if (gameState === "LEVEL4" && info.score() >= LEVEL4.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL4_COMPLETE"
             }
         })
@@ -635,7 +643,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL5" && info.score() > 5) {
+            if (gameState === "LEVEL5" && info.score() >= LEVEL5.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL5_COMPLETE"
             }
         })
@@ -649,7 +659,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL6" && info.score() > 6) {
+            if (gameState === "LEVEL6" && info.score() >= LEVEL6.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL6_COMPLETE"
             }
         })
@@ -697,7 +709,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL7" && info.score() > 7) {
+            if (gameState === "LEVEL7" && info.score() >= LEVEL7.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL7_COMPLETE"
             }
         })
@@ -711,7 +725,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL8" && info.score() > 8) {
+            if (gameState === "LEVEL8" && info.score() >= LEVEL8.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL8_COMPLETE"
             }
         })
@@ -725,7 +741,9 @@ game.onUpdate(function () {
         })
 
         game.onUpdate(() => {
-            if (gameState === "LEVEL9" && info.score() > 9) {
+            if (gameState === "LEVEL9" && info.score() >= LEVEL9.requirement) {
+                sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
+                PhantomSpawner.phantoms = []
                 gameState = "LEVEL9_COMPLETE"
             }
         })
