@@ -156,6 +156,20 @@ class Player {
             })
         })
 
+        sprites.onOverlap(SpriteKind.Player, SpriteKind.WhiteHole, function (playerSprite, projectileSprite) {
+            timer.throttle("damage_throttle", this.iframes, function () {
+
+                this.toggleStill = false
+                info.changeLifeBy(-1)
+                this.updateHair()
+                this.animateHurt()
+
+                music.powerDown.play()
+                scene.cameraShake(4, 500)
+
+            })
+        })
+
         info.onLifeZero(function () {
             this.toggleStill = false
             controller.moveSprite(this.sprite, 0, 0)

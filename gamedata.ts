@@ -12,6 +12,7 @@ namespace SpriteKind {
     export const EnemyProjectile = SpriteKind.create()
     export const Sprout = SpriteKind.create()
     export const Vine = SpriteKind.create()
+    export const WhiteHole = SpriteKind.create()
 }
 
 type CharacterData = {

@@ -296,10 +296,10 @@ class GodUrara {
         GodUrara.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
         GodUrara.health.max = 40
 
-        this.phase2Start = 40 // 34
-        this.phase3Start = 39 // 27
-        this.phase4Start = 38 // 20
-        this.phase5Start = 37 // 5
+        this.phase2Start = 34 // 34
+        this.phase3Start = 27 // 27
+        this.phase4Start = 20 // 20
+        this.phase5Start = 6 // 5
 
         GodUrara.health.attachToSprite(this.sprite)
 
@@ -313,7 +313,9 @@ class GodUrara {
                     // Signal intent and snore
                     this.chillZzz()
                     timer.after(1100, () => {
-                        this.chillZzz()
+                        if (GodUrara.health.value >= this.phase2Start) {
+                            this.chillZzz()
+                        }
                     })
 
                     timer.after(1500, () => {
@@ -332,23 +334,23 @@ class GodUrara {
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 80, false)
                     timer.after(1000, () => {
                         if (Math.random() < 0.4) {
-                            this.shootVolley(3, 180, 5, 0)
+                            this.shootVolley(3, 160, 5, 0, this.phase3Start)
                             timer.after(200, () => {
-                                this.shootVolley(2, 180, 5, 0)
+                                this.shootVolley(2, 160, 5, 0, this.phase3Start)
                             })
                             timer.after(400, () => {
-                                this.shootVolley(3, 180, 5, 0)
+                                this.shootVolley(3, 160, 5, 0, this.phase3Start)
                             })
                             timer.after(600, () => {
-                                this.shootVolley(2, 180, 5, 0)
+                                this.shootVolley(2, 160, 5, 0, this.phase3Start)
                             })
                             timer.after(800, () => {
-                                this.shootVolley(3, 180, 5, 0)
+                                this.shootVolley(3, 160, 5, 0, this.phase3Start)
                             })
                         } else {
-                            this.shootVolley(5, 120, 50, 100)
+                            this.shootVolley(5, 120, 55, 100, this.phase3Start)
                             timer.after(800, () => {
-                                this.shootVolley(4, 120, 50, 100)
+                                this.shootVolley(4, 120, 55, 100, this.phase3Start)
                             })
                         }
                     })
@@ -368,12 +370,12 @@ class GodUrara {
                     animation.runImageAnimation(this.sprite, assets.animation`GodUrara sleeprunwarning`, 80, false)
                     timer.after(1000, () => {
                         if (Math.random() < 0.3) {
-                            this.shootVolley(5, 120, 50, 50)
+                            this.shootVolley(5, 120, 50, 50, this.phase4Start)
                             timer.after(400, () => {
-                                this.shootVolley(4, 120, 50, 50)
+                                this.shootVolley(4, 120, 50, 50, this.phase4Start)
                             })
                             timer.after(800, () => {
-                                this.shootVolley(5, 120, 50, 50)
+                                this.shootVolley(5, 120, 50, 50, this.phase4Start)
                             })
 
                         } else {
@@ -399,36 +401,36 @@ class GodUrara {
                 
                     timer.after(800, () => {
   
-                        this.shootVolley(6, 100, 85, 0)
+                        this.shootVolley(6, 100, 85, 0, this.phase5Start)
                         timer.after(400, () => {
-                            this.shootVolley(5, 100, 85, 0)
+                            this.shootVolley(5, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(800, () => {
-                            this.shootVolley(7, 100, 85, 0)
+                            this.shootVolley(7, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(1200, () => {
-                            this.shootVolley(6, 100, 85, 0)
+                            this.shootVolley(6, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(1600, () => {
-                            this.shootVolley(5, 100, 85, 0)
+                            this.shootVolley(5, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(2000, () => {
-                            this.shootVolley(7, 100, 85, 0)
+                            this.shootVolley(7, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(2400, () => {
-                            this.shootVolley(6, 100, 85, 0)
+                            this.shootVolley(6, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(2800, () => {
-                            this.shootVolley(5, 100, 85, 0)
+                            this.shootVolley(5, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(3200, () => {
-                            this.shootVolley(7, 100, 85, 0)
+                            this.shootVolley(7, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(3600, () => {
-                            this.shootVolley(6, 100, 85, 0)
+                            this.shootVolley(6, 100, 85, 0, this.phase5Start)
                         })
                         timer.after(4000, () => {
-                            this.shootVolley(5, 100, 85, 0)
+                            this.shootVolley(5, 100, 85, 0, this.phase5Start)
                         })
                     })
 
@@ -457,6 +459,7 @@ class GodUrara {
                         sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
                         this.sprite.setFlag(SpriteFlag.Ghost, false)
                         gameState = "GOD_URARA_PHASE2_START"
+                        moveTo(140, 60, this.sprite, 150, 0, assets.animation`GodUrara walk`)
                     })
                 }
 
@@ -489,6 +492,8 @@ class GodUrara {
                         this.sprite.x = 140
                         this.sprite.y = 60
                         this.sprite.setFlag(SpriteFlag.Ghost, false)
+                    })
+                    timer.after(2500, () => {
                         gameState = "GOD_URARA_PHASE4_START"
                     })
                 }
@@ -501,20 +506,64 @@ class GodUrara {
                     scene.cameraShake(7, 1500)
 
                     timer.after(2000, () => {
-                        this.sprite.vx = 150
-                        this.sprite.vy = 75
+                        animation.runImageAnimation(this.sprite, assets.animation`GodUrara spin`, 100, true)
+                        this.sprite.ax = 10
+                        this.sprite.ay = 10
                         this.sprite.setFlag(SpriteFlag.Ghost, false)
-                        const blackHole = sprites.createProjectile(assets.image`BUraraSpecial animate`, 30, 0, SpriteKind.EnemyProjectile)
-                        blackHole.x = 170
-                        blackHole.y = 40
+                        this.spawnWall()
+
+                        game.onUpdate(() => {
+                            this.speedUp()
+                        })
+                        
+                        timer.after(5000, () => {
+                            if (GodUrara.health.value > 0) {
+                                this.spawnWall()
+                            }
+                        })
+
+                        timer.after(10000, () => {
+                            if (GodUrara.health.value > 0) {
+                                this.spawnWall()
+                            }
+                        })
+
+                        timer.after(15000, () => {
+                            if (GodUrara.health.value > 0) {
+                                this.spawnWall()
+                            }
+                        })
+
+                        timer.after(20000, () => {
+                            if (GodUrara.health.value > 0) {
+                                this.spawnWall()
+                            }
+                        })
+
+                        timer.after(25000, () => {
+                            if (GodUrara.health.value > 0) {
+                                this.spawnWall()
+                            }
+                        })
+
                         gameState = "GOD_URARA_PHASE5"
                     })
                 }
 
                 if (gameState === "GOD_URARA_PHASE5" && GodUrara.health.value <= 0) {
                     // Out of lives
-                    this.animateDeath()
-                    gameState = "ENDING"
+                    gameState = "PHASE5_DONE"
+                    animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
+                    sprites.destroyAllSpritesOfKind(SpriteKind.WhiteHole, effects.disintegrate, 200)
+                    this.sprite.ax = 0
+                    this.sprite.ay = 0
+                    this.sprite.vx = 0
+                    this.sprite.vy = 0
+                    music.bigCrash.play()
+
+                    timer.after(2000, () => {
+                        this.animateDeath()
+                    })
                 }
             })
         })
@@ -523,12 +572,10 @@ class GodUrara {
 
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
             timer.throttle("boss3_throttle", 1000, () => {
-                console.log(GodUrara.health.value)
                 if (phases.indexOf(gameState) !== -1 && GodUrara.health.value > 0) {
 
                     GodUrara.health.value -= 1
                     music.zapped.play()
-                    console.log("Detected!")
                     
                     if (!projectileSprite.data.piercing && !projectileSprite.data.vacuum) {
                         projectileSprite.destroy()
@@ -564,7 +611,7 @@ class GodUrara {
         zzz.setFlag(SpriteFlag.BounceOnWall, true)
     }
 
-    shootVolley(numBullets: number, speed: number, spread: number, gap: number) {
+    shootVolley(numBullets: number, speed: number, spread: number, gap: number, life: number) {
         const baseAngle = getAngle(player.sprite, this.sprite)
         const startAngle = baseAngle - spread
         const angleGap = (spread * 2) / (numBullets - 1)
@@ -574,7 +621,7 @@ class GodUrara {
             shotArr.push(shot)
             timer.after(gap * shot, () => {
                 
-                if (GodUrara.health.value >= this.phase5Start) {
+                if (GodUrara.health.value >= life) {
                     let bullet = sprites.create(assets.image`z`, SpriteKind.EnemyProjectile)
                     bullet.x = this.sprite.x
                     bullet.y = this.sprite.y
@@ -604,7 +651,43 @@ class GodUrara {
         }
     }
 
-    animateDeath() {
+    spawnWall() {
+        let blackHole = sprites.createProjectile(assets.image`BUraraSpecial`, -5, 0, SpriteKind.WhiteHole)
+        animation.runImageAnimation(blackHole, assets.animation`BUraraSpecial animate`, 100, true)
+        blackHole.x = 170
+        blackHole.y = 40
 
+        let blackHole2 = sprites.createProjectile(assets.image`BUraraSpecial`, -5, 0, SpriteKind.WhiteHole)
+        animation.runImageAnimation(blackHole2, assets.animation`BUraraSpecial animate`, 100, true)
+        blackHole2.x = 170
+        blackHole2.y = 80
+    }
+
+    speedUp() {
+        if (this.sprite.vx > 0 && this.sprite.ax < 0) {
+            this.sprite.ax *= -1
+        } else if (this.sprite.vx < 0 && this.sprite.ax > 0) {
+            this.sprite.ax *= -1
+        }
+
+        if (this.sprite.vy > 0 && this.sprite.ay < 0) {
+            this.sprite.ay *= -1
+        } else if (this.sprite.vx < 0 && this.sprite.ay > 0) {
+            this.sprite.ay *= -1
+        }
+    }
+
+    animateDeath() {
+        animation.runImageAnimation(this.sprite, assets.animation`GodUrara tired`, 100, true)
+
+        timer.after(2000, () => {
+            animation.runImageAnimation(this.sprite, assets.animation`GodUraradeath`, 100, false)
+        })
+
+        timer.after(4000, () => {
+            this.sprite.destroy()
+            gameState = "ENDING"
+            game.over(true, effects.confetti)
+        })
     }
 }
