@@ -13,6 +13,8 @@ namespace SpriteKind {
     export const Sprout = SpriteKind.create()
     export const Vine = SpriteKind.create()
     export const WhiteHole = SpriteKind.create()
+
+    export const ScreenEffect = SpriteKind.create()
 }
 
 type CharacterData = {
@@ -191,7 +193,7 @@ type LevelData = {
 
 const LEVEL1: LevelData = {
     spawnFlag: "LEVEL1",
-    requirement: 10,
+    requirement: 1,
 
     walkSpd: -50,
     walkSpdVar: 10,
@@ -205,7 +207,7 @@ const LEVEL1: LevelData = {
 
 const LEVEL2: LevelData = {
     spawnFlag: "LEVEL2",
-    requirement: 20,
+    requirement: 2,
 
     walkSpd: -100,
     walkSpdVar: 10,
@@ -219,7 +221,7 @@ const LEVEL2: LevelData = {
 
 const LEVEL3: LevelData = {
     spawnFlag: "LEVEL3",
-    requirement: 30,
+    requirement: 3,
 
     walkSpd: -50,
     walkSpdVar: 10,
@@ -233,7 +235,7 @@ const LEVEL3: LevelData = {
 
 const LEVEL4: LevelData = {
     spawnFlag: "LEVEL4",
-    requirement: 40,
+    requirement: 4,
 
     walkSpd: -100,
     walkSpdVar: 10,
@@ -247,7 +249,7 @@ const LEVEL4: LevelData = {
 
 const LEVEL5: LevelData = {
     spawnFlag: "LEVEL5",
-    requirement: 50,
+    requirement: 5,
 
     walkSpd: -50,
     walkSpdVar: 10,
@@ -261,7 +263,7 @@ const LEVEL5: LevelData = {
 
 const LEVEL6: LevelData = {
     spawnFlag: "LEVEL6",
-    requirement: 60,
+    requirement: 6,
 
     walkSpd: -100,
     walkSpdVar: 10,
@@ -275,7 +277,7 @@ const LEVEL6: LevelData = {
 
 const LEVEL7: LevelData = {
     spawnFlag: "LEVEL7",
-    requirement: 70,
+    requirement: 7,
 
     walkSpd: -50,
     walkSpdVar: 10,
@@ -289,7 +291,7 @@ const LEVEL7: LevelData = {
 
 const LEVEL8: LevelData = {
     spawnFlag: "LEVEL8",
-    requirement: 80,
+    requirement: 8,
 
     walkSpd: -100,
     walkSpdVar: 10,
@@ -303,7 +305,7 @@ const LEVEL8: LevelData = {
 
 const LEVEL9: LevelData = {
     spawnFlag: "LEVEL9",
-    requirement: 90,
+    requirement: 9,
 
     walkSpd: -50,
     walkSpdVar: 10,

@@ -39,7 +39,7 @@ class Player {
         controller.moveSprite(this.sprite, this.agility, this.agility)
         this.sprite.setStayInScreen(true)
 
-        game.showLongText(`Hello ${character.name}. I hope you're ready. Let's have some fun.`, DialogLayout.Bottom)
+        
 
         this.inventory = 0
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
@@ -472,6 +472,8 @@ function startGame(selectedSprite: Sprite) {
     }
 
     gameState = "CHARACTER_SELECTED"
+
+    
 }
 
 let delay = 0;

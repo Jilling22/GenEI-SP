@@ -3,6 +3,7 @@
 function posVec(s: Sprite) {
     return Vector.of(s.x, s.y);
 }
+
 function velVec(s: Sprite) {
     return Vector.of(s.vx, s.vy);
 }
