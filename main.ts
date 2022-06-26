@@ -577,6 +577,7 @@ game.onUpdate(function () {
         })
 
     } else if (gameState === "LEVEL1_COMPLETE") {
+
         gameState = "LEVEL2"
         
         timer.after(2000, () => {
@@ -588,7 +589,22 @@ game.onUpdate(function () {
                 gameState = "LEVEL2_COMPLETE"
             }
         })
+
     } else if (gameState === "LEVEL2_COMPLETE") {
+
+        gameState = "LEVEL3"
+
+        timer.after(2000, () => {
+            let thirdWave: PhantomSpawner = new PhantomSpawner(LEVEL3)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL3" && info.score() > 3) {
+                gameState = "LEVEL3_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL3_COMPLETE") {
 
         gameState = "TOMO"
 
@@ -597,6 +613,48 @@ game.onUpdate(function () {
         })
 
     } else if (gameState === "TOMO_DEFEATED") {
+
+        gameState = "LEVEL4"
+
+        timer.after(2000, () => {
+            let fourthWave: PhantomSpawner = new PhantomSpawner(LEVEL4)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL4" && info.score() > 4) {
+                gameState = "LEVEL4_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL4_COMPLETE") {
+
+        gameState = "LEVEL5"
+
+        timer.after(2000, () => {
+            let fifthWave: PhantomSpawner = new PhantomSpawner(LEVEL5)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL5" && info.score() > 5) {
+                gameState = "LEVEL5_COMPLETE"
+            }
+        })
+    
+    } else if (gameState === "LEVEL5_COMPLETE") {
+
+        gameState = "LEVEL6"
+
+        timer.after(2000, () => {
+            let sixthWave: PhantomSpawner = new PhantomSpawner(LEVEL6)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL6" && info.score() > 6) {
+                gameState = "LEVEL6_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL6_COMPLETE") {
 
         gameState = "SUPERPHANTOM"
 
@@ -629,7 +687,51 @@ game.onUpdate(function () {
                 }
             })
         })
+
     } else if (gameState === "PHANTOM_DEFEATED") {
+
+        gameState = "LEVEL7"
+
+        timer.after(2000, () => {
+            let seventhWave: PhantomSpawner = new PhantomSpawner(LEVEL7)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL7" && info.score() > 7) {
+                gameState = "LEVEL7_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL7_COMPLETE") {
+
+        gameState = "LEVEL8"
+
+        timer.after(2000, () => {
+            let eighthWave: PhantomSpawner = new PhantomSpawner(LEVEL8)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL8" && info.score() > 8) {
+                gameState = "LEVEL8_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL8_COMPLETE") {
+
+        gameState = "LEVEL9"
+
+        timer.after(2000, () => {
+            let ninthWave: PhantomSpawner = new PhantomSpawner(LEVEL9)
+        })
+
+        game.onUpdate(() => {
+            if (gameState === "LEVEL9" && info.score() > 9) {
+                gameState = "LEVEL9_COMPLETE"
+            }
+        })
+
+    } else if (gameState === "LEVEL9_COMPLETE") {
+
         gameState = "GOD_URARA"
 
         timer.after(2000, () => {

@@ -211,6 +211,90 @@ const LEVEL2: LevelData = {
     walkAnim: assets.animation`PMikage Walk`
 }
 
+const LEVEL3: LevelData = {
+    spawnFlag: "LEVEL3",
+    walkSpd: -50,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL4: LevelData = {
+    spawnFlag: "LEVEL4",
+    walkSpd: -100,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL5: LevelData = {
+    spawnFlag: "LEVEL5",
+    walkSpd: -50,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL6: LevelData = {
+    spawnFlag: "LEVEL6",
+    walkSpd: -100,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL7: LevelData = {
+    spawnFlag: "LEVEL7",
+    walkSpd: -50,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL8: LevelData = {
+    spawnFlag: "LEVEL8",
+    walkSpd: -100,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
+const LEVEL9: LevelData = {
+    spawnFlag: "LEVEL9",
+    walkSpd: -50,
+    walkSpdVar: 10,
+
+    spawnInterval: 1000,
+    spawnRate: 100,
+
+    spriteImg: assets.image`PMikage left`,
+    walkAnim: assets.animation`PMikage Walk`
+}
+
 type BossData = {
     spawnFlag: string,
     defeatedFlag: string,
