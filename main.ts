@@ -416,9 +416,6 @@ function initializeMenu() {
         blackScreen1.destroy(effects.disintegrate, 800)
         blackScreen2.destroy(effects.disintegrate, 600)
         blackScreen3.destroy(effects.ashes, 400)
-        timer.after(800, function () {
-            effects.starField.startScreenEffect()
-        })
     })
 
     sprites.onOverlap(SpriteKind.Cursor, SpriteKind.PlayButton, function (cursorSprite, selectedSprite) {
@@ -426,13 +423,13 @@ function initializeMenu() {
             sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
             sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
             sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
-            effects.starField.endScreenEffect()
             characterSelect()
         }
     })
 }
 
 function characterSelect() {
+    
     scene.setBackgroundImage(assets.image`menu_bg`)
 
     menuMikage = sprites.create(assets.image`Mikage Button`, SpriteKind.CharacterButton)
@@ -449,8 +446,8 @@ function characterSelect() {
     timer.after(400, function () {
         sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
             if (controller.A.isPressed()) {
-                cursor.destroy()
-                sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
+                
+                
                 startGame(selectedSprite)
             }
         })
@@ -459,21 +456,29 @@ function characterSelect() {
 
 function startGame(selectedSprite: Sprite) {
 
-    scene.setBackgroundImage(assets.image`game_bg1`)
+    const transitionScreen = sprites.create(assets.image`transition`, SpriteKind.ScreenEffect);
+    transitionScreen.z = 10;
 
-    if (selectedSprite == menuMikage) {
-        player = new Player(MIKAGE)
-    } else if (selectedSprite == menuSpica) {
-        player = new Player(SPICA)
-    } else if (selectedSprite == menuYuuhi) {
-        player = new Player(YUUHI)
-    } else if (selectedSprite == menuUrara) {
-        player = new Player(URARA)
-    }
+    animation.runImageAnimation(transitionScreen, assets.animation`transition close`, 100, false);
 
-    gameState = "CHARACTER_SELECTED"
+    timer.after(1000, () => {
+        cursor.destroy()
+        sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
 
-    
+        scene.setBackgroundImage(assets.image`game_bg1`)
+        if (selectedSprite == menuMikage) {
+            player = new Player(MIKAGE)
+        } else if (selectedSprite == menuSpica) {
+            player = new Player(SPICA)
+        } else if (selectedSprite == menuYuuhi) {
+            player = new Player(YUUHI)
+        } else if (selectedSprite == menuUrara) {
+            player = new Player(URARA)
+        }
+        gameState = "CHARACTER_SELECTED"
+        
+        animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
+    })
 }
 
 let delay = 0;
@@ -492,7 +497,6 @@ let life_up: Sprite = null
 let gameState = "MENU"
 initializeMenu()
 
-closeTransition()
 
 game.onUpdate(function () {
 
@@ -504,6 +508,8 @@ game.onUpdate(function () {
 
     // check if selected flag has been triggered, then trigger first set of listeners 
     if (gameState === "CHARACTER_SELECTED") {
+
+        gameState = "INTRO"
 
         controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
             player.animateWalk()
@@ -544,8 +550,8 @@ game.onUpdate(function () {
             })
         })
 
-        timer.after(1000, function () {
-            game.onUpdateInterval(3000, function () {
+        timer.after(10000, function () {
+            game.onUpdateInterval(15000, function () {
                 if (info.life() > 0) {
                     life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
                     animation.runImageAnimation(life_up, assets.animation`Special_fire`, 200, true)
@@ -573,8 +579,18 @@ game.onUpdate(function () {
             }
         });
 
+        timer.after(1000, () => {
+            gameState = "INTRO_COMPLETE"
+        })
+
+    } else if (gameState === "INTRO_COMPLETE") {
+
         gameState = "LEVEL1"
-        let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
+
+        timer.after(2000, () => {
+            let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
+        })
+
         game.onUpdate(() => {
             if (gameState === "LEVEL1" && info.score() >= LEVEL1.requirement) {
                 sprites.destroyAllSpritesOfKind(SpriteKind.Phantom, effects.hearts, 200)
