@@ -176,33 +176,6 @@ class SuperPhantom {
 
         this.bossIntro()
 
-        timer.after(1500, () => {
-            game.onUpdateInterval(2000, () => {
-                if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
-                    // Do a thing
-                    this.shootVolley()
-                }
-            })
-
-            game.onUpdate(() => {
-                if (gameState === "SUPERPHANTOM" && this.facingLeft && this.sprite.vx > 0) {
-                    animation.runImageAnimation(this.sprite, assets.animation`BPMikage right walk`, 200, true)
-                    this.facingLeft = false
-                }
-
-                if (gameState === "SUPERPHANTOM" && !this.facingLeft && this.sprite.vx < 0) {
-                    animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 200, true)
-                    this.facingLeft = true
-                }
-
-                if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value <= 0) {
-                    // Out of lives
-                    this.animateDeath()
-                    gameState = "PHANTOM_DEFEATED"
-                }
-            })
-        })
-
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
             timer.throttle("boss2_throttle", 1000, () => {
                 if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
@@ -235,14 +208,56 @@ class SuperPhantom {
         moveTo(140, 60, this.sprite, 30, 0, assets.animation`BPMikage left walk`)
 
         timer.after(1500, () => {
-            // 4. Pick a random direction
-            this.sprite.vy = Math.random() > 0.5 ? 30 : -30
-            this.sprite.vx = -40
-            
-            this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
-            this.sprite.setFlag(SpriteFlag.Ghost, false)
+
+            phantomIntroDialogue()
+
+            timer.after(1000, () => {
+                this.sprite.vy = Math.random() > 0.5 ? 30 : -30
+                this.sprite.vx = -40
+
+                this.sprite.setBounceOnWall(true)
+                animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 150, true)
+                this.sprite.setFlag(SpriteFlag.Ghost, false)
+
+                game.onUpdateInterval(2000, () => {
+                    if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value > 0) {
+                        // Do a thing
+                        this.shootVolley()
+                    }
+                })
+
+                game.onUpdate(() => {
+                    if (gameState === "SUPERPHANTOM" && this.facingLeft && this.sprite.vx > 0) {
+                        animation.runImageAnimation(this.sprite, assets.animation`BPMikage right walk`, 200, true)
+                        this.facingLeft = false
+                    }
+
+                    if (gameState === "SUPERPHANTOM" && !this.facingLeft && this.sprite.vx < 0) {
+                        animation.runImageAnimation(this.sprite, assets.animation`BPMikage left walk`, 200, true)
+                        this.facingLeft = true
+                    }
+
+                    if (gameState === "SUPERPHANTOM" && SuperPhantom.health.value <= 0) {
+                        // Out of lives
+                        gameState = "LOADING"
+                        this.sprite.vy = 0
+                        this.sprite.vx = 0
+                        this.sprite.setFlag(SpriteFlag.Ghost, true)
+
+                        timer.after(500, () => {
+                            phantomDeathDialogue()
+                            this.animateDeath()
+                            timer.after(100, () => {
+                                sprites.destroyAllSpritesOfKind(SpriteKind.Sprout)
+                                sprites.destroyAllSpritesOfKind(SpriteKind.Vine)
+                            })
+                        })
+                        
+                    }
+                })
+            })
         })
+        
     }
 
     shootEP(vx: number, vy: number) {
@@ -273,9 +288,7 @@ class SuperPhantom {
     }
 
     animateDeath() {
-        this.sprite.vy = 0
-        this.sprite.vx = 0
-        this.sprite.setFlag(SpriteFlag.Ghost, true)
+        
         timer.after(500, () => {
             this.sprite.setImage(assets.image`PMikage left`)
             animation.stopAnimation(animation.AnimationTypes.All, this.sprite)
@@ -288,8 +301,8 @@ class SuperPhantom {
         timer.after(1800, () => {
             PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts)
-            sprites.destroyAllSpritesOfKind(SpriteKind.Sprout)
-            sprites.destroyAllSpritesOfKind(SpriteKind.Vine)
+            
+            gameState = "PHANTOM_DEFEATED"
         })
     }
 }

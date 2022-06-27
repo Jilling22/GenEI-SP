@@ -63,4 +63,26 @@ function tomoDeathDialogue() {
 
 }
 
+function phantomIntroDialogue() {
 
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+
+}
+
+function phantomDeathDialogue() {
+
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+
+}

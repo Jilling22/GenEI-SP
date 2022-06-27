@@ -649,11 +649,11 @@ game.onUpdate(function () {
 
         gameState = "LOADING"
         
-        timer.after(500, () => {
+        timer.after(1000, () => {
             transitionTo(assets.image`game_bg2`)
         })
 
-        timer.after(3000, () => {
+        timer.after(3500, () => {
             intro2()
         })
     
