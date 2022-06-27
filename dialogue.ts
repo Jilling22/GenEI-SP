@@ -14,10 +14,35 @@ function transitionTo(bg: Image) {
 function intro() {
     gameState = "LOADING"
     game.showLongText(`Harumaki Gohan
-
+    ---------------
     One day, Mikage became bald.
-    Hahaha kekw`, DialogLayout.Bottom)
-    game.showLongText("INTRO 2", DialogLayout.Bottom)
-    game.showLongText("INTRO 3", DialogLayout.Bottom)
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
     gameState = "INTRO_COMPLETE"
+}
+
+function tomoIntroDialogue() {
+
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+     
+}
+
+function tomoDeathDialogue() {
+
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+
 }

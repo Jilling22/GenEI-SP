@@ -18,28 +18,6 @@ class Tomo {
 
         this.bossIntro()
 
-        timer.after(boss.introPeriod, () => {
-            game.onUpdateInterval(boss.shootCooldown1 + boss.shootCooldown2, () => {
-                if (gameState === boss.spawnFlag && Tomo.health.value > 0) {
-
-                    this.shootVolley()
-
-                    timer.after(boss.shootCooldown1, () => {
-                        if (Tomo.health.value > 0) {
-                            this.shootHomingVolley()
-                        }
-                    })
-                }
-            })
-
-            game.onUpdate(() => {
-                if (gameState === boss.spawnFlag && Tomo.health.value <= 0) {
-                    this.animateDeath()
-                    gameState = boss.defeatedFlag
-                }
-            })
-        })
-
         sprites.onOverlap(SpriteKind.Boss, SpriteKind.Projectile, function (bossSprite, projectileSprite) {
             timer.throttle("boss_throttle", boss.iframes, () => {
                 if (gameState === boss.spawnFlag && Tomo.health.value > 0) {
@@ -56,19 +34,57 @@ class Tomo {
     }
 
     bossIntro() {
+
+        const boss = this.bossData;
+
         this.sprite.x = 170
         this.sprite.y = 60
 
         moveTo(140, 60, this.sprite, 30, 0, assets.animation`Tomo Walk`)
 
         timer.after(this.bossData.introPeriod, () => {
-            let y = this.bossData.initialYSpeed
-            this.sprite.vy = Math.random() > 0.5 ? y : -y
-            
-            this.sprite.setBounceOnWall(true)
-            animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
-            this.sprite.setFlag(SpriteFlag.Ghost, false)
+
+            tomoIntroDialogue()
+
+            timer.after(1000, () => {
+                let y = this.bossData.initialYSpeed
+                this.sprite.vy = Math.random() > 0.5 ? y : -y
+
+                this.sprite.setBounceOnWall(true)
+                animation.runImageAnimation(this.sprite, assets.animation`Tomo Walk`, 150, true)
+                this.sprite.setFlag(SpriteFlag.Ghost, false)
+
+                game.onUpdate(() => {
+                    if (gameState === boss.spawnFlag && Tomo.health.value <= 0) {
+
+                        gameState = "LOADING"
+                        this.sprite.vy = 0
+                        this.sprite.setFlag(SpriteFlag.Ghost, true)
+
+                        timer.after(500, () => {
+                            tomoDeathDialogue()
+                            this.animateDeath()
+                            
+                        })
+                    }
+                })
+
+                game.onUpdateInterval(boss.shootCooldown1 + boss.shootCooldown2, () => {
+
+                    if (gameState === boss.spawnFlag && Tomo.health.value > 0) {
+
+                        this.shootVolley()
+
+                        timer.after(boss.shootCooldown1, () => {
+                            if (Tomo.health.value > 0) {
+                                this.shootHomingVolley()
+                            }
+                        })
+                    }
+                })
+            })
         })
+        
     }
 
     shootPopsicle() {
@@ -127,6 +143,7 @@ class Tomo {
         timer.after(2000, () => {
             PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts, 200)
+            gameState = this.bossData.defeatedFlag
         })
     }
 }

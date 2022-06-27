@@ -363,7 +363,7 @@ const TOMO: BossData = {
     bulletSprite: assets.image`Tomo Bullet`,
     bulletAnim: null,
 
-    introPeriod: 2500,
+    introPeriod: 2000,
 
     health: 1,
     phase2Start: 8,
