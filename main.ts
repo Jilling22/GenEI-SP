@@ -647,10 +647,21 @@ game.onUpdate(function () {
 
     } else if (gameState === "TOMO_DEFEATED") {
 
-        scene.setBackgroundImage(assets.image`game_bg2`)
+        gameState = "LOADING"
+        
+        timer.after(500, () => {
+            transitionTo(assets.image`game_bg2`)
+        })
+
+        timer.after(3000, () => {
+            intro2()
+        })
+    
+    } else if (gameState === "INTRO2_COMPLETE") {
+
         gameState = "LEVEL4"
 
-        timer.after(2000, () => {
+        timer.after(1000, () => {
             let fourthWave: PhantomSpawner = new PhantomSpawner(LEVEL4)
         })
 

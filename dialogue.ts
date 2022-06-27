@@ -5,9 +5,13 @@ function transitionTo(bg: Image) {
 
     animation.runImageAnimation(transitionScreen, assets.animation`transition close`, 100, false);
 
-    timer.after(500, () => {
+    timer.after(1000, () => {
         scene.setBackgroundImage(bg)
         animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
+    })
+
+    timer.after(2000, () => {
+        transitionScreen.destroy()
     })
 }
 
@@ -21,6 +25,18 @@ function intro() {
     Hahaha kekw
      `, DialogLayout.Bottom)
     gameState = "INTRO_COMPLETE"
+}
+
+function intro2() {
+    gameState = "LOADING"
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+    gameState = "INTRO2_COMPLETE"
 }
 
 function tomoIntroDialogue() {
@@ -46,3 +62,5 @@ function tomoDeathDialogue() {
      `, DialogLayout.Bottom)
 
 }
+
+
