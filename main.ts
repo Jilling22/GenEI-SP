@@ -39,8 +39,6 @@ class Player {
         controller.moveSprite(this.sprite, this.agility, this.agility)
         this.sprite.setStayInScreen(true)
 
-        
-
         this.inventory = 0
         this.inventorySprites.push(sprites.create(assets.image`Empty Special`, SpriteKind.Placeholder))
         this.inventorySprites[0].x = 45
@@ -446,8 +444,7 @@ function characterSelect() {
     timer.after(400, function () {
         sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
             if (controller.A.isPressed() && gameState === "MENU") {
-                
-                
+
                 startGame(selectedSprite)
             }
         })

@@ -98,3 +98,15 @@ function phantomDeathDialogue() {
      `, DialogLayout.Bottom)
 
 }
+
+function godUraraIntroDialogue() {
+
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+
+}
