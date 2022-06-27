@@ -301,7 +301,8 @@ class SuperPhantom {
         timer.after(1800, () => {
             PhantomSpawner.phantoms.removeElement(this.sprite)
             this.sprite.destroy(effects.hearts)
-            
+            sprites.destroyAllSpritesOfKind(SpriteKind.Sprout)
+            sprites.destroyAllSpritesOfKind(SpriteKind.Vine)
             gameState = "PHANTOM_DEFEATED"
         })
     }

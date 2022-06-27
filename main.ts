@@ -723,23 +723,37 @@ game.onUpdate(function () {
                     sprout.y = randint(30, 100)
                     sprout.z = -2
                     timer.after(2000, () => {
-                        if (Math.random() < 0.5) {
-                            vine = sprites.create(assets.image`vine1`, SpriteKind.Vine)
-                            animation.runImageAnimation(vine, assets.animation`vine animate1`, 150, false)
-                        } else {
-                            vine = sprites.create(assets.image`vine2`, SpriteKind.Vine)
-                            animation.runImageAnimation(vine, assets.animation`vine animate2`, 150, false)
+                        if (gameState === "SUPERPHANTOM" && info.life() > 0) {
+                            if (Math.random() < 0.5) {
+                                vine = sprites.create(assets.image`vine1`, SpriteKind.Vine)
+                                animation.runImageAnimation(vine, assets.animation`vine animate1`, 150, false)
+                            } else {
+                                vine = sprites.create(assets.image`vine2`, SpriteKind.Vine)
+                                animation.runImageAnimation(vine, assets.animation`vine animate2`, 150, false)
+                            }
+                            vine.x = sprout.x
+                            vine.y = sprout.y - 8
+                            vine.z = -2
+                            sprout.destroy()
                         }
-                        vine.x = sprout.x
-                        vine.y = sprout.y - 8
-                        vine.z = -2
-                        sprout.destroy()
                     })
                 }
             })
         })
 
     } else if (gameState === "PHANTOM_DEFEATED") {
+
+        gameState = "LOADING"
+        
+        timer.after(2000, () => {
+            transitionTo(assets.image`game_bg3`)
+        })
+
+        timer.after(4500, () => {
+            intro3()
+        })
+        
+    } else if (gameState === "INTRO3_COMPLETE") {
 
         gameState = "LEVEL7"
         scene.setBackgroundImage(assets.image`game_bg3`)

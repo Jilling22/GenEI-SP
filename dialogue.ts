@@ -28,7 +28,7 @@ function intro() {
 }
 
 function intro2() {
-    gameState = "LOADING"
+
     game.showLongText(`Harumaki Gohan
     ---------------
     One day, Mikage became bald.
@@ -37,6 +37,18 @@ function intro2() {
     Hahaha kekw
      `, DialogLayout.Bottom)
     gameState = "INTRO2_COMPLETE"
+}
+
+function intro3() {
+
+    game.showLongText(`Harumaki Gohan
+    ---------------
+    One day, Mikage became bald.
+    Harumaki Gohan
+    ---------------
+    Hahaha kekw
+     `, DialogLayout.Bottom)
+    gameState = "INTRO3_COMPLETE"
 }
 
 function tomoIntroDialogue() {
