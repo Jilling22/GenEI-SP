@@ -13,6 +13,11 @@ function transitionTo(bg: Image) {
 
 function intro() {
     gameState = "LOADING"
-    game.showLongText("INTRO", DialogLayout.Bottom)
+    game.showLongText(`Harumaki Gohan
+
+    One day, Mikage became bald.
+    Hahaha kekw`, DialogLayout.Bottom)
+    game.showLongText("INTRO 2", DialogLayout.Bottom)
+    game.showLongText("INTRO 3", DialogLayout.Bottom)
     gameState = "INTRO_COMPLETE"
 }
