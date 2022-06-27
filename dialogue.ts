@@ -10,3 +10,9 @@ function transitionTo(bg: Image) {
         animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
     })
 }
+
+function intro() {
+    gameState = "LOADING"
+    game.showLongText("INTRO", DialogLayout.Bottom)
+    gameState = "INTRO_COMPLETE"
+}

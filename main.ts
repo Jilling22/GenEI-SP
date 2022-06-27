@@ -445,7 +445,7 @@ function characterSelect() {
     // Initial menu event listener
     timer.after(400, function () {
         sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
-            if (controller.A.isPressed()) {
+            if (controller.A.isPressed() && gameState === "MENU") {
                 
                 
                 startGame(selectedSprite)
@@ -455,6 +455,8 @@ function characterSelect() {
 }
 
 function startGame(selectedSprite: Sprite) {
+
+    gameState = "LOADING"
 
     const transitionScreen = sprites.create(assets.image`transition`, SpriteKind.ScreenEffect);
     transitionScreen.z = 10;
@@ -475,9 +477,13 @@ function startGame(selectedSprite: Sprite) {
         } else if (selectedSprite == menuUrara) {
             player = new Player(URARA)
         }
-        gameState = "CHARACTER_SELECTED"
         
         animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
+    })
+
+    timer.after(1500, () => {
+        transitionScreen.destroy()
+        gameState = "CHARACTER_SELECTED"
     })
 }
 
@@ -538,9 +544,9 @@ game.onUpdate(function () {
             }
         })
 
-        timer.after(10000, function () {
-            game.onUpdateInterval(25000, function () {
-                if (info.life() > 0) {
+        timer.after(5000, function () {
+            game.onUpdateInterval(30000, function () {
+                if (info.life() > 0 && gameState !== "LOADING") {
                     life_up = sprites.create(assets.image`Life Up`, SpriteKind.Food)
                     life_up.x = scene.screenWidth()
                     life_up.vx = -30
@@ -550,9 +556,9 @@ game.onUpdate(function () {
             })
         })
 
-        timer.after(10000, function () {
+        timer.after(5000, function () {
             game.onUpdateInterval(15000, function () {
-                if (info.life() > 0) {
+                if (info.life() > 0 && gameState !== "LOADING") {
                     life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
                     animation.runImageAnimation(life_up, assets.animation`Special_fire`, 200, true)
                     life_up.x = randint(30, 130)
@@ -579,15 +585,15 @@ game.onUpdate(function () {
             }
         });
 
-        timer.after(1000, () => {
-            gameState = "INTRO_COMPLETE"
+        timer.after(500, () => {
+            intro()
         })
 
     } else if (gameState === "INTRO_COMPLETE") {
 
         gameState = "LEVEL1"
 
-        timer.after(2000, () => {
+        timer.after(1000, () => {
             let firstWave: PhantomSpawner = new PhantomSpawner(LEVEL1)
         })
 
