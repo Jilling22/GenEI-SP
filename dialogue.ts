@@ -22,7 +22,8 @@ function intro() {
     game.showLongText(`CHAPTER 1:
     The Path of Wisdom`, DialogLayout.Center)
 
-    game.showLongText(player.spriteAssets.stage1Dialogue, DialogLayout.Bottom)
+    game.showLongText(player.spriteAssets.stage2Dialogue, DialogLayout.Bottom)
+    
 
     gameState = "INTRO_COMPLETE"
 }
@@ -32,13 +33,7 @@ function intro2() {
     game.showLongText(`CHAPTER 2:
     The Forest of Shadows`, DialogLayout.Center)
 
-    game.showLongText(`Harumaki Gohan
-    ---------------
-    One day, Mikage became bald.
-    Harumaki Gohan
-    ---------------
-    Hahaha kekw
-     `, DialogLayout.Bottom)
+    game.showLongText(`It is always midnight in the forest, even with the sun high above. The sky is riddled with vines and broken glass. Occasionally, you can see spots of blue and pink among the shadows. A lone firefly floats by.`, DialogLayout.Bottom)
 
     gameState = "INTRO2_COMPLETE"
 }
@@ -61,7 +56,7 @@ function intro3() {
 
 function tomoIntroDialogue() {
 
-    game.showLongText(player.spriteAssets.tomoDialogue, DialogLayout.Bottom)
+    game.showLongText(player.spriteAssets.phantomDialogue, DialogLayout.Bottom)
      
 }
 

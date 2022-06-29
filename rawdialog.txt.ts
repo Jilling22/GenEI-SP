@@ -97,7 +97,7 @@ I can't let Spica and
 Mikage
 ---------------
 the others see me like this.
-    `;
+ `;
 
 `Spica
 ---------------
@@ -358,28 +358,3 @@ with your "God Urara" thing again?
 God Urara
 ---------------
 Zzz…
-
- `;
-
-`God Urara
----------------
-Zzz…
-Urara
----------------
-Zzz…
-Urara
----------------
-(It seems I had the album
-Urara
----------------
-in my pocket the whole time.
-Urara
----------------
-Silly me.
- `;
-
-// GOD URARA DEATH
-`God Urara
----------------
-Zzz…
- `;

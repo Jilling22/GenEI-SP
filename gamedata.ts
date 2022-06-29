@@ -49,7 +49,10 @@ type CharacterData = {
     vacuumSpecial: boolean,
 
     stage1Dialogue: string,
-    tomoDialogue?: string
+    tomoDialogue: string,
+
+    stage2Dialogue: string,
+    phantomDialogue?: string
 
 }
 
@@ -129,6 +132,57 @@ const MIKAGE: CharacterData = {
     Tomo
     ---------------
     Not this time!
+     `,
+    
+    stage2Dialogue: `Mikage
+    ---------------
+    I have to hurry... I can't let
+    Mikage
+    ---------------
+    Spica and the others see me
+    Mikage
+    ---------------
+    like this.
+     `,
+    
+    phantomDialogue: `Phantom
+    ---------------
+    Did you come here to give up?
+    Mikage
+    ---------------
+    I'm not here to play games with you.
+    Mikage
+    ---------------
+    Where did you hide the album?
+    Phantom
+    ---------------
+    Mikage, you never needed that album
+    Phantom
+    ---------------
+    to begin with.
+     
+    Phantom
+    ---------------
+    It's okay to be bald.
+    Phantom
+    ---------------
+    Spica and the others will accept
+    Phantom
+    ---------------
+    you regardless.
+     
+    Phantom
+    ---------------
+    Isn't that what true friends are for?
+    Mikage
+    ---------------
+    This is completely different!
+    Mikage
+    ---------------
+    I'll never be bald!
+    Mikage
+    ---------------
+    Never ever ever!
      `
      
 }
@@ -206,6 +260,14 @@ const SPICA: CharacterData = {
     Tomo
     ---------------
     who stole her from me!
+     `,
+
+    stage2Dialogue: `Spica
+    ---------------
+    This place is giving me the creeps,
+    Spica
+    ---------------
+    but I gotta do my best for her!
      `
 }
 
@@ -281,6 +343,17 @@ const YUUHI: CharacterData = {
     Tomo
     ---------------
     you should have it.
+     `,
+
+    stage2Dialogue: `Yuuhi
+    ---------------
+    What did that ice cream girl say
+    Yuuhi
+    ---------------
+    again? Was it left or right...
+    Yuuhi
+    ---------------
+    Wait, where am I?
      `
 }
 
@@ -347,6 +420,17 @@ const URARA: CharacterData = {
     Tomo
     ---------------
     some ice cream will wake you up.
+     `,
+
+    stage2Dialogue: `Urara
+    ---------------
+    Zzz... (If only Spica or Yuuhi 
+    Urara
+    ---------------
+    were here, I'd still be sleeping
+    Urara
+    ---------------
+    in bed right now...)
      `
 }
 
