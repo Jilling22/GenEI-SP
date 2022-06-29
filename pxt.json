@@ -6,7 +6,8 @@
         "controller": "*",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
-        "pxt-arcade-image-transform": "github:robo-technical-group/pxt-arcade-image-transform#v1.0.8"
+        "pxt-arcade-image-transform": "github:robo-technical-group/pxt-arcade-image-transform#v1.0.8",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0"
     },
     "files": [
         "main.blocks",

@@ -426,6 +426,21 @@ function initializeMenu() {
     })
 }
 
+function Help() {
+    let texthelp = textsprite.create("up arrow - move up")
+    let texthelp1 = textsprite.create("down arrow - move down")
+    let texthelp2 = textsprite.create("left arrow - move back")
+    let texthelp3 = textsprite.create("right arrow - move forward")
+    let texthelp4 = textsprite.create("z - shoot")
+    let texthelp5 = textsprite.create("x - special")
+    texthelp.setPosition(74, 13)
+    texthelp1.setPosition(74, 25)
+    texthelp2.setPosition(74, 37)
+    texthelp3.setPosition(80, 49)
+    texthelp4.setPosition(89, 85)
+    texthelp5.setPosition(95, 97)
+}
+
 function characterSelect() {
     
     scene.setBackgroundImage(assets.image`menu_bg`)
@@ -434,11 +449,14 @@ function characterSelect() {
     menuSpica = sprites.create(assets.image`Spica Button`, SpriteKind.CharacterButton)
     menuYuuhi = sprites.create(assets.image`Yuuhi Button`, SpriteKind.CharacterButton)
     menuUrara = sprites.create(assets.image`Urara Button`, SpriteKind.CharacterButton)
+    let textCharacterselect = textsprite.create("Character Select")
     
     menuMikage.setPosition(26, 100)
     menuSpica.setPosition(62, 100)
     menuYuuhi.setPosition(98, 100)
     menuUrara.setPosition(134, 100)
+    textCharacterselect.setPosition(80, 45)
+    textCharacterselect.setOutline(1, 8)
 
     // Initial menu event listener
     timer.after(400, function () {
