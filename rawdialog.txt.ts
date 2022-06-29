@@ -46,8 +46,7 @@ become bald.)
 // TOMO INTROS
 
 
-`
-Tomo
+`Tomo
 ---------------
 So you finally came back, Mikage.
 Tomo
@@ -81,7 +80,7 @@ leave me again, aren't you?
 Tomo
 ---------------
 Not this time!
- `
+ `;
 
 // TOMO DEATH
 
@@ -273,13 +272,114 @@ is not with me anymore…
  `;
 
 // STAGE 3 INTRO
+`Mikage
+---------------
+... the parts. The airplane…
+Mikage
+---------------
+Wait, what am I saying?
+Mikage
+---------------
+I gotta get that album soon!
+ `;
 
+`Spica
+---------------
+Where am I… it feels so cold in here,
+Spica
+---------------
+but no snow...
+Spica
+---------------
+I don't like this.
+Spica
+---------------
+Let's get this over with, for Mikage.
+ `;
 
+`Yuuhi
+---------------
+Gah, where's my sunglasses when I
+Yuuhi
+---------------
+actually need them!
+Yuuhi
+---------------
+Mikage, you're treating me to
+Yuuhi
+---------------
+Magic Spice ramen after this is over…
+ `;
+
+`Urara
+---------------
+Zzz… (At last…)
+ `;
+
+`
+
+ `;
 
 // GOD URARA INTROS
+`God Urara
+---------------
+Zzz…
+Mikage
+---------------
+... wait, Urara?
+God Urara
+---------------
+Zzz…
+ `;
 
+`God Urara
+---------------
+Zzz…
+Spica
+---------------
+Oh, Urara!
+Spica
+---------------
+Why do you look so… bright?
+God Urara
+---------------
+Zzz…
+ `;
 
+`God Urara
+---------------
+Zzz…
+Yuuhi
+---------------
+Urara, are you pranking me
+Yuuhi
+---------------
+with your "God Urara" thing again?
+God Urara
+---------------
+Zzz…
+
+ `;
+
+`God Urara
+---------------
+Zzz…
+Urara
+---------------
+Zzz…
+Urara
+---------------
+(It seems I had the album
+Urara
+---------------
+in my pocket the whole time.
+Urara
+---------------
+Silly me.
+ `;
 
 // GOD URARA DEATH
-
-
+`God Urara
+---------------
+Zzz…
+ `;
