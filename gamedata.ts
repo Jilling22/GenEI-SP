@@ -528,7 +528,7 @@ type LevelData = {
 
 const LEVEL1: LevelData = {
     spawnFlag: "LEVEL1",
-    requirement: 1,
+    requirement: 19,
 
     walkSpd: -50,
     walkSpdVar: 10,
@@ -542,13 +542,13 @@ const LEVEL1: LevelData = {
 
 const LEVEL2: LevelData = {
     spawnFlag: "LEVEL2",
-    requirement: 2,
+    requirement: 25,
 
     walkSpd: -100,
     walkSpdVar: 10,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 700,
+    spawnRate: 300,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -556,13 +556,13 @@ const LEVEL2: LevelData = {
 
 const LEVEL3: LevelData = {
     spawnFlag: "LEVEL3",
-    requirement: 3,
+    requirement: 50,
 
-    walkSpd: -50,
-    walkSpdVar: 10,
+    walkSpd: -100,
+    walkSpdVar: 25,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 500,
+    spawnRate: 340,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -570,13 +570,13 @@ const LEVEL3: LevelData = {
 
 const LEVEL4: LevelData = {
     spawnFlag: "LEVEL4",
-    requirement: 4,
+    requirement: 70,
 
-    walkSpd: -100,
-    walkSpdVar: 10,
+    walkSpd: -125,
+    walkSpdVar: 30,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 500,
+    spawnRate: 520,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -584,13 +584,13 @@ const LEVEL4: LevelData = {
 
 const LEVEL5: LevelData = {
     spawnFlag: "LEVEL5",
-    requirement: 5,
+    requirement: 89,
 
-    walkSpd: -50,
-    walkSpdVar: 10,
+    walkSpd: -110,
+    walkSpdVar: 20,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 430,
+    spawnRate: 600,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -598,13 +598,13 @@ const LEVEL5: LevelData = {
 
 const LEVEL6: LevelData = {
     spawnFlag: "LEVEL6",
-    requirement: 6,
+    requirement: 125,
 
-    walkSpd: -100,
+    walkSpd: -110,
     walkSpdVar: 10,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 350,
+    spawnRate: 650,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
