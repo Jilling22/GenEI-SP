@@ -170,7 +170,7 @@ class SuperPhantom {
         this.facingLeft = true
 
         SuperPhantom.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        SuperPhantom.health.max = 1
+        SuperPhantom.health.max = 15
 
         SuperPhantom.health.attachToSprite(this.sprite)
 
@@ -325,12 +325,12 @@ class GodUrara {
         PhantomSpawner.phantoms.push(this.sprite)
 
         GodUrara.health = statusbars.create(20, 2, StatusBarKind.EnemyHealth)
-        GodUrara.health.max = 7
+        GodUrara.health.max = 40
 
-        this.phase2Start = 7 // 34
-        this.phase3Start = 6 // 27
-        this.phase4Start = 5 // 20
-        this.phase5Start = 4 // 5
+        this.phase2Start = 34 // 34
+        this.phase3Start = 27 // 27
+        this.phase4Start = 20 // 20
+        this.phase5Start = 9 // 5
 
         GodUrara.health.attachToSprite(this.sprite)
 

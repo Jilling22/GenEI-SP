@@ -710,12 +710,12 @@ const LEVEL6: LevelData = {
 
 const LEVEL7: LevelData = {
     spawnFlag: "LEVEL7",
-    requirement: 7,
+    requirement: 135,
 
-    walkSpd: -50,
-    walkSpdVar: 10,
+    walkSpd: -200,
+    walkSpdVar: 50,
 
-    spawnInterval: 1000,
+    spawnInterval: 1500,
     spawnRate: 100,
 
     spriteImg: assets.image`PMikage left`,
@@ -724,13 +724,13 @@ const LEVEL7: LevelData = {
 
 const LEVEL8: LevelData = {
     spawnFlag: "LEVEL8",
-    requirement: 8,
+    requirement: 150,
 
-    walkSpd: -100,
+    walkSpd: -120,
     walkSpdVar: 10,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 100,
+    spawnRate: 20,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -738,13 +738,13 @@ const LEVEL8: LevelData = {
 
 const LEVEL9: LevelData = {
     spawnFlag: "LEVEL9",
-    requirement: 9,
+    requirement: 170,
 
-    walkSpd: -50,
-    walkSpdVar: 10,
+    walkSpd: -150,
+    walkSpdVar: 30,
 
-    spawnInterval: 1000,
-    spawnRate: 100,
+    spawnInterval: 50,
+    spawnRate: 15,
 
     spriteImg: assets.image`PMikage left`,
     walkAnim: assets.animation`PMikage Walk`
@@ -798,7 +798,7 @@ const TOMO: BossData = {
 
     introPeriod: 2000,
 
-    health: 1,
+    health: 10,
     phase2Start: 8,
     phase3Start: 5,
     phase4Start: 2,

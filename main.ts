@@ -588,9 +588,9 @@ game.onUpdate(function () {
             })
         })
 
-        timer.after(5000, function () {
-            game.onUpdateInterval(15000, function () {
-                if (info.life() > 0 && gameState !== "LOADING") {
+        timer.after(10000, function () {
+            game.onUpdateInterval(1000, function () {
+                if (info.life() > 0 && gameState !== "LOADING" && Math.random() < 0.05) {
                     life_up = sprites.create(assets.image`Special_fire still`, SpriteKind.Special)
                     animation.runImageAnimation(life_up, assets.animation`Special_fire`, 200, true)
                     life_up.x = randint(30, 130)
