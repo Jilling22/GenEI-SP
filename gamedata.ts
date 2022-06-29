@@ -268,7 +268,39 @@ const SPICA: CharacterData = {
     Spica
     ---------------
     but I gotta do my best for her!
+     `,
+
+    phantomDialogue: `Phantom
+    ---------------
+    ... begone, Spica.
+     
+    Phantom
+    ---------------
+    The forest of shadows does not take
+    Phantom
+    ---------------
+    kindly to the blinding light.
+    Spica
+    ---------------
+    Light? I don't see any here...
+    Spica
+    ---------------
+    By the way, did you happen to know
+    Spica
+    ---------------
+    where the album that can cure
+    Spica
+    ---------------
+    baldness is?
+     
+    Phantom
+    ---------------
+    That was your last warning.
+    Phantom
+    ---------------
+    Now you too shall experience baldness.
      `
+
 }
 
 const YUUHI: CharacterData = {
@@ -354,6 +386,31 @@ const YUUHI: CharacterData = {
     Yuuhi
     ---------------
     Wait, where am I?
+     `,
+    
+    phantomDialogue: `Phantom
+    ---------------
+    I know what you did.
+    Phantom
+    ---------------
+    Don't think you can get away from us.
+    Yuuhi
+    ---------------
+    Do what now?
+     
+    Phantom
+    ---------------
+    Don't play dumb with me,
+    Phantom
+    ---------------
+    you murderer.
+     
+    Phantom
+    ---------------
+    It's about time you paid the price,
+    Phantom
+    ---------------
+    with your hair.
      `
 }
 
@@ -431,6 +488,27 @@ const URARA: CharacterData = {
     Urara
     ---------------
     in bed right now...)
+     `,
+
+    phantomDialogue: `Phantom
+    ---------------
+    Lord Urara, have mercy on us.
+    Urara
+    ---------------
+    Zzz...
+     
+    Urara
+    ---------------
+    (Cease your useless begging.
+    Urara
+    ---------------
+    I will exterminate you and your
+    Urara
+    ---------------
+    kind, on behalf of my friend.)
+    Phantom
+    ---------------
+    ...
      `
 }
 
