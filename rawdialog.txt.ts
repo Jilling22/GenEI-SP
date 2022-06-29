@@ -35,14 +35,53 @@ Yuuhi
 for it, but why?
  `;
 
-`
-
+`Urara
+---------------
+Zzz... (Hehe, Mikage's gonna
+Urara
+---------------
+become bald.)
  `;
 
 // TOMO INTROS
 
 
+`
+Tomo
+---------------
+So you finally came back, Mikage.
+Tomo
+---------------
+I've been waiting for weeks since
+Tomo
+---------------
+you took off with Yuuhi and Urara.
+Tomo
+---------------
+Look, the ice cream's almost melted
+Tomo
+---------------
+now because of you.
+Mikage
+---------------
+Umm... so there's this album that can
+Mikage
+---------------
+cure baldness, do you happen to
+Mikage
+---------------
+know where it is?
 
+Tomo
+---------------
+Oh, so I see how it is. You're
+Tomo
+---------------
+leave me again, aren't you?
+Tomo
+---------------
+Not this time!
+ `
 
 // TOMO DEATH
 

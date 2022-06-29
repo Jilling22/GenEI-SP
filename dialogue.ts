@@ -61,24 +61,31 @@ function intro3() {
 
 function tomoIntroDialogue() {
 
-    game.showLongText(`Harumaki Gohan
-    ---------------
-    One day, Mikage became bald.
-    Harumaki Gohan
-    ---------------
-    Hahaha kekw
-     `, DialogLayout.Bottom)
+    game.showLongText(player.spriteAssets.tomoDialogue, DialogLayout.Bottom)
      
 }
 
 function tomoDeathDialogue() {
 
-    game.showLongText(`Harumaki Gohan
+    game.showLongText(`Tomo
     ---------------
-    One day, Mikage became bald.
-    Harumaki Gohan
+    Please... spare me... I just 
+    Tomo
     ---------------
-    Hahaha kekw
+    wanted to eat this ice cream 
+    Tomo
+    ---------------
+    with someone...
+     
+    Tomo
+    ---------------
+    ... if you're looking for GenEi
+    Tomo
+    ---------------
+    SP, it's in the forest
+    Tomo
+    ---------------
+    over there...
      `, DialogLayout.Bottom)
 
 }

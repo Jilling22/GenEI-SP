@@ -48,7 +48,9 @@ type CharacterData = {
     homingSpecial: boolean,
     vacuumSpecial: boolean,
 
-    stage1Dialogue?: string
+    stage1Dialogue: string,
+    tomoDialogue?: string
+
 }
 
 const MIKAGE: CharacterData = {
@@ -91,7 +93,44 @@ const MIKAGE: CharacterData = {
     Mikage
     ---------------
     album quickly, before...
+     `,
+
+    tomoDialogue: `Tomo
+    ---------------
+    So you finally came back, Mikage.
+    Tomo
+    ---------------
+    I've been waiting for weeks since
+    Tomo
+    ---------------
+    you took off with Yuuhi and Urara.
+    Tomo
+    ---------------
+    Look, the ice cream's almost melted
+    Tomo
+    ---------------
+    now because of you.
+    Mikage
+    ---------------
+    Umm... so there's this album that can
+    Mikage
+    ---------------
+    cure baldness, do you happen to
+    Mikage
+    ---------------
+    know where it is?
+     
+    Tomo
+    ---------------
+    Oh, so I see how it is. You're
+    Tomo
+    ---------------
+    leave me again, aren't you?
+    Tomo
+    ---------------
+    Not this time!
      `
+     
 }
 
 const SPICA: CharacterData = {
@@ -137,6 +176,36 @@ const SPICA: CharacterData = {
     Spica
     ---------------
     winter uniform!
+     `,
+
+    tomoDialogue: `Tomo
+    ---------------
+    Hello there, what's your name?
+    Tomo
+    ---------------
+    I'm looking for someone to eat all
+    Tomo
+    ---------------
+    this ice cream with me!
+    Spica
+    ---------------
+    Hi, my name's Spica! Do you know
+    Spica
+    ---------------
+    where the album that can cure
+    Spica
+    ---------------
+    baldness is?
+     
+    Tomo
+    ---------------
+    Spica?!? Mikage keeps talking
+    Tomo
+    ---------------
+    about you... So you were the one
+    Tomo
+    ---------------
+    who stole her from me!
      `
 }
 
@@ -180,6 +249,38 @@ const YUUHI: CharacterData = {
     Yuuhi
     ---------------
     for it, but why?
+     `,
+
+    tomoDialogue: `Tomo
+    ---------------
+    ... it's you again, the one who
+    Tomo
+    ---------------
+    ruined my precious moment with
+    Tomo
+    ---------------
+    my best friend... Where is she?
+    Yuuhi
+    ---------------
+    Mikage? Dunno, sorry! But have
+    Yuuhi
+    ---------------
+    you seen an album somewhere? It
+    Yuuhi
+    ---------------
+    kinda looks like this--
+    Tomo
+    ---------------
+    That's it, I'm done with waiting
+    Tomo
+    ---------------
+    for her. All this ice cream is
+    Tomo
+    ---------------
+    about to melt anyway... Say, maybe
+    Tomo
+    ---------------
+    you should have it.
      `
 }
 
@@ -204,7 +305,7 @@ const URARA: CharacterData = {
     specialBullet: assets.animation`UraraSpecial animate`,
 
     startingLives: 5,
-    agility: 10,
+    agility: 15,
     bulletSpeed: 0,
     shootCooldown: 500,
     iframes: 2000,
@@ -212,7 +313,41 @@ const URARA: CharacterData = {
     multishotSpecial: false,
     pierceSpecial: false,
     homingSpecial: false,
-    vacuumSpecial: true
+    vacuumSpecial: true,
+
+    stage1Dialogue: `Urara
+    ---------------
+    Zzz... (Hehe, Mikage's gonna
+    Urara
+    ---------------
+    become bald.)
+     `,
+
+    tomoDialogue: `Tomo
+    ---------------
+    Hey, I know you. You were with
+    Tomo
+    ---------------
+    that yellow-haired dwarf when
+    Tomo
+    ---------------
+    she took Mikage away.
+    Urara
+    ---------------
+    Zzz... (Maybe you should finish
+    Urara
+    ---------------
+    your ice cream before it melts.)
+    Tomo
+    ---------------
+    How rude, can't you do anything
+    Tomo
+    ---------------
+    else but snore at people? Maybe
+    Tomo
+    ---------------
+    some ice cream will wake you up.
+     `
 }
 
 type LevelData = {
