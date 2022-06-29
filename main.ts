@@ -417,22 +417,31 @@ function initializeMenu() {
     })
 
     sprites.onOverlap(SpriteKind.Cursor, SpriteKind.PlayButton, function (cursorSprite, selectedSprite) {
-        if (controller.A.isPressed()) {
+        if (selectedSprite == playButton && controller.A.isPressed()) {
             sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
             sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
             sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
             characterSelect()
+        } else if (selectedSprite == helpButton && controller.A.isPressed()) {
+            sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
+            sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
+            sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
+            helpmenu()
         }
     })
 }
 
-function Help() {
+function helpmenu() {
+
+    scene.setBackgroundColor(15)
+
     let texthelp = textsprite.create("up arrow - move up")
     let texthelp1 = textsprite.create("down arrow - move down")
     let texthelp2 = textsprite.create("left arrow - move back")
     let texthelp3 = textsprite.create("right arrow - move forward")
     let texthelp4 = textsprite.create("z - shoot")
     let texthelp5 = textsprite.create("x - special")
+
     texthelp.setPosition(74, 13)
     texthelp1.setPosition(74, 25)
     texthelp2.setPosition(74, 37)
@@ -462,8 +471,10 @@ function characterSelect() {
     timer.after(400, function () {
         sprites.onOverlap(SpriteKind.Cursor, SpriteKind.CharacterButton, function (cursorSprite, selectedSprite) {
             if (controller.A.isPressed() && gameState === "MENU") {
-
                 startGame(selectedSprite)
+                timer.after(550, () =>{
+                    textCharacterselect.destroy()
+                })
             }
         })
     })
