@@ -46,7 +46,9 @@ type CharacterData = {
     multishotSpecial: boolean,
     pierceSpecial: boolean,
     homingSpecial: boolean,
-    vacuumSpecial: boolean
+    vacuumSpecial: boolean,
+
+    stage1Dialogue?: string
 }
 
 const MIKAGE: CharacterData = {
@@ -78,7 +80,18 @@ const MIKAGE: CharacterData = {
     multishotSpecial: false,
     pierceSpecial: false,
     homingSpecial: true,
-    vacuumSpecial: false
+    vacuumSpecial: false,
+
+    stage1Dialogue: `Mikage
+    ---------------
+    Where is it? It's gotta be here
+    Mikage
+    ---------------
+    somewhere... I need to find that
+    Mikage
+    ---------------
+    album quickly, before...
+     `
 }
 
 const SPICA: CharacterData = {
@@ -110,7 +123,21 @@ const SPICA: CharacterData = {
     multishotSpecial: true,
     pierceSpecial: false,
     homingSpecial: false,
-    vacuumSpecial: false
+    vacuumSpecial: false,
+
+    stage1Dialogue: `Spica
+    ---------------
+    So this is the place Mikage told
+    Spica
+    ---------------
+    me about... It's a bit chilly
+    Spica
+    ---------------
+    here, good thing I'm wearing my
+    Spica
+    ---------------
+    winter uniform!
+     `
 }
 
 const YUUHI: CharacterData = {
@@ -142,7 +169,18 @@ const YUUHI: CharacterData = {
     multishotSpecial: false,
     pierceSpecial: true,
     homingSpecial: false,
-    vacuumSpecial: false
+    vacuumSpecial: false,
+
+    stage1Dialogue: `Yuuhi
+    ---------------
+    Now where is that album? Mikage
+    Yuuhi
+    ---------------
+    told me she needed my help looking
+    Yuuhi
+    ---------------
+    for it, but why?
+     `
 }
 
 const URARA: CharacterData = {

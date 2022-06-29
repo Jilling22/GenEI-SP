@@ -22,13 +22,7 @@ function intro() {
     game.showLongText(`CHAPTER 1:
     The Path of Wisdom`, DialogLayout.Center)
 
-    game.showLongText(`Harumaki Gohan
-    ---------------
-    One day, Mikage became bald.
-    Harumaki Gohan
-    ---------------
-    Hahaha kekw
-     `, DialogLayout.Bottom)
+    game.showLongText(player.spriteAssets.stage1Dialogue, DialogLayout.Bottom)
 
     gameState = "INTRO_COMPLETE"
 }

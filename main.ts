@@ -494,7 +494,9 @@ function startGame(selectedSprite: Sprite) {
         cursor.destroy()
         sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
 
-        game.showLongText(`There was said to be an album created by a man possessed by rice, which held the cure for baldness. In a world where children could permanently become bald as early as high school, this was their only hope...`, DialogLayout.Full)
+        game.showLongText(`In a world where children could permanently become bald as early as high school, their only hope, according to rumors, was... an album created by Harumaki Gohan, which held the cure for baldness.`, DialogLayout.Full)
+        game.showLongText(`However, it is currently missing. Mikage and the others are currently tracking it down for their own reasons. Will they succeed? Or will they become bald?`, DialogLayout.Full)
+
 
         timer.after(1000, () => {
             scene.setBackgroundImage(assets.image`game_bg1`)
