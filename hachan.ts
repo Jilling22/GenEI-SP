@@ -55,7 +55,7 @@ function moveTo(x: number, y: number, sprite: Sprite, speed: number, pause: numb
         }
     })
 
-    timer.after(delay + timeTaken * 1000 - 50, () => {
+    timer.after(delay + timeTaken * 1000, () => {
         sprite.vx = 0
         sprite.vy = 0
  

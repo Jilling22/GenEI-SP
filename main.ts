@@ -464,24 +464,31 @@ function startGame(selectedSprite: Sprite) {
         cursor.destroy()
         sprites.destroyAllSpritesOfKind(SpriteKind.CharacterButton)
 
-        scene.setBackgroundImage(assets.image`game_bg1`)
-        if (selectedSprite == menuMikage) {
-            player = new Player(MIKAGE)
-        } else if (selectedSprite == menuSpica) {
-            player = new Player(SPICA)
-        } else if (selectedSprite == menuYuuhi) {
-            player = new Player(YUUHI)
-        } else if (selectedSprite == menuUrara) {
-            player = new Player(URARA)
-        }
+        game.showLongText(`There was said to be an album created by a man possessed by rice, which held the cure for baldness. In a world where children could permanently become bald as early as high school, this was their only hope...`, DialogLayout.Full)
+
+        timer.after(1000, () => {
+            scene.setBackgroundImage(assets.image`game_bg1`)
+            if (selectedSprite == menuMikage) {
+                player = new Player(MIKAGE)
+            } else if (selectedSprite == menuSpica) {
+                player = new Player(SPICA)
+            } else if (selectedSprite == menuYuuhi) {
+                player = new Player(YUUHI)
+            } else if (selectedSprite == menuUrara) {
+                player = new Player(URARA)
+            }
+            animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
+
+            timer.after(500, () => {
+                transitionScreen.destroy()
+                gameState = "CHARACTER_SELECTED"
+            })
+        })
+
         
-        animation.runImageAnimation(transitionScreen, assets.animation`transition open`, 100, false);
     })
 
-    timer.after(1500, () => {
-        transitionScreen.destroy()
-        gameState = "CHARACTER_SELECTED"
-    })
+    
 }
 
 let delay = 0;
@@ -803,8 +810,22 @@ game.onUpdate(function () {
 
         gameState = "GOD_URARA"
 
-        timer.after(2000, () => {
-            let bossFight3: GodUrara = new GodUrara()
+        timer.after(3000, () => {
+            if (player.spriteAssets.name !== "Urara") {
+                let bossFight3: GodUrara = new GodUrara()
+            } else {
+
+                uraraEndingDialogue()
+
+                player.toggleStill = false
+                controller.moveSprite(player.sprite, 0, 0)
+                player.sprite.setFlag(SpriteFlag.Ghost, true)
+
+                player.animateDeath()
+                timer.after(player.spriteAssets.deathTimer + 2000, function () {
+                    sleepyEnding()
+                })
+            }
         })
     }
 })

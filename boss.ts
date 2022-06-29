@@ -521,6 +521,7 @@ class GodUrara {
                             sprites.destroyAllSpritesOfKind(SpriteKind.EnemyProjectile, effects.disintegrate, 200)
                             this.sprite.setFlag(SpriteFlag.Ghost, false)
                             gameState = "GOD_URARA_PHASE2_START"
+                            travelQueue.shift();
                             moveTo(140, 60, this.sprite, 150, 0, assets.animation`GodUrara walk`)
                         })
                     }
@@ -549,10 +550,12 @@ class GodUrara {
                         gameState = "PHASE3_DONE"
                         music.bigCrash.play()
                         scene.cameraShake(7, 1500)
+                        scene.setBackgroundImage(assets.image`black_bg`)
 
                         timer.after(2000, () => {
-                            this.sprite.x = 140
-                            this.sprite.y = 60
+                            
+                            travelQueue.shift();
+                            moveTo(140, 60, this.sprite, 150, 0, assets.animation`GodUrara walk`)
                             this.sprite.setFlag(SpriteFlag.Ghost, false)
                         })
                         timer.after(2500, () => {
@@ -622,14 +625,26 @@ class GodUrara {
                         this.sprite.vx = 0
                         this.sprite.vy = 0
                         music.bigCrash.play()
+                        scene.setBackgroundImage(assets.image`game_bg3`)
 
                         timer.after(2000, () => {
-                            this.animateDeath()
+                            music.bigCrash.play()
+                            scene.setBackgroundImage(assets.image`black_bg`)
+                        })
+
+                        timer.after(4000, () => {
+                            music.bigCrash.play()
+                            scene.setBackgroundImage(assets.image`game_bg3`)
+                            timer.after(1000, () => {
+                                godUraraDeathDialogue()
+                                timer.after(2000, () => {
+                                    this.animateDeath()
+                                })
+                            })
                         })
                     }
                 })
             })
-
         })
     }
 
@@ -719,8 +734,8 @@ class GodUrara {
             animation.runImageAnimation(this.sprite, assets.animation`GodUraradeath`, 100, false)
         })
 
-        timer.after(4000, () => {
-            this.sprite.destroy()
+        timer.after(5000, () => {
+            regularEnding()
             gameState = "ENDING"
             game.over(true, effects.confetti)
         })
