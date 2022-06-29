@@ -431,6 +431,7 @@ function initializeMenu() {
     })
 }
 
+//i have stared this section for 3 hours
 function helpmenu() {
 
     scene.setBackgroundColor(15)
