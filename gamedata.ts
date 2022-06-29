@@ -52,7 +52,11 @@ type CharacterData = {
     tomoDialogue: string,
 
     stage2Dialogue: string,
-    phantomDialogue?: string
+    phantomDialogue: string,
+
+    stage3Dialogue: string,
+    godUraraDialogue?: string
+
 
 }
 
@@ -183,8 +187,31 @@ const MIKAGE: CharacterData = {
     Mikage
     ---------------
     Never ever ever!
-     `
+     `,
+    
+    stage3Dialogue: `Mikage
+    ---------------
+    ... the parts. The airplane...
+    Mikage
+    ---------------
+    Wait, what am I saying?
+    Mikage
+    ---------------
+    I gotta get that album soon!
+     `,
+    
+    godUraraDialogue: `God Urara
+    ---------------
+    Zzz...
      
+    Mikage
+    ---------------
+    ... wait, Urara?
+     
+    God Urara
+    ---------------
+    Zzz...
+     `,
 }
 
 const SPICA: CharacterData = {
@@ -299,7 +326,41 @@ const SPICA: CharacterData = {
     Phantom
     ---------------
     Now you too shall experience baldness.
-     `
+     `,
+    
+    stage3Dialogue: `Spica
+    ---------------
+    Where am I... it feels so cold in 
+    Spica
+    ---------------
+    here, yet there's no snow...
+    Spica
+    ---------------
+    I don't like this.
+     
+    Spica
+    ---------------
+    Let's get this over with, 
+    Spica
+    ---------------
+    for Mikage.
+     `,
+    
+    godUraraDialogue: `God Urara
+    ---------------
+    Zzz...
+     
+    Spica
+    ---------------
+    Oh, Urara!
+     
+    Spica
+    ---------------
+    Why do you look so... bright?
+    God Urara
+    ---------------
+    Zzz...
+     `,
 
 }
 
@@ -411,7 +472,35 @@ const YUUHI: CharacterData = {
     Phantom
     ---------------
     with your hair.
-     `
+     `,
+    
+    stage3Dialogue: `Yuuhi
+    ---------------
+    Gah, where's my sunglasses when I
+    Yuuhi
+    ---------------
+    actually need them!
+    Yuuhi
+    ---------------
+    Mikage, you're treating me to
+    Yuuhi
+    ---------------
+    Magic Spice ramen after this...
+     `,
+    
+    godUraraDialogue: `God Urara
+    ---------------
+    Zzz...
+    Yuuhi
+    ---------------
+    Urara, are you pranking me
+    Yuuhi
+    ---------------
+    with your "God Urara" thing again?
+    God Urara
+    ---------------
+    Zzz...
+     `,
 }
 
 const URARA: CharacterData = {
@@ -509,6 +598,15 @@ const URARA: CharacterData = {
     Phantom
     ---------------
     ...
+     `,
+    
+    stage3Dialogue: `Urara
+    ---------------
+    Zzz... 
+     
+    Urara
+    ---------------
+    (At long last...)
      `
 }
 

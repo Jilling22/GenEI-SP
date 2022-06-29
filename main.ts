@@ -516,11 +516,7 @@ function startGame(selectedSprite: Sprite) {
                 gameState = "CHARACTER_SELECTED"
             })
         })
-
-        
     })
-
-    
 }
 
 let delay = 0;
