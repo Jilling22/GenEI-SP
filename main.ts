@@ -88,8 +88,8 @@ class Player {
             if (this.inventory < 3) {
                 this.inventory += 1
                 if (character.vacuumSpecial) {
-                    this.agility += 20
-                    this.bulletSpeed += 20
+                    this.agility += 30
+                    this.bulletSpeed += 30
                     controller.moveSprite(this.sprite, this.agility, this.agility)
                 }
             }

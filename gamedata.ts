@@ -525,7 +525,7 @@ const URARA: CharacterData = {
 
     startingLives: 5,
     agility: 15,
-    bulletSpeed: 0,
+    bulletSpeed: 10,
     shootCooldown: 500,
     iframes: 2000,
 
