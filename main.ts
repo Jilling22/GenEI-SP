@@ -396,8 +396,7 @@ function initializeMenu() {
     playButton = sprites.create(assets.image`Play Button`, SpriteKind.PlayButton)
     helpButton = sprites.create(assets.image`Help Button`, SpriteKind.HelpButton)
 
-    playButton.setPosition(45, 98)
-    helpButton.setPosition(115, 98)
+    playButton.setPosition(82, 98)
 
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
     controller.moveSprite(cursor)
@@ -422,33 +421,8 @@ function initializeMenu() {
             sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
             sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
             characterSelect()
-        } else if (selectedSprite == helpButton && controller.A.isPressed()) {
-            sprites.destroyAllSpritesOfKind(SpriteKind.Placeholder)
-            sprites.destroyAllSpritesOfKind(SpriteKind.PlayButton)
-            sprites.destroyAllSpritesOfKind(SpriteKind.HelpButton)
-            helpmenu()
         }
     })
-}
-
-//i have stared this section for 3 hours
-function helpmenu() {
-
-    scene.setBackgroundColor(15)
-
-    let texthelp = textsprite.create("up arrow - move up")
-    let texthelp1 = textsprite.create("down arrow - move down")
-    let texthelp2 = textsprite.create("left arrow - move back")
-    let texthelp3 = textsprite.create("right arrow - move forward")
-    let texthelp4 = textsprite.create("z - shoot")
-    let texthelp5 = textsprite.create("x - special")
-
-    texthelp.setPosition(74, 13)
-    texthelp1.setPosition(74, 25)
-    texthelp2.setPosition(74, 37)
-    texthelp3.setPosition(80, 49)
-    texthelp4.setPosition(89, 85)
-    texthelp5.setPosition(95, 97)
 }
 
 function characterSelect() {
