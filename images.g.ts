@@ -894,19 +894,6 @@ fff8fffffffff8fffffffff88fffffffffffffffffffffffffffffffffffffffffffffffffffffff
 .11......11...1..1....11....11....
 1111....1111111.111..1111..1111...
 `;
-            case "image27":
-            case "Help Button":return img`
-1111..1111.1111111..1111....111111
-.11....11...11...1...11......11..1
-.11....11...11.......11......11..1
-.11....11...11..1....11......11..1
-.11111111...11111....11......11..1
-.11....11...11..1....11......11111
-.11....11...11.......11......11...
-.11....11...11...1...11...1..11...
-.11....11...11...1...11...1..11...
-1111..1111.1111111..1111111.1111..
-`;
             case "image28":
             case "YuuhiSpecial":return img`
 ....................5....
@@ -15708,6 +15695,13 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 ...................11...........
 ....................1...........
 `];
+        }
+        return null;
+    })
+
+    helpers._registerFactory("song", function(name: string) {
+        switch(helpers.stringTrim(name)) {
+
         }
         return null;
     })

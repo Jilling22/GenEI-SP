@@ -394,7 +394,6 @@ function initializeMenu() {
     scene.setBackgroundImage(assets.image`mainmenu_bg`)
     sprites.create(assets.image`title`, SpriteKind.Placeholder)
     playButton = sprites.create(assets.image`Play Button`, SpriteKind.PlayButton)
-    helpButton = sprites.create(assets.image`Help Button`, SpriteKind.HelpButton)
 
     playButton.setPosition(82, 98)
 
